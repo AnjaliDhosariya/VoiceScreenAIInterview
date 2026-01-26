@@ -1,0 +1,471 @@
+{
+    "jobs": {
+        "JOB-DA-FRESHER": {
+            "id": "JOB-DA-FRESHER",
+            "title": "Data Analyst",
+            "level": "Fresher / Entry Level",
+            "experience_years": "0-1",
+            "department": "Analytics",
+            "description": "Seeking a motivated fresher to join our analytics team. You'll work on data extraction, cleaning, and basic reporting while learning industry best practices.",
+            "responsibilities": [
+                "Extract and clean data from multiple sources",
+                "Create basic reports and dashboards using BI tools",
+                "Perform exploratory data analysis",
+                "Support senior analysts with ad-hoc analysis",
+                "Document data processes and findings",
+                "Participate in team meetings and present insights"
+            ],
+            "must_have_skills": [
+                "SQL basics (SELECT, JOIN, WHERE, GROUP BY)",
+                "Excel (pivot tables, vlookup, basic formulas)",
+                "Basic statistics knowledge",
+                "Data visualization fundamentals"
+            ],
+            "nice_to_have_skills": [
+                "Python or R basics",
+                "Tableau or Power BI exposure",
+                "Understanding of ETL concepts",
+                "Version control (Git) basics"
+            ],
+            "technical_focus_areas": [
+                "SQL query writing",
+                "Data cleaning techniques",
+                "Basic statistical analysis",
+                "Chart creation and interpretation"
+            ],
+            "behavioral_focus_areas": [
+                "Learning agility",
+                "Attention to detail",
+                "Communication of findings",
+                "Teamwork and collaboration"
+            ],
+            "sample_questions": {
+                "technical": [
+                    "Explain the difference between WHERE and HAVING clauses in SQL",
+                    "How would you find duplicate records in a table?",
+                    "What is a LEFT JOIN and when would you use it?"
+                ],
+                "behavioral": [
+                    "Tell me about a time you had to learn something new quickly",
+                    "Describe a project where attention to detail was critical"
+                ]
+            }
+        },
+        "JOB-DA-MID": {
+            "id": "JOB-DA-MID",
+            "title": "Data Analyst",
+            "level": "Mid-Level",
+            "experience_years": "2-4",
+            "department": "Analytics",
+            "description": "Looking for an experienced Data Analyst to drive insights and support business decisions. You'll own end-to-end analysis projects and mentor junior team members.",
+            "responsibilities": [
+                "Design and execute complex analytical projects",
+                "Build automated dashboards and reporting pipelines",
+                "Perform A/B testing and statistical analysis",
+                "Present insights to stakeholders and leadership",
+                "Mentor junior analysts",
+                "Optimize SQL queries for performance",
+                "Collaborate with engineering on data infrastructure"
+            ],
+            "must_have_skills": [
+                "Advanced SQL (window functions, CTEs, optimization)",
+                "Python or R for analysis (pandas, numpy, matplotlib)",
+                "BI tools (Tableau, Power BI, Looker)",
+                "Statistical analysis (hypothesis testing, regression)",
+                "Data modeling concepts"
+            ],
+            "nice_to_have_skills": [
+                "ETL/ELT pipeline experience",
+                "Cloud platforms (AWS, GCP, Azure)",
+                "Git version control",
+                "Airflow or similar orchestration tools",
+                "Basic machine learning knowledge"
+            ],
+            "technical_focus_areas": [
+                "Window functions and advanced SQL",
+                "Statistical hypothesis testing",
+                "Dashboard optimization",
+                "Data pipeline design"
+            ],
+            "behavioral_focus_areas": [
+                "Stakeholder management",
+                "Project ownership",
+                "Mentorship capabilities",
+                "Problem-solving approach"
+            ],
+            "sample_questions": {
+                "technical": [
+                    "Explain window functions with a real-world example",
+                    "How would you design a dashboard for executive leadership?",
+                    "Walk me through your approach to A/B test analysis"
+                ],
+                "behavioral": [
+                    "Describe a time you influenced a business decision with data",
+                    "Tell me about a complex analysis project you owned end-to-end"
+                ]
+            }
+        },
+        "JOB-DE-FRESHER": {
+            "id": "JOB-DE-FRESHER",
+            "title": "Data Engineer",
+            "level": "Junior",
+            "experience_years": "0-2",
+            "department": "Data Engineering",
+            "description": "Join our data engineering team to build scalable data pipelines. You'll learn modern data stack technologies and contribute to our data infrastructure.",
+            "responsibilities": [
+                "Assist in building ETL/ELT pipelines",
+                "Write SQL queries for data transformation",
+                "Monitor and troubleshoot data pipeline failures",
+                "Document data workflows and schemas",
+                "Participate in code reviews",
+                "Support data quality initiatives"
+            ],
+            "must_have_skills": [
+                "SQL (intermediate level)",
+                "Python basics (functions, classes, libraries)",
+                "Database fundamentals (RDBMS concepts)",
+                "Basic understanding of data warehousing"
+            ],
+            "nice_to_have_skills": [
+                "Airflow or Prefect exposure",
+                "Cloud platforms (AWS S3, Redshift, BigQuery)",
+                "Git and CI/CD basics",
+                "Docker fundamentals",
+                "Spark or distributed computing concepts"
+            ],
+            "technical_focus_areas": [
+                "ETL pipeline development",
+                "SQL optimization",
+                "Data quality checks",
+                "Basic Python scripting"
+            ],
+            "behavioral_focus_areas": [
+                "Problem-solving mindset",
+                "Attention to detail",
+                "Collaboration with analysts",
+                "Learning new technologies"
+            ],
+            "sample_questions": {
+                "technical": [
+                    "What is the difference between ETL and ELT?",
+                    "How would you handle duplicate records in a data pipeline?",
+                    "Explain the concept of idempotency in data pipelines"
+                ],
+                "behavioral": [
+                    "Describe a technical challenge you overcame",
+                    "How do you approach debugging a failing pipeline?"
+                ]
+            }
+        },
+        "JOB-DE-SENIOR": {
+            "id": "JOB-DE-SENIOR",
+            "title": "Senior Data Engineer",
+            "level": "Senior",
+            "experience_years": "5-8",
+            "department": "Data Engineering",
+            "description": "Lead the design and implementation of enterprise-scale data infrastructure. Architect solutions, mentor engineers, and drive technical excellence.",
+            "responsibilities": [
+                "Design and architect data infrastructure solutions",
+                "Build real-time and batch data pipelines at scale",
+                "Optimize data warehouse performance and costs",
+                "Establish data engineering best practices",
+                "Mentor junior and mid-level engineers",
+                "Collaborate with ML/AI teams on feature engineering",
+                "Drive technical decisions and roadmap planning",
+                "Ensure data security and governance compliance"
+            ],
+            "must_have_skills": [
+                "Advanced Python (OOP, design patterns, async)",
+                "Distributed systems (Spark, Kafka, Flink)",
+                "Cloud platforms (AWS/GCP/Azure data services)",
+                "Data warehouse design (Snowflake, Redshift, BigQuery)",
+                "Orchestration tools (Airflow, Prefect, Dagster)",
+                "SQL optimization and query planning",
+                "CI/CD and infrastructure as code (Terraform)"
+            ],
+            "nice_to_have_skills": [
+                "Kubernetes and containerization",
+                "Stream processing frameworks",
+                "Data governance tools",
+                "Machine learning pipeline integration",
+                "Scala or Java",
+                "Event-driven architecture"
+            ],
+            "technical_focus_areas": [
+                "System design and architecture",
+                "Performance optimization",
+                "Scalability patterns",
+                "Data modeling (star schema, snowflake)",
+                "Real-time data processing"
+            ],
+            "behavioral_focus_areas": [
+                "Technical leadership",
+                "Architecture decision-making",
+                "Cross-functional collaboration",
+                "Mentorship and team building",
+                "Strategic thinking"
+            ],
+            "sample_questions": {
+                "technical": [
+                    "Design a real-time data pipeline for processing millions of events per second",
+                    "How would you optimize a slowly performing data warehouse?",
+                    "Explain your approach to ensuring data quality at scale"
+                ],
+                "behavioral": [
+                    "Describe a time you architected a complex data system",
+                    "How do you handle technical disagreements with peers?",
+                    "Tell me about mentoring an engineer to solve a difficult problem"
+                ]
+            }
+        },
+        "JOB-DS-FRESHER": {
+            "id": "JOB-DS-FRESHER",
+            "title": "Data Scientist",
+            "level": "Junior",
+            "experience_years": "0-2",
+            "department": "Data Science",
+            "description": "Start your data science career building predictive models and deriving insights from data. Work alongside experienced data scientists on real business problems.",
+            "responsibilities": [
+                "Build and evaluate machine learning models",
+                "Perform exploratory data analysis",
+                "Create data visualizations and reports",
+                "Assist in A/B testing and experimentation",
+                "Document model development and findings",
+                "Present results to team members"
+            ],
+            "must_have_skills": [
+                "Python (pandas, numpy, scikit-learn)",
+                "Statistics and probability fundamentals",
+                "Machine learning basics (regression, classification)",
+                "SQL for data extraction",
+                "Data visualization (matplotlib, seaborn)"
+            ],
+            "nice_to_have_skills": [
+                "Deep learning frameworks (TensorFlow, PyTorch)",
+                "Feature engineering techniques",
+                "Model deployment basics",
+                "R programming",
+                "Experiment design knowledge"
+            ],
+            "technical_focus_areas": [
+                "Supervised learning algorithms",
+                "Model evaluation metrics",
+                "Feature selection and engineering",
+                "Statistical hypothesis testing"
+            ],
+            "behavioral_focus_areas": [
+                "Analytical thinking",
+                "Curiosity and experimentation",
+                "Communication of technical concepts",
+                "Collaboration with stakeholders"
+            ],
+            "sample_questions": {
+                "technical": [
+                    "Explain the bias-variance tradeoff",
+                    "When would you use logistic regression vs decision trees?",
+                    "How do you handle imbalanced datasets?"
+                ],
+                "behavioral": [
+                    "Describe a data problem you solved with creative analysis",
+                    "How do you explain technical results to non-technical stakeholders?"
+                ]
+            }
+        },
+        "JOB-DS-SENIOR": {
+            "id": "JOB-DS-SENIOR",
+            "title": "Senior Data Scientist",
+            "level": "Senior",
+            "experience_years": "5-8",
+            "department": "Data Science",
+            "description": "Lead high-impact data science initiatives that drive business value. Build advanced models, establish best practices, and guide junior scientists.",
+            "responsibilities": [
+                "Design and implement end-to-end ML solutions",
+                "Develop advanced predictive and prescriptive models",
+                "Lead experimentation strategy and causal inference",
+                "Define modeling best practices and standards",
+                "Collaborate with engineering on ML infrastructure",
+                "Mentor junior data scientists",
+                "Present findings to C-level executives",
+                "Drive business impact through data-driven insights"
+            ],
+            "must_have_skills": [
+                "Advanced machine learning techniques",
+                "Deep learning (CNNs, RNNs, Transformers)",
+                "Python (advanced ML libraries and frameworks)",
+                "Experiment design and causal inference",
+                "MLOps and model deployment",
+                "Statistical modeling and time series",
+                "SQL and data manipulation at scale"
+            ],
+            "nice_to_have_skills": [
+                "NLP or Computer Vision specialization",
+                "Reinforcement learning",
+                "Distributed ML (Spark MLlib, Dask)",
+                "Cloud ML services (SageMaker, Vertex AI)",
+                "LLM fine-tuning and prompt engineering",
+                "Research publication experience"
+            ],
+            "technical_focus_areas": [
+                "Advanced modeling techniques",
+                "Model interpretability and explainability",
+                "Production ML systems",
+                "Experimentation framework design",
+                "Algorithm optimization"
+            ],
+            "behavioral_focus_areas": [
+                "Business impact orientation",
+                "Strategic thinking",
+                "Technical leadership",
+                "Stakeholder influence",
+                "Team mentorship"
+            ],
+            "sample_questions": {
+                "technical": [
+                    "Design an end-to-end recommendation system for an e-commerce platform",
+                    "How would you approach building a customer churn prediction model?",
+                    "Explain your process for debugging a model that's underperforming in production"
+                ],
+                "behavioral": [
+                    "Describe a project where your model drove significant business impact",
+                    "Tell me about a time you had to balance model complexity with interpretability",
+                    "How do you prioritize between multiple data science initiatives?"
+                ]
+            }
+        },
+        "JOB-ML-JUNIOR": {
+            "id": "JOB-ML-JUNIOR",
+            "title": "AI/ML Engineer",
+            "level": "Junior",
+            "experience_years": "1-3",
+            "department": "Machine Learning",
+            "description": "Build and deploy machine learning models in production. Work on ML infrastructure, model serving, and continuous improvement of AI systems.",
+            "responsibilities": [
+                "Deploy ML models to production environments",
+                "Build ML pipelines and automation",
+                "Monitor model performance and drift",
+                "Implement feature engineering workflows",
+                "Collaborate with data scientists on model optimization",
+                "Write clean, maintainable ML code",
+                "Participate in model experimentation"
+            ],
+            "must_have_skills": [
+                "Python (strong OOP and software engineering)",
+                "Machine learning frameworks (scikit-learn, XGBoost)",
+                "REST APIs and microservices",
+                "Docker and containerization",
+                "Git and CI/CD pipelines",
+                "SQL and data processing"
+            ],
+            "nice_to_have_skills": [
+                "Deep learning frameworks (TensorFlow, PyTorch)",
+                "Kubernetes basics",
+                "Cloud platforms (AWS, GCP, Azure)",
+                "Model serving (TensorFlow Serving, TorchServe)",
+                "MLflow or similar ML tracking tools",
+                "Feature stores"
+            ],
+            "technical_focus_areas": [
+                "ML model deployment",
+                "API development",
+                "Pipeline automation",
+                "Model monitoring and logging"
+            ],
+            "behavioral_focus_areas": [
+                "Software engineering mindset",
+                "Collaboration with DS and engineering teams",
+                "Production reliability focus",
+                "Continuous learning"
+            ],
+            "sample_questions": {
+                "technical": [
+                    "How would you deploy a machine learning model as a REST API?",
+                    "Explain your approach to monitoring ML models in production",
+                    "What is model drift and how do you detect it?"
+                ],
+                "behavioral": [
+                    "Describe a time you debugged a production ML issue",
+                    "How do you balance speed of deployment with model quality?"
+                ]
+            }
+        },
+        "JOB-ML-SENIOR": {
+            "id": "JOB-ML-SENIOR",
+            "title": "Senior AI/ML Engineer",
+            "level": "Senior",
+            "experience_years": "5-8",
+            "department": "Machine Learning",
+            "description": "Architect and scale AI/ML infrastructure to support company-wide machine learning initiatives. Lead MLOps practices and drive technical excellence.",
+            "responsibilities": [
+                "Design scalable ML infrastructure and platforms",
+                "Build automated ML pipelines (training, deployment, monitoring)",
+                "Establish MLOps best practices and standards",
+                "Optimize model performance and latency",
+                "Lead integration of LLMs and generative AI",
+                "Mentor ML engineers and data scientists",
+                "Drive technical roadmap for ML systems",
+                "Ensure model governance and compliance"
+            ],
+            "must_have_skills": [
+                "Advanced Python and software engineering",
+                "Deep learning (PyTorch, TensorFlow)",
+                "Kubernetes and cloud-native architecture",
+                "ML infrastructure tools (Kubeflow, MLflow, Airflow)",
+                "Model optimization (quantization, pruning, distillation)",
+                "Distributed training and inference",
+                "Cloud platforms (AWS/GCP/Azure ML services)"
+            ],
+            "nice_to_have_skills": [
+                "LLM fine-tuning and deployment (Llama, GPT, Mistral)",
+                "Vector databases (Pinecone, Weaviate)",
+                "Edge ML deployment",
+                "Model compression techniques",
+                "ONNX and model interoperability",
+                "Ray or Dask for distributed computing",
+                "Research publications or patents"
+            ],
+            "technical_focus_areas": [
+                "ML platform architecture",
+                "Model serving at scale",
+                "Distributed systems",
+                "Performance optimization",
+                "LLM integration and RAG systems"
+            ],
+            "behavioral_focus_areas": [
+                "Technical leadership and vision",
+                "Cross-functional collaboration",
+                "System design thinking",
+                "Team mentorship",
+                "Strategic planning"
+            ],
+            "sample_questions": {
+                "technical": [
+                    "Design an end-to-end MLOps platform for a company with 100+ models",
+                    "How would you optimize inference latency for a real-time prediction API?",
+                    "Explain your approach to implementing a RAG system with LLMs"
+                ],
+                "behavioral": [
+                    "Describe a time you scaled an ML system to handle 10x traffic",
+                    "How do you approach technical decision-making for long-term projects?",
+                    "Tell me about mentoring an engineer through a complex ML infrastructure challenge"
+                ]
+            }
+        }
+    },
+    "metadata": {
+        "version": "1.0",
+        "last_updated": "2026-01-24",
+        "total_jobs": 8,
+        "roles": [
+            "Data Analyst",
+            "Data Engineer",
+            "Data Scientist",
+            "AI/ML Engineer"
+        ],
+        "experience_levels": [
+            "Fresher (0-1 years)",
+            "Junior (1-3 years)",
+            "Mid-Level (2-4 years)",
+            "Senior (5-8 years)"
+        ]
+    }
+}

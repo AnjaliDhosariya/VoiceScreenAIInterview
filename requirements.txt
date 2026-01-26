@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+supabase
+langgraph
+langchain
+langchain-groq
+groq
+python-dotenv
+pydantic
+requests
+tenacity==8.2.3
