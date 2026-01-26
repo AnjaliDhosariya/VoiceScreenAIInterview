@@ -148,11 +148,11 @@ class InterviewController:
             state.question_count += 1
             StatePersistence.save_state(state)
             
-            # Fallback question to prevent crash
+            # Fallback question to prevent crash (AVOID BACKGROUND - already covered in warmup)
             question_data = {
-                "type": "general",
-                "question": "Could you tell me more about your background and experience relevant to this role?",
-                "rubric": {"mustMention": ["Experience", "Skills"]}
+                "type": "motivation",
+                "question": "What aspects of this role are you most excited about?",
+                "rubric": {"mustMention": ["Interest", "Goals"]}
             }
         
         if not question_data:
