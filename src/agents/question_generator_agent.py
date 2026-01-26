@@ -102,7 +102,7 @@ Output Format:
 }}"""
         
         elif q_type == 'motivation':
-            return f"""You are an interview for {job_title}.
+            return f"""You are an interviewer for {job_title}.
 
 Generate a MOTIVATION question to understand what drives the candidate.
 
@@ -111,7 +111,8 @@ CRITICAL RULES FOR MOTIVATION:
 2. Ask about their career goals or what energizes them
 3. NO "Tell me about a time..." (that is Behavioral)
 4. NO technical scenarios (that is Technical)
-5. Keep it professional but personal
+5. DO NOT ask about their background/experience (already covered in warmup)
+6. Keep it professional but personal
 
 Respond using a valid JSON object.
 
@@ -119,6 +120,10 @@ GOOD EXAMPLES:
 - "What specifically about this {job_title} role at our company aligns with your career goals?"
 - "What part of being a {job_title} do you find most energizing and why?"
 - "We have a fast-paced environment. What kind of work culture allows you to do your best work?"
+
+BAD EXAMPLES (AVOID):
+- "Tell me about your background and experience" (Already covered in warmup)
+- "What experiences have prepared you for this role?" (Already covered in warmup)
 
 Output Format:
 {{
@@ -152,6 +157,8 @@ Output Format:
         prompt = f"""You are an interviewer for {job_title}. 
 Question Type: {q_type}. Difficulty: {difficulty} ({difficulty_notes.get(difficulty)}).
 Skills Focus: {skills_str}. {focus_area}
+
+CRITICAL: DO NOT ask about candidate's background, experience overview, or career journey - this was already covered in warmup question.
 
 Conversation History:
 {history}

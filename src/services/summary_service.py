@@ -81,18 +81,22 @@ class SummaryService:
     def _determine_recommendation(overall_score: int, num_questions: int) -> str:
         """Determine recommendation based on score and completion"""
         
-        # Strong performers should proceed regardless of question count
+        # CRITICAL: Must complete at least 8 core questions for valid PROCEED
+        # Early termination (< 8 questions) indicates insufficient signal
+        if num_questions < 8:
+            # Insufficient data - require more signal
+            if overall_score >= 70:
+                return "HOLD"  # Strong early showing but need full assessment
+            elif overall_score >= 60:
+                return "HOLD"
+            else:
+                return "REJECT"
+        
+        # Strong performers with sufficient questions should proceed
         if overall_score >= 75:
             return "PROCEED"
         
-        # For lower scores, consider interview length
-        if num_questions < 10:
-            # Early termination with decent scores: HOLD for further assessment
-            if overall_score >= 60:
-                return "HOLD"
-            return "REJECT"
-        
-        # Full interview completed
+        # Full interview completed (8+ questions)
         if overall_score >= 60:
             return "HOLD"
         return "REJECT"
