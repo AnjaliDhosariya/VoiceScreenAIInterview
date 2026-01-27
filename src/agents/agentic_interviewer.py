@@ -17,22 +17,20 @@ class AgenticInterviewer:
     """
     
     # Constants
-    MIN_CORE_QUESTIONS = 10  # Core evaluation questions
-    MIN_QUESTIONS = 12  # Minimum total including candidate Q&A + wrap-up
-    MAX_QUESTIONS = 15  # Hard maximum
+    MIN_CORE_QUESTIONS = 8  # Core evaluation questions (Strict 8-step plan)
+    MIN_QUESTIONS = 10  # Minimum total including candidate Q&A + wrap-up
+    MAX_QUESTIONS = 13  # Reduced max since core is shorter
     END_INTERVIEW_BUFFER = 2  # Slots for candidate Q&A + wrap-up
     
-    # Core 8-question evaluation plan (candidate Q&A and wrap-up added dynamically at end)
+    # Core 8-question evaluation plan (Verified User Request)
     BASE_QUESTION_PLAN = [
         {"type": "warmup", "description": "Intro + warm-up (easy)"},
-        {"type": "behavioral", "description": "Behavioral question 1"},
-        {"type": "behavioral", "description": "Behavioral question 2"},
+        {"type": "behavioral", "description": "Behavioral question 1 (conflict/stakeholder)"},
+        {"type": "behavioral", "description": "Behavioral question 2 (ownership/result)"},
         {"type": "motivation", "description": "Role motivation question"},
         {"type": "technical", "description": "JD-specific technical Q1"},
         {"type": "technical", "description": "JD-specific technical Q2"},
-        {"type": "technical", "description": "JD-specific technical Q3"},
-        {"type": "technical", "description": "JD-specific technical Q4"},
-        {"type": "scenario", "description": "Scenario/case question"},
+        {"type": "scenario", "description": "Scenario/case question (role-specific)"},
         {"type": "culture", "description": "Culture fit question"}
     ]
     
@@ -46,43 +44,31 @@ class AgenticInterviewer:
     def should_continue_after_minimum(self, state: CandidateState) -> Tuple[bool, str]:
         """
         Decide whether to continue interview after 8 core questions.
-        
-        Returns: (should_continue, reasoning)
+        Strategy: Stop if we have enough data (Avg >= 7.0), only probe if weak/unclear.
         """
         # Must complete at least 8 core questions
         if state.question_count < self.MIN_CORE_QUESTIONS:
             return True, f"Must complete minimum {self.MIN_CORE_QUESTIONS} core questions"
         
-        # Cannot exceed 13 (MAX - 2 for candidate Q&A and wrap-up)
+        # Cannot exceed MAX
         if state.question_count >= self.MAX_QUESTIONS - self.END_INTERVIEW_BUFFER:
-            return False, "Reached maximum follow-up questions"
+            return False, "Reached maximum questions limit"
         
-        # AGENT AUTONOMOUS DECISIONS (questions 11-13):
+        # AGENT AUTONOMOUS DECISIONS (questions 9-11):
         
-        # Terminate early if poor fit (3+ red flags)
-        if len(state.red_flags) >= 3:
-            return False, f"Poor fit detected: {len(state.red_flags)} red flags (sufficient signal)"
-        
-        # Terminate if consistently weak performance
-        if state.struggle_count >= 3 and state.avg_score < 4.5:
-            return False, f"Consistently weak performance (avg {state.avg_score:.1f}/10)"
-        
-        # Continue if strong candidate (probe deeper)
-        # Lowered threshold from 8.5 to 7.5 to allow more depth for good candidates
-        if state.avg_score >= 7.5 and (len(state.green_flags) >= 2 or state.strong_answer_count >= 3):
-            return True, f"Strong candidate (avg {state.avg_score:.1f}/10) - probe deeper"
-        
-        # Continue if unclear signals (need more data)
-        # Adjusted range to be more inclusive
-        if 4.5 <= state.avg_score <= 7.0:
-            # But only add 2 clarifying questions
-            if state.question_count < self.MIN_CORE_QUESTIONS + 2:
-                return True, f"Mixed signals (avg {state.avg_score:.1f}/10) - need clarity"
-            else:
-                return False, "Sufficient data gathered after clarifying questions"
-        
-        # Default: end after core questions
-        return False, f"Sufficient data gathered from {self.MIN_CORE_QUESTIONS} core questions"
+        # 1. STOP: Sufficient Positive Data
+        # If the candidate is solid (>= 7.0), we don't need to grill them further.
+        if state.avg_score >= 7.0:
+            return False, f"Sufficient positive data gathered (Avg {state.avg_score:.1f}/10) - ending interview"
+            
+        # 2. STOP: Consistent Failure
+        # If they are performing very poorly (Avg < 4.0), further questions won't help.
+        if state.avg_score < 4.0:
+             return False, f"insufficient performance (Avg {state.avg_score:.1f}/10) - ending interview"
+
+        # 3. CONTINUE: Weak/Mixed Performance (4.0 <= Score < 7.0)
+        # We need to probe specific weak areas to give them a chance or confirm rejection.
+        return True, f"Mixed signals (Avg {state.avg_score:.1f}/10) - probing weak areas for final assessment"
     
     def should_add_followup(self, state: CandidateState) -> Tuple[bool, str, str]:
         """
@@ -299,7 +285,8 @@ class AgenticInterviewer:
                     job_id=job_id,
                     previous_answers=[],
                     difficulty="easy",
-                    candidate_state=state
+                    candidate_state=state,
+                    q_type_override=q_type  # PASS EXPLICIT TYPE
                 )
                 state.question_count = turn_no
                 state.last_question = question_data["question"]
@@ -330,7 +317,8 @@ class AgenticInterviewer:
                 job_id=job_id,
                 previous_answers=previous_answers,
                 difficulty=difficulty,
-                candidate_state=state
+                candidate_state=state,
+                q_type_override=q_type  # PASS EXPLICIT TYPE FROM PLAN
             )
             
             # Update state
@@ -379,24 +367,29 @@ class AgenticInterviewer:
                 
                 difficulty = "hard"
                 
+                # FORCE TECHNICAL for follow-ups unless probing specific soft skill
+                # For simplicity, we assume deep dives are technical for now
+                q_type_followup = "technical"
+                
                 question_data = self.question_generator.generate_question(
                     turn_no=turn_no,
                     job_id=job_id,
                     previous_answers=previous_answers,
                     difficulty=difficulty,
-                    candidate_state=state
+                    candidate_state=state,
+                    q_type_override=q_type_followup # PASS EXPLICIT TYPE
                 )
                 
                 state.question_count = turn_no
                 state.last_question = question_data["question"]
-                state.last_question_type = "technical"
+                state.last_question_type = q_type_followup
                 
                 return question_data
             else:
                 # No more follow-ups, move to candidate Q&A
                 return self._generate_candidate_questions(state, turn_no)
         
-        # Candidate Q&A phase (fallback for turn 14)
+        # Candidate Q&A phase (fallback for turn 13)
         elif turn_no == self.MAX_QUESTIONS - 1:
             if "candidate_questions" in state.topics_covered:
                 return self._generate_wrapup(state, turn_no)

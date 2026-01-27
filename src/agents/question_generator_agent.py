@@ -21,7 +21,8 @@ class QuestionGeneratorAgent:
         job_id: str, 
         previous_answers: List[Dict[str, Any]],
         difficulty: str = "medium",
-        candidate_state: Any = None
+        candidate_state: Any = None,
+        q_type_override: str = None # NEW: specific type requested by controller
     ) -> Dict[str, Any]:
         """Generate next question based on interview flow with adaptive difficulty"""
         
@@ -30,13 +31,9 @@ class QuestionGeneratorAgent:
         if not job_data:
             job_data = {"title": "General Position", "level": "Entry", "must_have_skills": []}
         
-        # Determine question type from plan
-        question_plan = [
-            "warmup", "behavioral", "behavioral", "motivation", 
-            "technical", "technical", "technical", "technical",
-            "scenario", "culture", "candidate_questions", "wrapup"
-        ]
-        q_type = question_plan[turn_no - 1] if turn_no <= len(question_plan) else "technical"
+        # Determine question type: Use override if provided, else default to technical
+        # The planning logic is now centralized in AgenticInterviewer
+        q_type = q_type_override if q_type_override else "technical"
         
         # Create prompt for LLM
         prompt = self._create_prompt(q_type, job_data, previous_answers, difficulty, candidate_state)
@@ -65,9 +62,11 @@ class QuestionGeneratorAgent:
     ) -> str:
         """Create optimized, concise prompt for question generation"""
         
+        # Common context
+        job_title = job_data.get('title', 'Position')
+
         # SPECIAL HANDLING: Warmup questions should be catchy and engaging
         if q_type == 'warmup':
-            job_title = job_data.get('title', 'Position')
             return f"""You are an energetic and professional interviewer for a {job_title} role.
 
 Generate a CATCHY and ENGAGING warmup question to kick off the interview.
@@ -136,7 +135,36 @@ Output Format:
     }}
 }}"""
         
-        # OPTIMIZATION: Concise context for other question types
+        elif q_type == 'behavioral':
+             return f"""You are an interviewer for {job_title}.
+
+Generate a BEHAVIORAL question using the STAR method (Situation, Task, Action, Result).
+
+CRITICAL RULES FOR BEHAVIORAL:
+1. Ask "Tell me about a time when..." or "Describe a situation where..."
+2. Focus on SOFT SKILLS: Conflict resolution, Leadership, Teamwork, Adaptability, Ownership, Integrity.
+3. DO NOT ask technical questions (e.g., "Tell me about a time you used Python").
+4. DO NOT ask about code or tools. Focus on PEOPLE and PROCESS logic.
+
+Respond using a valid JSON object.
+
+GOOD EXAMPLES:
+- "Tell me about a time you had a conflict with a stakeholder. How did you resolve it?"
+- "Describe a situation where you had to take ownership of a project that was falling behind."
+- "Tell me about a time you had to explain a complex technical concept to a non-technical audience."
+
+Output Format:
+{{
+    "question": "your behavioral question here",
+    "type": "behavioral",
+    "rubric": {{
+        "mustMention": ["STAR structure", "specific example", "outcome"],
+        "goodToMention": ["learning", "collaboration"],
+        "redFlags": ["blaming others", "vague", "no result"]
+    }}
+}}"""
+        
+        # OPTIMIZATION: Concise context for other question types (TECHNICAL / SCENARIO / CULTURE / ETC)
         job_title = job_data.get('title', 'Position')
         skills_str = ', '.join(job_data.get('must_have_skills', [])[:5])
         

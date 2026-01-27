@@ -111,6 +111,20 @@ class SummaryService:
         # REJECT CRITERIA
         # ====================
         
+        # ====================
+        # EARLY TERMINATION (Insufficient Data)
+        # ====================
+        
+        # New Rule: Automatically REJECT if fewer than 5 answers (User Request)
+        if num_questions < 4:
+             if overall_score >= 60:
+                 return "REJECT", f"Early termination (only {num_questions} answers) - insufficient data to proceed despite score ({overall_score}/100)"
+             return "REJECT", f"Early termination ({num_questions} answers) with weak performance ({overall_score}/100) - candidate dropped off"
+
+        # ====================
+        # REJECT CRITERIA (> 5 answers)
+        # ====================
+        
         # Critical: Severe performance
         if overall_score < 40: # Lowered from 45
             return "REJECT", f"Overall score too low ({overall_score}/100) - does not meet minimum bar"
@@ -130,14 +144,6 @@ class SummaryService:
         if technical_score < 30 and technical_score > 0:  # Lowered from 35
             return "REJECT", f"Critical technical gaps (technical score: {technical_score}/100) - does not meet role requirements"
         
-        # Early termination with poor performance
-        if num_questions < 8:
-            if overall_score < 50: # Lowered from 55
-                if red_flag_count >= 1 or improvement_count >= 4:
-                    return "REJECT", f"Early termination with weak performance ({overall_score}/100) and multiple concerns - insufficient potential"
-                return "HOLD", f"Early termination with borderline performance ({overall_score}/100, {num_questions} questions) - need more signal"
-            return "HOLD", f"Insufficient coverage ({num_questions} questions, need ≥8) despite decent score ({overall_score}/100) - require full assessment"
-        
         # Complete interview with poor performance
         if num_questions >= 10 and overall_score < 45: # Lowered from 50
             return "REJECT", f"Completed {num_questions} questions but performance remains weak ({overall_score}/100) - not a fit"
@@ -146,8 +152,8 @@ class SummaryService:
         # PROCEED CRITERIA
         # ====================
         
-        # Must have minimum coverage
-        if num_questions >= 8 and overall_score >= 65: # Lowered threshold from 75 to 65
+        # Must have minimum coverage (at least 5 for 'strong', usually 8)
+        if overall_score >= 65: # Lowered threshold from 75 to 65
             # Additional validation checks
             checks_passed = 0
             reasons = []
@@ -197,6 +203,11 @@ class SummaryService:
         # HOLD CRITERIA
         # ====================
         
+        # Borderline performance with moderate coverage (5-8 questions)
+        # If they dropped off but were doing OK, we HOLD (unless < 5, which is rejected above)
+        if num_questions < 8:
+             return "HOLD", f"Interview ended early ({num_questions} questions) but showed promise ({overall_score}/100). Valid answers provided."
+
         # Borderline performance with full coverage
         if num_questions >= 8:
             reasons = []
@@ -223,8 +234,8 @@ class SummaryService:
             if overall_score < 60:
                 return "HOLD", f"Below target performance ({overall_score}/100) - marginal fit, needs careful consideration"
         
-        # Default: insufficient coverage
-        return "HOLD", f"Insufficient interview coverage ({num_questions} questions, target ≥8) - need more signal before decision"
+        # Default fallback
+        return "HOLD", f"Review required - mixed performance signals ({overall_score}/100)"
     
     @staticmethod
     def _areas_to_probe(concerns: List[str]) -> List[str]:
