@@ -149,8 +149,6 @@ POST /hr/interview/{interviewId}/finish
 GET /hr/interview/{interviewId}/report
 ```
 
-## Testing with Postman/cURL
-
 ### Complete Interview Flow
 
 1. **Create Interview**
