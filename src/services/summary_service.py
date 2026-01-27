@@ -94,14 +94,17 @@ class SummaryService:
         culture_score = scores.get("culture", 0) if scores else 0
         
         # Count red/green flags from evaluations
-        red_flags = []
+        actual_red_flags = []
+        improvements = []
         green_flags = []
         if evaluations:
             for eval_data in evaluations:
-                red_flags.extend(eval_data.get('improvements', []))
+                actual_red_flags.extend(eval_data.get('red_flags', []))
+                improvements.extend(eval_data.get('improvements', []))
                 green_flags.extend(eval_data.get('strengths', []))
         
-        red_flag_count = len([f for f in red_flags if f and len(f) > 10])
+        red_flag_count = len([f for f in actual_red_flags if f and len(f) > 10])
+        improvement_count = len([i for i in improvements if i and len(i) > 10])
         green_flag_count = len([g for g in green_flags if g and len(g) > 10])
         
         # ====================
@@ -109,27 +112,34 @@ class SummaryService:
         # ====================
         
         # Critical: Severe performance
-        if overall_score < 50:
+        if overall_score < 40: # Lowered from 45
             return "REJECT", f"Overall score too low ({overall_score}/100) - does not meet minimum bar"
         
-        # Critical: Too many red flags
-        if red_flag_count >= 5:
-            return "REJECT", f"Too many concerns identified ({red_flag_count} red flags) - substantial gaps in multiple areas"
+        # Critical: Actual Red Flags (Major issues)
+        if red_flag_count >= 4: # Increased from 3
+            return "REJECT", f"Multiple critical red flags identified ({red_flag_count}) - severe gaps in core requirements"
         
+        if red_flag_count >= 2 and overall_score < 50: # Only reject for 2 red flags if score is very weak
+            return "REJECT", f"Multiple red flags ({red_flag_count}) combined with very weak performance ({overall_score}/100)"
+        
+        # Critical: Too many minor concerns when score is already weak
+        if improvement_count >= 8 and overall_score < 50: # Increased threshold and lowered score trigger
+            return "REJECT", f"Too many concerns identified ({improvement_count} improvements) with weak overall score ({overall_score}/100)"
+
         # Critical: Technical incompetence for technical roles
-        if technical_score < 40 and technical_score > 0:  # > 0 means it was scored
+        if technical_score < 30 and technical_score > 0:  # Lowered from 35
             return "REJECT", f"Critical technical gaps (technical score: {technical_score}/100) - does not meet role requirements"
         
         # Early termination with poor performance
         if num_questions < 8:
-            if overall_score < 60:
-                if red_flag_count >= 2:
+            if overall_score < 50: # Lowered from 55
+                if red_flag_count >= 1 or improvement_count >= 4:
                     return "REJECT", f"Early termination with weak performance ({overall_score}/100) and multiple concerns - insufficient potential"
                 return "HOLD", f"Early termination with borderline performance ({overall_score}/100, {num_questions} questions) - need more signal"
             return "HOLD", f"Insufficient coverage ({num_questions} questions, need ≥8) despite decent score ({overall_score}/100) - require full assessment"
         
         # Complete interview with poor performance
-        if num_questions >= 10 and overall_score < 55:
+        if num_questions >= 10 and overall_score < 45: # Lowered from 50
             return "REJECT", f"Completed {num_questions} questions but performance remains weak ({overall_score}/100) - not a fit"
         
         # ====================
@@ -137,34 +147,46 @@ class SummaryService:
         # ====================
         
         # Must have minimum coverage
-        if num_questions >= 8 and overall_score >= 75:
+        if num_questions >= 8 and overall_score >= 65: # Lowered threshold from 75 to 65
             # Additional validation checks
             checks_passed = 0
             reasons = []
             
             # Check 1: Technical strength
-            if technical_score >= 70:
+            if technical_score >= 65: # Lowered from 70
                 checks_passed += 1
-                reasons.append("strong technical skills")
+                reasons.append("solid technical skills")
             
             # Check 2: Communication strength
-            if communication_score >= 70:
+            if communication_score >= 65: # Lowered from 70
                 checks_passed += 1
                 reasons.append("clear communication")
             
             # Check 3: Positive signal ratio
             if green_flag_count >= red_flag_count:
                 checks_passed += 1
-                reasons.append("more strengths than concerns")
+                reasons.append("positive signal ratio")
             
             # Check disqualifiers
-            if red_flag_count >= 4:
-                return "HOLD", f"High overall score ({overall_score}/100) but too many concerns ({red_flag_count} red flags) - needs follow-up assessment"
+            # Logic: In longer interviews, more minor improvements are expected.
+            # Only trigger HOLD if improvements are > 1.25x the number of turns.
+            max_improvements = max(10, int(num_questions * 1.25))
+            
+            if red_flag_count >= 3: # Increased from 2
+                return "HOLD", f"Potential candidate ({overall_score}/100) but has {red_flag_count} red flags - technical deep-dive recommended"
+            
+            # EXCEPTION: If overall score is excellent (>= 80), allow more improvements
+            # High performers often get many nitpicky "improvements" from the LLM
+            if overall_score >= 80:
+                 max_improvements = max_improvements * 1.5
+            
+            if improvement_count >= max_improvements and overall_score < 80:
+                return "HOLD", f"Good overall score ({overall_score}/100) but numerous improvement areas identified ({improvement_count}) - review specific feedback"
             
             if technical_score < 60 and technical_score > 0:
                 return "HOLD", f"Good overall ({overall_score}/100) but technical gaps (technical: {technical_score}/100) - recommend technical deep-dive"
             
-            # Need at least 2 of 3 validation checks
+            # Need at least 2 of 3 validation checks for PROCEED
             if checks_passed >= 2:
                 reason_str = ", ".join(reasons)
                 return "PROCEED", f"Strong performance ({overall_score}/100 across {num_questions} questions) with {reason_str} - recommend next round"
@@ -190,6 +212,11 @@ class SummaryService:
             if 60 <= overall_score < 75:
                 if red_flag_count > green_flag_count:
                     return "HOLD", f"Moderate performance ({overall_score}/100) with more concerns than strengths - borderline candidate"
+                
+                # If score is close to 75 (e.g., 70-74), lean towards PROCEED if no red flags
+                if overall_score >= 70 and red_flag_count == 0:
+                     return "PROCEED", f"Solid performance ({overall_score}/100) with no red flags - recommend next round"
+                     
                 return "HOLD", f"Moderate performance ({overall_score}/100) across {num_questions} questions - additional assessment needed"
             
             # Low but not rejectable

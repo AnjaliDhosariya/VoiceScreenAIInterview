@@ -33,8 +33,8 @@ class QuestionGeneratorAgent:
         # Determine question type from plan
         question_plan = [
             "warmup", "behavioral", "behavioral", "motivation", 
-            "technical", "technical", "scenario", "culture", 
-            "candidate_questions", "wrapup"
+            "technical", "technical", "technical", "technical",
+            "scenario", "culture", "candidate_questions", "wrapup"
         ]
         q_type = question_plan[turn_no - 1] if turn_no <= len(question_plan) else "technical"
         
@@ -154,14 +154,30 @@ Output Format:
         if q_type == 'technical' and candidate_state and hasattr(candidate_state, 'next_skill_to_test'):
             focus_area = f"Target skill: {candidate_state.next_skill_to_test}"
 
+        # Placeholder for topics_covered, assuming it will be passed or derived from candidate_state
+        # For now, it's an empty string to avoid errors.
+        topics_covered = getattr(candidate_state, 'topics_covered', '') if candidate_state else ''
+
         prompt = f"""You are an interviewer for {job_title}. 
 Question Type: {q_type}. Difficulty: {difficulty} ({difficulty_notes.get(difficulty)}).
 Skills Focus: {skills_str}. {focus_area}
+Previous Topics Covered: {topics_covered}
+
+DIVERSITY & ANTI-REPETITION RULES:
+1. DO NOT ask about a topic/skill if it appears in "Previous Topics Covered".
+2. DO NOT repeat the same Scenario structure. If you asked about "missing data" or "joining two tables" previously, DO NOT ask a similar question again.
+3. VARY the context: Use different industries (Finance, Healthcare, E-commerce) and different data problems (Data Quality, Performance, Privacy, Modeling).
+4. If "SQL" or "Joins" were already tested, move to "Optimization", "Warehousing", or "Python/Scripting".
 
 CRITICAL: DO NOT ask about candidate's background, experience overview, or career journey - this was already covered in warmup question.
 
 Conversation History:
 {history}
+
+CRITICAL: DO NOT repeat topics, themes, or specific technical subjects already covered in the Conversation History.
+Each question must explore a DIFFERENT skill or situation.
+If a candidate has already discussed "model optimization", DO NOT ask about it again in a different way. Move to another area (e.g., data quality, monitoring, versioning, team conflict).
+Avoid asking questions that lead the candidate to repeat what they have already said. Seek depth in UNTESTED areas of the job description.
 
 Generate a JSON object for the next question. 
 
@@ -171,11 +187,17 @@ CRITICAL DISTINCTION:
 - Motivation questions: Ask "WHY this role?", "Where do you see yourself?", "What drives you?". NO technical scenarios.
 
 Criteria:
-1. Dynamic, JD-specific question.
-2. For Behavioral: Use STAR method.
-3. For Culture: Ask for preferences/values (NOT past situations).
-4. For Motivation: Ask about drivers/goals (NOT skills).
-5. For Technical: Practical scenario-based (no generic theory).
+1. Dynamic, JD-specific question focusing on: {skills_str}.
+2. For Behavioral: Use STAR method. Ask "Tell me about a time when...".
+3. For Culture: Ask about preferences/values (NOT past situations). NO "Tell me about a time".
+4. For Motivation: Ask about drivers/goals (NOT skills). NO "Tell me about a time".
+5. For Technical/Scenario: 
+   - DO NOT USE "Tell me about a time when...". 
+   - Instead, use: "How would you handle...", "Imagine you have...", "Describe your process for...".
+   - Present a HYPOTHETICAL situation or a specific technical problem to solve based on {skills_str}.
+   - Example Technical: "How would you implement a solution for [Specific Skill from {skills_str}] given [Specific constraint]?"
+   - Example Scenario: "Your team is facing a challenge with [Task related to {job_title}]. How would you structure your approach?"
+6. Be mindful of the role level ({job_data.get('level', 'Mid')}). Do not over-complicate for junior/mid roles.
 
 Output Format:
 {{

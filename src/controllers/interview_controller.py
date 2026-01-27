@@ -13,6 +13,7 @@ from src.agents.interview_flow_graph import interview_graph, InterviewState
 # NEW: Agentic interviewer imports
 from src.agents.agentic_interviewer import AgenticInterviewer
 from src.services.state_persistence import StatePersistence
+from src.services.job_service import job_service
 
 class InterviewController:
     """Business logic for interview operations"""
@@ -269,7 +270,8 @@ class InterviewController:
             
             # 2. Parallel Evaluation (Core Intelligence)
             try:
-                evaluations = self._evaluate_all_answers(turns)
+                job_data = job_service.get_job(session["job_id"])
+                evaluations = self._evaluate_all_answers(turns, job_data)
             except Exception as e:
                 print(f"[ERROR] Parallel evaluation failed: {e}")
                 evaluations = []
@@ -406,7 +408,7 @@ class InterviewController:
         
         return qa_pairs
     
-    def _evaluate_all_answers(self, turns: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def _evaluate_all_answers(self, turns: List[Dict[str, Any]], job_data: Dict[str, Any] = None) -> List[Dict[str, Any]]:
         """Evaluate all Q&A pairs in parallel to reduce latency"""
         print(f"[DEBUG] Starting parallel evaluation of {len(turns)} turns")
         qa_pairs = self._extract_qa_pairs(turns)
@@ -432,7 +434,8 @@ class InterviewController:
                     qa["question"],
                     qa["answer"],
                     q_type,
-                    {"mustMention": [], "goodToMention": [], "redFlags": []}
+                    {"mustMention": [], "goodToMention": [], "redFlags": []},
+                    job_data
                 )
             except Exception as e:
                 print(f"[ERROR] Individual evaluation failed: {e}")
