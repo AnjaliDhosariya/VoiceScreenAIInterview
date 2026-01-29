@@ -176,8 +176,8 @@ The system uses a **Priority Waterfall** to ensure safe and accurate decisions:
 ---
 
 ## 📄 Documentation Deep-Dives
-- [Question Generation Logic](file:///C:/Users/Anjali/.gemini/antigravity/brain/496b217e-462a-4f31-bff5-adb2ac2d3899/question_generation_logic.md)
-- [Scoring & Evaluation Logic](file:///C:/Users/Anjali/.gemini/antigravity/brain/496b217e-462a-4f31-bff5-adb2ac2d3899/scoring_and_evaluation_logic.md)
+- [Question Generation Logic]
+- [Scoring & Evaluation Logic]
 
 ---
 
