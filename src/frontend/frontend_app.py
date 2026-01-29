@@ -186,7 +186,6 @@ st.markdown("""
     /* Hide Streamlit Branding */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    header {visibility: hidden;}
     </style>
 """, unsafe_allow_html=True)
 
@@ -383,7 +382,15 @@ def show_start_screen():
         "JOB-DS-FRESHER": "🔬 Data Scientist - Junior (0-2 years)",
         "JOB-DS-SENIOR": "🔬 Data Scientist - Senior (5-8 years)",
         "JOB-ML-JUNIOR": "🤖 AI/ML Engineer - Junior (1-3 years)",
-        "JOB-ML-SENIOR": "🤖 AI/ML Engineer - Senior (5-8 years)"
+        "JOB-ML-SENIOR": "🤖 AI/ML Engineer - Senior (5-8 years)",
+        "JOB-DEVOPS-FRESHER": "☁️ DevOps Engineer - Fresher (0-1 years)",
+        "JOB-DEVOPS-EXPERIENCED": "☁️ DevOps Engineer - Experienced (4-8 years)",
+        "JOB-BACKEND-FRESHER": "⚙️ Backend Engineer - Fresher (0-1 years)",
+        "JOB-BACKEND-EXPERIENCED": "⚙️ Backend Engineer - Experienced (3-7 years)",
+        "JOB-FRONTEND-FRESHER": "🎨 Frontend Engineer - Fresher (0-1 years)",
+        "JOB-FRONTEND-EXPERIENCED": "🎨 Frontend Engineer - Experienced (3-6 years)",
+        "JOB-FULLSTACK-FRESHER": "🚀 Full Stack Engineer - Fresher (0-1 years)",
+        "JOB-FULLSTACK-EXPERIENCED": "🚀 Full Stack Engineer - Experienced (3-7 years)"
     }
     
     # Job role selection with better UX
@@ -430,6 +437,38 @@ def show_start_screen():
             "JOB-ML-SENIOR": {
                 "skills": "PyTorch/TF, Kubernetes, ML infrastructure, LLMs, Distributed systems",
                 "focus": "ML platform architecture, LLM integration, optimization, mentorship"
+            },
+            "JOB-DEVOPS-FRESHER": {
+                "skills": "Linux, Docker, K8s basics, Terraform, Jenkins",
+                "focus": "CI/CD, containerization, infra automation"
+            },
+            "JOB-DEVOPS-EXPERIENCED": {
+                "skills": "K8s, Terraform, AWS/GCP/Azure, CI/CD at scale, Monitoring",
+                "focus": "Scalability, SRE, Infrastructure security"
+            },
+            "JOB-BACKEND-FRESHER": {
+                "skills": "Python/Java, DSA, SQL, REST APIs, Git",
+                "focus": "API development, database interaction"
+            },
+            "JOB-BACKEND-EXPERIENCED": {
+                "skills": "Advanced Python/Java, System Design, SQL/NoSQL, Concurrency",
+                "focus": "Scalability, performance, mentorship"
+            },
+            "JOB-FRONTEND-FRESHER": {
+                "skills": "HTML, CSS, JS, React basics, Browser fundamentals",
+                "focus": "UI components, responsive design, UX"
+            },
+            "JOB-FRONTEND-EXPERIENCED": {
+                "skills": "React/Angular, TypeScript, State Management, Performance",
+                "focus": "UI architecture, performance, accessibility"
+            },
+            "JOB-FULLSTACK-FRESHER": {
+                "skills": "JS, React, Backend basics, SQL",
+                "focus": "End-to-end features, full-stack debugging"
+            },
+            "JOB-FULLSTACK-EXPERIENCED": {
+                "skills": "React, Backend frameworks, System Design, Docker",
+                "focus": "Full-stack ownership, system integration"
             }
         }
         

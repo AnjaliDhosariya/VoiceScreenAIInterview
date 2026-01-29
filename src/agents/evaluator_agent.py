@@ -1,6 +1,6 @@
 import os
 from groq import Groq
-from typing import Dict, Any
+from typing import Dict, Any, List
 import json
 from src.config import GROQ_API_KEY, GROQ_MODEL
 
@@ -29,7 +29,7 @@ class EvaluatorAgent:
             }
 
         # CRITICAL: Pre-filter gibberish BEFORE LLM call (bypasses lenient LLM)
-        if self._is_gibberish(answer):
+        if self._is_gibberish(answer, question_type):
             return {
                 "technical": 0,
                 "communication": 0,
@@ -80,45 +80,52 @@ Evaluation Rubric:
 
 {star_check}
 
-CRITICAL: Detect gibberish and non-answers:
-- Gibberish (random letters like "EDNRHCNHTVY", "RTRY"): Score 0-1 on ALL dimensions
-- One-word answers or "I don't know": Score 0-2
-- Extremely vague answers with no specifics: Score 1-3
+ROLE-AWARE GRADING STANDARDS:
+- FOR JUNIOR/FRESHER: Prioritize **Logic, Structure, and Communication**. 
+    - **Mastery Reward**: If a Junior candidate demonstrates knowledge of advanced concepts (e.g., expert-level methodologies, complex industry-specific frameworks, or sophisticated problem-solving tools) that exceed typical entry-level expectations, **REWARD THEM IN THE 8-9 RANGE**.
+    - **Logical Pass**: If they explain their baseline process clearly and use a logical structure (like STAR), give them a score of 7.5-8 even if they don't mention advanced tools or techniques.
+- **COMMUNICATION & STRUCTURE REWARD**: If a candidate (Junior or Senior) uses the **STAR method perfectly** or provides an **exceptionally well-organized, step-by-step professional explanation**, **YOU MUST AWARD A SCORE OF 8.5-9.5** in Communication and Structure.
+    - **NO "SAFE" SCORING**: Do not default to a "safe" 7.0-7.5 if the structure is excellent. A well-organized answer is a major differentiator; reward it accordingly.
+- FOR SENIOR/EXPERIENCED: Maintain a very high technical bar. Expect deep-dives into edge cases, high-level strategy, and complex optimizations relevant to the field.
+
+CRITICAL QUALITY RULES:
+1. ONLY flag an answer as "gibberish" or "invalid" if it is truly random characters or completely unrelated to human language.
+2. DO NOT flag technical terminology, industry jargon, or acronyms as gibberish.
+3. Be lenient with long, professional explanations.
 
 Evaluate the answer on a scale of 0-10:
 1. Technical (if applicable) - correctness, complexity, accuracy
-   - 9-10: Mastery; expert-level depth, handles edge cases
-   - 7-8: Solid; correctly answers and provides good examples (PROCEED level)
-   - 5-6: Fair; correct but brief or lacks specific detail/depth
-   - 2-4: Weak; partially incorrect or very vague
-   - 0-1: Failed; non-answer or incorrect
+   - 9-10: Exceptional; expert-level depth with absolute precision within the domain.
+   - 8-9: Advanced; shows depth beyond target level (Excellent for Juniors).
+   - 7-7.5: Solid; core concepts handled professionally (Strong Pass).
+   - 5-6: Fair; correct baseline but brief or lacks depth.
+   - 0-4: Weak/Failed; incorrect or nonsensical.
 
 2. Communication - clarity, structure, professional tone
-   - 9-10: Exceptional; extremely well-articulated, concise, and professional
-   - 7-8: Clear; easy to follow, well-structured (PROCEED level)
-   - 5-6: Understandable; gets the point across but may ramble or be too brief
-   - 2-4: Poor; difficult to follow or unprofessional
-   - 0-1: Incoherent or one-word answers
+   - 9-10: Exceptional; extremely well-articulated, concise, and professional. 
+   - 8.5-9.5: Excellent; mandated for perfect STAR usage or exceptional organization.
+   - 7-8: Clear; easy to follow (Strong Pass).
+   - 5-6: Understandable; gets the point across but may ramble.
+   - 0-4: Poor.
 
 3. Structure - organization, logical flow, STAR method (if behavioral)
-   - 8-10: Perfect flow; clearly uses STAR for behavioral
-   - 6-7: Good flow; mostly logical (PROCEED level)
-   - 3-5: Loose structure; jumps around or misses key context
-   - 0-2: No structure
+   - 9-10: Perfect flow; masterfully organized.
+   - 8.5-9.5: Excellent; clear logical steps or **Perfect STAR method**.
+   - 7-8: Good; mostly logical (Solid).
+   - 0-6: Loose or No structure.
 
 4. Confidence - ownership and assertiveness
-   - 8-10: High; strong ownership (e.g., "I took lead", "I decided")
-   - 6-7: Moderate; appropriate for most roles (PROCEED level)
-   - 3-5: Low; passive or hesistant
-   - 0-2: Lacks ownership
+   - 8-10: High; strong ownership (e.g., "I took lead", "I decided").
+   - 6-7: Moderate; appropriate for most roles.
+   - 3-5: Low; passive or hesistant.
+   - 0-2: Lacks ownership.
 
 SCORING PHILOSOPHY:
-- Be generous and supportive. If the candidate provides a clear, technically accurate, and professional answer, they SHOULD receive an 8 or 9.
-- Reward technical depth: If the candidate mentions specific industry-standard tools, optimizations, or robust patterns (e.g., dbt, Airflow, MERGE logic, Indexing, STAR method), GIVE a 9 or 10. High detail is a major strength.
-- Reward structure: A candidate who uses the STAR method (Situation, Task, Action, Result) for behavioral questions or a structured "step-by-step" approach for technical questions SHOULD get an 8-10.
-- DO NOT penalize for "missing more depth" if the answer provided is already correct and professionally sufficient for the target level ({job_level}).
-- 7 is for "Correct but basic" - it is a strong PASSING score.
-- 5-6 is only for answers that are incomplete, very brief, or vague.
+- **FOR BEHAVIORAL QUESTIONS**: Focus **SOLELY** on Logic, STAR Structure, and Communication. If they use STAR, they **MUST** get an 8.5-9.5 regardless of technical depth.
+- **FOR TECHNICAL QUESTIONS**: Reward depth and use of specific industry-standard tools or robust patterns. High detail is a major strength.
+- **FOR ALL QUESTIONS**: Be generous and supportive. If the answer is clear, accurate, and professional for the {job_level} level, give an 8 or 9.
+- DO NOT penalize for "missing more depth" if the answer is already sufficient for the target level.
+- 5-6 is only for incomplete, very brief, or vague answers.
 
 Return ONLY a JSON object:
 {{
@@ -127,10 +134,18 @@ Return ONLY a JSON object:
     "structure": <0-10>,
     "confidence": <0-10>,
     "strengths": ["specific strength with evidence"],
-    "improvements": ["ONLY key areas to improve. Leave EMPTY if answer is strong (8-10). Do not nitpick."],
-    "red_flags": ["CRITICAL issues, dealbreakers, or severe technical errors"],
-    "brief_reasoning": "One sentence explaining the score"
-}}"""
+    "improvements": ["Only include critical technical or structural gaps. DO NOT include generic advice like 'elaborate more' or 'be more specific' if the answer already satisfies the prompt professionally. Leave EMPTY for strong (8-10) answers."],
+    "red_flags": ["If the answer is irrelevant or canned, you MUST include the EXACT string 'Irrelevant answer' here. Also include CRITICAL issues, dealbreakers, or severe technical errors"],
+    "brief_reasoning": "One sentence explaining the score. If answer is irrelevant, state 'Irrelevant answer' explicitly."
+}}
+SCORING MANDATE (CRITICAL):
+- RELEVANCE GATE: If the answer is "canned" or irrelevant, YOU MUST score 0-1 for Technical and add 'Irrelevant answer' to red_flags.
+- DO NOT award points for structure/STAR if the content is irrelevant.
+- NEGATIVE EXAMPLE: Question: "Explain React Caching", Answer: "I am a hard worker who loves teams." -> Result: {{"technical": 0, "red_flags": ["Irrelevant answer"], "brief_reasoning": "Answer did not address caching."}}
+- DEEP DIVE REWARD (JUNIOR/FRESHER): If a candidate at this level provides a detailed, conceptual deep-dive (e.g. explaining statistical implications of missing data or complex database aggregations), **YOU MUST AWARD 8.5-9.5**.
+- NO SEARCHING FOR IMPROVEMENTS: If an answer is professionally sufficient, leave "improvements" EMPTY. Do not search for minor flaws to fill space.
+- DO NOT hallucinate technical depth if the answer doesn't contain any specific technical responses to the prompt.
+"""
         
         try:
             chat_completion = self.client.chat.completions.create(
@@ -149,6 +164,54 @@ Return ONLY a JSON object:
             # Fallback evaluation
             return self._fallback_evaluation(answer)
     
+    def quick_evaluate(self, question: str, answer: str, question_type: str, job_level: str = "Mid") -> Dict[str, Any]:
+        """High-speed, low-latency evaluation for adaptive difficulty logic"""
+        # Skip for metadata turns
+        if question_type.lower() in ["warmup", "candidate_questions", "wrapup"]:
+            return {"technical": 5, "communication": 5, "structure": 5, "confidence": 5, "overall": 5}
+
+        if self._is_gibberish(answer, question_type):
+            return {"technical": 0, "communication": 0, "structure": 0, "confidence": 0, "overall": 0}
+
+        prompt = f"""Rate this interview answer from 0-10 for a {job_level} level position.
+Question Type: {question_type}
+Question: {question}
+Answer: {answer}
+
+SCORING RULES:
+- 7-10: CORRECT and PROFESSIONAL (Role-appropriate quality).
+- **For Juniors**: Prioritize Logic and STAR structure. 7-8 is a standard PASS.
+- **For Seniors**: High bar; expect depth and advanced concepts.
+- 5-6: BASIC or BRIEF (Max 5 if only 1-2 sentences).
+- 0-4: VAGUE/Inaccurate.
+
+Return ONLY a JSON object: {{"score": <number>}}"""
+
+        try:
+            chat_completion = self.client.chat.completions.create(
+                messages=[{"role": "user", "content": prompt}],
+                model=self.model_name,
+                response_format={"type": "json_object"},
+                max_tokens=20 # Hard limit for speed
+            )
+            data = json.loads(chat_completion.choices[0].message.content)
+            score_raw = data.get("score", 5)
+            try:
+                score = float(score_raw)
+            except (ValueError, TypeError):
+                score = 5.0
+
+            # Map single score to all dimensions for state compatibility
+            return {
+                "technical": score,
+                "communication": score,
+                "structure": score,
+                "confidence": score,
+                "overall": score
+            }
+        except:
+            return {"technical": 5, "communication": 5, "structure": 5, "confidence": 5, "overall": 5}
+
     def _parse_evaluation(self, response_text: str) -> Dict[str, Any]:
         """Parse LLM evaluation response"""
         try:
@@ -156,15 +219,31 @@ Return ONLY a JSON object:
             end = response_text.rfind('}') + 1
             json_str = response_text[start:end]
             data = json.loads(json_str)
+            
+            # Normalize scores to floats
+            for field in ["technical", "communication", "structure", "confidence"]:
+                if field in data:
+                    try:
+                        data[field] = float(data[field])
+                    except (ValueError, TypeError):
+                        data[field] = 5.0
+                else:
+                    data[field] = 5.0
+                    
             return data
         except:
             return self._fallback_evaluation("")
     
-    def _is_gibberish(self, answer: str) -> bool:
+    def _is_gibberish(self, answer: str, question_type: str = "technical") -> bool:
         """Detect gibberish/nonsense answers using multiple heuristics"""
         if not answer or not answer.strip():
             return True
         
+        # VALIDATION FIX: Allow very short answers for non-substantive types
+        if question_type.lower() in ["candidate_questions", "wrapup", "warmup", "consent"]:
+            # Even "no" or "yes" is valid here.
+            return False
+            
         word_count = len(answer.split())
         char_count = len(answer.strip())
         
@@ -183,11 +262,12 @@ Return ONLY a JSON object:
         alpha_chars = [c for c in answer if c.isalpha()]
         if alpha_chars:
             vowel_ratio = sum(1 for c in alpha_chars if c in vowels) / len(alpha_chars)
-            if vowel_ratio < 0.2:  # Less than 20% vowels
+            # Reduced from 0.2 to 0.15 to allow for very dense technical jargon
+            if vowel_ratio < 0.15: 
                 return True
         
-        # Heuristic 4: Contains common nonsense patterns
-        nonsense_patterns = ['asdf', 'qwer', 'zxcv', 'hjkl', 'rtyu']
+        # Heuristic 4: Contains keyboard mash patterns (now more strict)
+        nonsense_patterns = ['asdfg', 'qwerty', 'zxcvb'] # Longer strings
         answer_lower = answer.lower()
         if any(pattern in answer_lower for pattern in nonsense_patterns):
             return True
@@ -232,9 +312,8 @@ Return ONLY a JSON object:
         # Technical score: Only from technical/scenario questions
         tech_turns = [e for e in evaluations if e.get("type", "").lower() in ["technical", "scenario"]]
         if tech_turns:
-            technical_avg = sum(e.get("technical", 0) for e in tech_turns) / len(tech_turns)
+            technical_avg = self._calculate_smoothed_avg([e.get("technical", 0) for e in tech_turns])
         else:
-            # Fallback to general tech score if no explicit tech turns labeled
             technical_avg = sum(e.get("technical", 0) for e in evaluations) / len(evaluations)
             
         # Communication: All turns matter
@@ -252,3 +331,15 @@ Return ONLY a JSON object:
             "culture": int(culture_avg * 10),
             "overall": int(overall * 10)
         }
+
+    def _calculate_smoothed_avg(self, scores: List[float]) -> float:
+        """Low prioritize a single bad score if candidate recovered (3+ answers in category)."""
+        if len(scores) < 3:
+            return sum(scores) / len(scores) if scores else 0.0
+        min_score = min(scores)
+        others = [s for s in scores if s != min_score]
+        if len(others) < len(scores) - 1: others.append(min_score) 
+        avg_others = sum(others) / len(others)
+        if avg_others - min_score > 4.0:
+            return (avg_others * 0.7) + (min_score * 0.3)
+        return sum(scores) / len(scores)

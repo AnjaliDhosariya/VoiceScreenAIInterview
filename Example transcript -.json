@@ -1,0 +1,910 @@
+﻿[
+    {
+        "interviewId": "INT-78a668f2-6118-4062-981f-63a606590eef",
+        "candidateId": "CAND-048",
+        "jobId": "JOB-DS-FRESHER",
+        "status": "COMPLETED",
+        "transcript": [
+            {
+                "turnNo": 0,
+                "speaker": "system",
+                "text": "Hi! I'm an AI interviewer powered by advanced language models. This conversation will be recorded and analyzed to assess your qualifications for the position. Your responses will be evaluated based on technical skills, communication, and cultural fit. The entire interview typically takes 15-20 minutes. Do I have your consent to proceed and record this conversation?",
+                "timestamp": "2026-01-29T09:01:55.223728"
+            },
+            {
+                "turnNo": 1,
+                "speaker": "agent",
+                "text": "Let's dive right in – can you share a moment when you first realized the power of data in transforming business or society, and how that ignited your enthusiasm for this Data Scientist opportunity?",
+                "timestamp": "2026-01-29T09:05:57.105184"
+            },
+            {
+                "turnNo": 1,
+                "speaker": "candidate",
+                "text": "One moment that really made me realize the power of data was during an academic project where we were asked to analyze customer behavior for a mock business case. At first, it felt like just another dataset, but as I explored it, patterns started to emerge that clearly explained why certain products were performing better and why some customers were dropping off. When we presented those insights, the recommendations we made were directly tied to changes the “business” could take, like adjusting pricing or targeting a specific customer segment.\n\nThat experience stood out to me because it showed how data can move decisions from guesswork to clarity. Instead of opinions or assumptions, we were able to point to evidence and explain the “why” behind what was happening. Seeing how even simple analysis could influence strategy really sparked my interest.\n\nSince then, I’ve been enthusiastic about building skills that help turn raw data into meaningful insights. This Data Scientist opportunity excites me because it aligns perfectly with that motivation, learning how to work with real-world data, ask the right questions, and use data to support smarter decisions that can genuinely impact a business or society.\n",
+                "timestamp": "2026-01-29T09:10:43.686832"
+            },
+            {
+                "turnNo": 2,
+                "speaker": "candidate",
+                "text": "Situation\nDuring my data analyst internship, we were working on a report that showed weekly sales performance for different product categories. We noticed that the numbers in our report did not match the figures used by another team, and everyone had a different opinion about why the discrepancy was happening.\n\nTask\nThe task was to identify the root cause of the data mismatch and agree on a single, accurate approach so the final report could be shared with stakeholders confidently.\n\nAction\nEach team member initially suggested a different solution, such as changing filters, using a different date logic, or excluding certain records. To move forward, I suggested we step back and compare our assumptions one by one. I worked with the team to review the data source, SQL queries, and transformation logic together. I specifically focused on checking date ranges, join conditions, and handling of cancelled orders. Through this process, I identified that different teams were using different definitions of a “completed sale.” I documented the findings and proposed a clear, agreed-upon definition based on business requirements.\n\nResult\nOnce we aligned on the definition and updated the logic, the numbers matched across reports. The final report was delivered on time and trusted by stakeholders. This experience taught me how important it is to rely on data validation and collaboration rather than assumptions, especially when multiple opinions exist.\n",
+                "timestamp": "2026-01-29T09:12:40.105977"
+            },
+            {
+                "turnNo": 2,
+                "speaker": "agent",
+                "text": "Tell me about a time when you had to work with a team to resolve a data-related issue where everyone had a different opinion about the solution.",
+                "timestamp": "2026-01-29T09:10:47.745144"
+            },
+            {
+                "turnNo": 3,
+                "speaker": "candidate",
+                "text": "During my internship, I worked with a cross-functional team to resolve a complex data issue where our dashboard metrics were inconsistent across different reports. Each team member had a different opinion on the cause, some thought it was a data source issue, others believed it was a transformation logic problem, and a few suspected timing or refresh delays.\n\nTo ensure everyone’s opinions were heard, I suggested a structured discussion where each person explained their perspective and assumptions. I made sure the conversation stayed focused on facts rather than opinions by proposing we validate each hypothesis with data checks. I took notes, summarized what I heard, and helped the team agree on a step-by-step validation plan so no idea was dismissed upfront.\n\nWe divided the investigation based on those ideas and reviewed the findings together. This approach helped us identify that the issue was caused by inconsistent filtering logic used by different reports. Once we aligned on a single business definition and updated the logic, the problem was resolved.\n\nThe outcome was a consistent and reliable dashboard, and the team appreciated the collaborative approach. It reinforced for me that creating space for everyone’s input and grounding discussions in data is key to solving complex problems effectively.\n",
+                "timestamp": "2026-01-29T09:14:25.796537"
+            },
+            {
+                "turnNo": 3,
+                "speaker": "agent",
+                "text": "Tell me about a time when you had to collaborate with a team to solve a complex problem, and how you ensured everyone's opinions were heard and considered in the solution.",
+                "timestamp": "2026-01-29T09:12:44.011565"
+            },
+            {
+                "turnNo": 4,
+                "speaker": "agent",
+                "text": "What aspects of this Data Scientist role at our company excite you the most, and how do you see it aligning with your long-term career objectives?",
+                "timestamp": "2026-01-29T09:14:30.58854"
+            },
+            {
+                "turnNo": 4,
+                "speaker": "candidate",
+                "text": "What excites me most about this Data Scientist role is the opportunity to work on real, meaningful problems where data is not just analyzed, but actively used to drive decisions and create impact. From what I understand about your company, there is a strong focus on applying data science to real-world challenges, which aligns perfectly with what motivates me about this field.\n\nI’m especially drawn to the chance to work with diverse datasets, collaborate with cross-functional teams, and move beyond pure analysis into building insights and models that influence products or strategy. I enjoy the process of exploring data, asking the right questions, and translating complex findings into clear, actionable outcomes. Being in an environment where data science is closely connected to business goals is something I find very exciting.\n\nIn terms of long-term career objectives, this role aligns well with my goal of growing into a well-rounded data scientist who combines strong analytical skills with business understanding. In the near term, I want to deepen my technical foundation, learn best practices from experienced team members, and contribute reliable insights. Over time, I hope to take on more complex problems, build more advanced models, and play a larger role in shaping data-driven decisions. I see this position as a strong step toward that path and a place where I can grow while adding meaningful value to the team.\n",
+                "timestamp": "2026-01-29T09:15:52.005634"
+            },
+            {
+                "turnNo": 5,
+                "speaker": "agent",
+                "text": "The company uses a custom-built data platform that involves combining and transforming data from multiple sources. How would you approach designing a quality control mechanism to ensure data integrity and consistency across different datasets and transformations?",
+                "timestamp": "2026-01-29T09:15:55.850445"
+            },
+            {
+                "turnNo": 5,
+                "speaker": "candidate",
+                "text": "From a fresher data scientist perspective, I would approach building a quality control mechanism in a structured but practical way, focusing on prevention, validation, and visibility rather than overly complex systems.\n\nFirst, I would start by clearly understanding the data sources and transformations. I would document where the data is coming from, how often it is updated, and what each dataset represents. Having a shared understanding of source systems, key fields, and business definitions is essential before applying any quality checks.\n\nNext, I would introduce basic validation checks at each stage of the data pipeline. For example, after data is ingested from a source, I would check for things like missing values in critical columns, duplicate records, unexpected data types, and invalid ranges. After transformations, I would add checks to ensure row counts, totals, or key metrics remain consistent and do not change unexpectedly. These simple checks help catch issues early before they propagate.\n\nI would also focus on consistency checks across datasets. Since the platform combines data from multiple sources, I would validate that shared identifiers match correctly, such as customer IDs or product IDs, and that joins are not creating unexpected data loss or duplication. Comparing aggregates across related datasets is an easy and effective way to spot inconsistencies.\n\nTo make this practical, I would automate these checks as part of the data pipeline and log the results. Any failures or anomalies would be flagged and shared with the team through alerts or dashboards. Even as a fresher, I believe visibility is key, it’s better to clearly surface data issues than to silently ignore them.\n\nFinally, I would ensure assumptions and checks are documented and reviewed with stakeholders. This helps align technical validation with business expectations and builds trust in the data. Over time, as I gain more experience, I would refine these checks based on recurring issues and evolving data needs.\n\nOverall, my approach would be to start simple, automate where possible, and continuously improve the quality controls as I learn more about the data and the platform.\n",
+                "timestamp": "2026-01-29T09:21:14.268006"
+            },
+            {
+                "turnNo": 6,
+                "speaker": "agent",
+                "text": "You mentioned the importance of grounding discussions in data to solve complex problems effectively. Design a scenario where you would apply techniques from machine learning to model the dynamics of a complex system, such as a supply chain or a financial portfolio, and how would you validate your models by connecting to data.",
+                "timestamp": "2026-01-29T09:21:18.671287"
+            },
+            {
+                "turnNo": 6,
+                "speaker": "candidate",
+                "text": "Here’s how I would approach this from a **fresher data scientist perspective**, using a concrete but realistic scenario and keeping the discussion grounded in data.\n\nScenario: Modeling a supply chain system\nImagine I’m working with a supply chain team that wants to understand and predict product delays across warehouses and retail locations. The system is complex because delays depend on multiple factors such as supplier reliability, transportation time, demand fluctuations, inventory levels, and seasonal effects.\n\nStep 1: Framing the problem with data\nI would start by clearly defining the objective in measurable terms. For example, predicting whether an order will be delayed or estimating the expected delivery time. I would then identify relevant datasets such as historical shipment records, inventory levels, supplier performance metrics, demand forecasts, and external factors like holidays.\n\nBefore applying machine learning, I would explore the data to understand patterns and dependencies. This includes checking distributions, correlations, time-based trends, and missing values. This step helps ground discussions in evidence rather than assumptions.\n\nStep 2: Applying machine learning techniques\nOnce the data is prepared, I would start with simple and interpretable models. For example, I might use a regression model to predict delivery time or a classification model to predict the likelihood of delay. Features could include average supplier lead time, recent demand spikes, warehouse capacity utilization, and historical delay rates.\n\nIf the system shows strong time dependencies, I would consider time-series features or rolling averages to capture trends. The goal at this stage is not to build the most complex model, but to understand how different variables influence outcomes and whether the model behavior aligns with domain knowledge.\n\nStep 3: Validating the model using real data\nTo validate the model, I would split the data into training and validation sets based on time, ensuring future data is not used to predict the past. I would evaluate performance using appropriate metrics, such as error in predicted delivery time or precision and recall for delayed shipments.\n\nBeyond metrics, I would validate the model by connecting predictions back to real-world behavior. For example, I would check whether the model assigns higher delay risk during known peak seasons or for suppliers with historically poor performance. If the model contradicts known facts, that would trigger further investigation.\n\nStep 4: Using data to support discussion and decisions\nI would present results using clear visualizations and explain how specific features influence predictions. This helps stakeholders understand not just what the model predicts, but why. If different team members have competing opinions, the model outputs and validation results provide a common, data-backed reference point for discussion.\n\nOverall, this approach uses machine learning as a tool to structure understanding of a complex system, while keeping decisions grounded in data through careful validation, interpretation, and continuous feedback from real-world outcomes.\n",
+                "timestamp": "2026-01-29T09:23:53.190809"
+            },
+            {
+                "turnNo": 7,
+                "speaker": "candidate",
+                "text": "I would handle this as a high-risk project disruption and focus on stabilization, communication, and alternative paths forward rather than waiting for leadership to return.\n\nFirst, I would quickly assess and clarify the situation. I’d gather concrete details about why the analytics tool is down, whether it’s a vendor issue, infrastructure failure, or internal dependency, and whether there are any partial workarounds. Understanding what functionality is completely blocked versus what can still be done is critical before making promises.\n\nSecond, I would take ownership of communication and alignment. With the team lead and project manager unavailable, I would step in to provide structure. I’d inform stakeholders early and transparently about the issue, its impact on the timeline, and what is being done. I would avoid vague updates and instead share a clear plan with checkpoints so stakeholders, especially the investor, feel the situation is being actively managed rather than ignored.\n\nThird, I would look for interim solutions to reduce the 2-week delay. This could include using backup tools, manual data extraction, simplified analysis approaches, or pulling data directly from source systems if possible. Even if the solution is less efficient or less polished, restoring partial progress is often enough to keep the project moving and reduce anxiety.\n\nIn parallel, I would reorganize the team’s work. While the analytics tool is unavailable, I’d shift focus to tasks that don’t depend on it, such as defining metrics, validating assumptions, documenting logic, or preparing downstream analysis frameworks. This ensures the team is still productive and ready to move fast once the tool is restored.\n\nFinally, I would prepare a revised plan and recommendation. If the original deadline is truly at risk, I’d propose options such as phased delivery, reduced scope, or a temporary milestone that still delivers value. Presenting clear trade-offs allows stakeholders to make informed decisions rather than reacting emotionally to uncertainty.\n\nOverall, my approach would be to lead with clarity, keep stakeholders informed, minimize idle time, and demonstrate control of the situation. Even without formal authority, calm ownership and structured action are often what restore confidence during disruptions like this.\n",
+                "timestamp": "2026-01-29T09:25:53.205305"
+            },
+            {
+                "turnNo": 7,
+                "speaker": "agent",
+                "text": "A data analytics tool used by a critical team has gone down, disrupting the project timeline by at least 2 weeks. The team lead is out sick, and the project manager is unavailable for an unknown duration. Stakeholders, including a key investor, are getting anxious about meeting the original deadline. How would you handle this situation?",
+                "timestamp": "2026-01-29T09:23:57.082736"
+            },
+            {
+                "turnNo": 8,
+                "speaker": "agent",
+                "text": "In a high-performing team like ours, it's essential that team members are comfortable sharing their perspectives and learning from each other. How do you think collaboration and open communication should happen within a team?",
+                "timestamp": "2026-01-29T09:25:57.062798"
+            },
+            {
+                "turnNo": 8,
+                "speaker": "candidate",
+                "text": "I believe collaboration and open communication work best when they are intentional, consistent, and grounded in trust. In a high-performing team, communication shouldn’t be limited to formal meetings, it should be part of daily work.\n\nCollaboration should start with clarity. Teams need shared goals, clear ownership, and a common understanding of priorities. When people know what success looks like and how their work fits into the bigger picture, it becomes easier to contribute confidently and align with others.\n\nOpen communication happens when there is psychological safety. Team members should feel comfortable sharing ideas, asking questions, or disagreeing respectfully without fear of being judged. This can be encouraged by actively inviting input, listening without interrupting, and responding with curiosity rather than defensiveness.\n\nI also think communication should be two-way and practical. Sharing progress early, discussing blockers openly, and giving constructive feedback in real time helps prevent misunderstandings and builds trust. Using simple documentation and shared channels ensures information is accessible to everyone, not just those in the room.\n\nFinally, learning from each other should be encouraged through knowledge sharing, pair work, and open discussions about what worked and what didn’t. When teams treat feedback and mistakes as opportunities to improve rather than failures, collaboration becomes stronger and more natural.\n\nIn short, effective collaboration comes from clarity, trust, respect, and continuous dialogue, all of which help teams learn faster and perform better together.\n",
+                "timestamp": "2026-01-29T09:27:26.965273"
+            },
+            {
+                "turnNo": 9,
+                "speaker": "agent",
+                "text": "That covers all my questions. Do you have any questions for me about the role, the team, or the company?",
+                "timestamp": "2026-01-29T09:27:30.421"
+            },
+            {
+                "turnNo": 9,
+                "speaker": "candidate",
+                "text": "company politics ?",
+                "timestamp": "2026-01-29T09:27:42.41155"
+            },
+            {
+                "turnNo": 9,
+                "speaker": "agent",
+                "text": "\"I appreciate your question about company politics. As a neutral third-party interviewer, I don't have real-time information about internal dynamics, but I can tell you that our company prioritizes open communication, transparency, and collaboration among team members. If you're interested in learning more about the company culture or any specific concerns you may have, I recommend discussing it with the hiring manager during the interview process or when you're onboarding.\"",
+                "timestamp": "2026-01-29T09:27:42.980866"
+            },
+            {
+                "turnNo": 10,
+                "speaker": "agent",
+                "text": "Thank you for your time today! We'll review your responses and get back to you with next steps shortly. Have a great day!",
+                "timestamp": "2026-01-29T09:27:46.176655"
+            }
+        ],
+        "scores": {
+            "id": "4e7a3d5b-f8e4-4881-b7d5-a3713da34b2a",
+            "interview_id": "INT-78a668f2-6118-4062-981f-63a606590eef",
+            "technical_score": 76,
+            "communication_score": 80,
+            "culture_score": 79,
+            "overall_score": 78,
+            "recommendation": "PROCEED",
+            "reasoning": {
+                "concerns": [
+                    "Could dive deeper into the technical specifics of the data issue",
+                    "More explicit use of STAR structure would improve clarity",
+                    "Could provide more detail on hyperparameter tuning and model selection process."
+                ],
+                "highlights": [
+                    "The candidate demonstrated clear logic and provided an organized step-by-step explanation using the STAR method, which is excellent for a Junior-level answer.",
+                    "Excellent communication skills",
+                    "Well-structured story",
+                    "Shows a clear passion for data science and its applications",
+                    "Effectively explains the alignment with own goals and career objectives"
+                ]
+            },
+            "created_at": "2026-01-29T09:28:35.412471"
+        },
+        "signals": {
+            "id": "baa41a9d-f8df-4e5d-bcd6-c180783ccf20",
+            "interview_id": "INT-78a668f2-6118-4062-981f-63a606590eef",
+            "talk_ratio": 0.85,
+            "avg_response_length": 249,
+            "sentiment": "neutral",
+            "speech_rate_wpm": 622,
+            "call_quality_score": 85,
+            "created_at": "2026-01-29T09:28:34.691101"
+        },
+        "summary": {
+            "concerns": [
+                "Could dive deeper into the technical specifics of the data issue",
+                "More explicit use of STAR structure would improve clarity",
+                "Could provide more detail on hyperparameter tuning and model selection process."
+            ],
+            "highlights": [
+                "The candidate demonstrated clear logic and provided an organized step-by-step explanation using the STAR method, which is excellent for a Junior-level answer.",
+                "Excellent communication skills",
+                "Well-structured story",
+                "Shows a clear passion for data science and its applications",
+                "Effectively explains the alignment with own goals and career objectives"
+            ]
+        }
+    },
+    {
+        "interviewId": "INT-c84de73f-4202-4d34-86cf-c619258e4a6e",
+        "candidateId": "CAND-102",
+        "jobId": "JOB-DEVOPS-FRESHER",
+        "status": "COMPLETED",
+        "transcript": [
+            {
+                "turnNo": 0,
+                "speaker": "system",
+                "text": "Hi! I'm an AI interviewer powered by advanced language models. This conversation will be recorded and analyzed to assess your qualifications for the position. Your responses will be evaluated based on technical skills, communication, and cultural fit. The entire interview typically takes 15-20 minutes. Do I have your consent to proceed and record this conversation?",
+                "timestamp": "2026-01-28T10:40:54.406482"
+            },
+            {
+                "turnNo": 1,
+                "speaker": "agent",
+                "text": "What experiences and moments in your career have shaped your drive to bridge people, processes, and technology as a DevOps Engineer in our fast-paced organization?",
+                "timestamp": "2026-01-28T10:41:04.734824"
+            },
+            {
+                "turnNo": 1,
+                "speaker": "candidate",
+                "text": "As a fresher, my drive to bridge people, processes, and technology has come from early experiences where I saw how small gaps between teams or tools could slow things down or create confusion.\n\nDuring my academic projects and hands-on learning, I often worked on setups where code worked locally but failed in shared environments, or where deployment and configuration issues caused delays even when the application logic was correct. These moments helped me realize that building software isn’t just about writing code, but about making sure systems work reliably end to end and that teams can collaborate smoothly.\n\nI also enjoyed working in group projects where I helped streamline workflows, document setup steps, or automate repetitive tasks. Acting as a link between teammates with different strengths taught me the value of clear communication and simple, well-defined processes. Seeing how automation and basic DevOps practices can reduce friction and improve delivery really motivated me to explore this field further.\n\nThese experiences shaped my interest in DevOps because the role naturally sits at the intersection of people, processes, and technology. In a fast-paced organization, I’m excited to learn how to support teams by improving reliability, enabling faster releases, and helping create an environment where collaboration and continuous improvement are part of everyday work.\n",
+                "timestamp": "2026-01-28T10:42:03.286485"
+            },
+            {
+                "turnNo": 2,
+                "speaker": "agent",
+                "text": "Describe a situation where you had to collaborate with a cross-functional team to resolve a bottleneck in a project. How did you contribute to the resolution and what was the outcome?",
+                "timestamp": "2026-01-28T10:42:07.091273"
+            },
+            {
+                "turnNo": 2,
+                "speaker": "candidate",
+                "text": "In one project, a bottleneck occurred because data delivery from one team was blocking downstream analysis and reporting. Different teams had different priorities, which slowed progress.\n\nI contributed by coordinating a quick discussion to clarify dependencies and identify the root cause. I helped simplify the data requirements, suggested a temporary workaround, and kept communication clear between teams so everyone stayed aligned.\n\nAs a result, the bottleneck was resolved quickly, the project moved forward on schedule, and collaboration improved for the remaining work.\n",
+                "timestamp": "2026-01-28T10:43:01.763346"
+            },
+            {
+                "turnNo": 3,
+                "speaker": "candidate",
+                "text": "Situation\nDuring a critical project delivery, two team members disagreed on the implementation approach, which started slowing progress and creating tension close to the deadline.\n\nTask\nMy task was to help resolve the disagreement quickly so the team could stay focused and deliver the project on time.\n\nAction\nI facilitated a short discussion where both team members could explain their perspectives. I focused the conversation on the project goal and timeline rather than personal preferences. Together, we identified a common ground and agreed on a simpler approach that met the immediate requirements, with the option to improve it later.\n\nResult\nThe team aligned on the solution, collaboration improved, and the project was delivered on time. The situation helped reinforce the importance of clear communication and focusing on shared goals during high-pressure moments.\n",
+                "timestamp": "2026-01-28T10:43:38.073556"
+            },
+            {
+                "turnNo": 3,
+                "speaker": "agent",
+                "text": "Tell me about a time when you had to address a disagreement between two team members during a critical project delivery. Describe the situation, the task you were given, the actions you took, and the result you achieved.",
+                "timestamp": "2026-01-28T10:43:05.714838"
+            },
+            {
+                "turnNo": 4,
+                "speaker": "candidate",
+                "text": "As a fresher DevOps Engineer, I see myself contributing by being proactive, reliable, and eager to learn from the team. I would focus on supporting smooth deployments, improving basic automation, and helping reduce friction between development and operations. By documenting processes, communicating clearly, and continuously improving systems step by step, I aim to support the team’s mission of building stable, scalable, and efficient solutions while growing alongside the organization",
+                "timestamp": "2026-01-28T10:44:21.263661"
+            },
+            {
+                "turnNo": 4,
+                "speaker": "agent",
+                "text": "What specific aspects of our company's culture and values resonate with you, and how do you see yourself contributing to our mission as a DevOps Engineer?",
+                "timestamp": "2026-01-28T10:43:42.213271"
+            },
+            {
+                "turnNo": 5,
+                "speaker": "agent",
+                "text": "You are given a legacy web application with a mix of PHP and Node.js scripts that are hosted on a server running an older version of Ubuntu. The server is running out of disk space due to the accumulation of logs and temporary files. The web application is experiencing intermittent crashes due to the disk space issues. What steps would you take to troubleshoot and resolve the issue, considering you need to minimize the downtime of the application?",
+                "timestamp": "2026-01-28T10:44:25.172699"
+            },
+            {
+                "turnNo": 5,
+                "speaker": "candidate",
+                "text": "First, I would quickly identify what is consuming disk space using basic Linux tools to locate large log files and temporary directories. Since downtime needs to be minimal, I would start by safely clearing or compressing old logs and temporary files that are no longer needed, focusing on application logs, system logs, and temp folders. This immediately frees space and helps stabilize the application.\n\nNext, I would check whether log files are growing uncontrollably due to errors or misconfiguration. If so, I would temporarily reduce log verbosity and ensure logging continues without filling the disk again. I would also restart only the affected services if required, rather than rebooting the entire server, to keep downtime minimal.\n\nOnce the system is stable, I would put preventive measures in place. This includes configuring log rotation so logs are automatically compressed and deleted after a set period, and setting up basic monitoring or alerts for disk usage. If possible, I would also review application logging behavior in both PHP and Node.js to ensure logs are meaningful and not excessive.",
+                "timestamp": "2026-01-28T10:45:32.192515"
+            },
+            {
+                "turnNo": 6,
+                "speaker": "agent",
+                "text": "We are implementing a new E-commerce platform and plan to use Kubernetes for container orchestration. Describe how you would configure a pod to run both an Apache web server and a MySQL database container. Please consider security, resource allocation, and scalability. ",
+                "timestamp": "2026-01-28T10:45:37.113327"
+            },
+            {
+                "turnNo": 6,
+                "speaker": "candidate",
+                "text": "Since I don’t have very deep Kubernetes experience yet, I’d approach this in a simple and cautious way.\n\nI understand that Kubernetes allows multiple containers to run in the same pod, so I would configure one pod with two containers: one for the Apache web server and one for the MySQL database. They would share the same network, so Apache could connect to MySQL using localhost.\n\nFor security, I would keep credentials like database passwords in Kubernetes Secrets instead of hardcoding them,",
+                "timestamp": "2026-01-28T10:46:55.961078"
+            },
+            {
+                "turnNo": 7,
+                "speaker": "candidate",
+                "text": "First, I would stay calm and treat this as a high-priority incident. Since it’s my first week, I would immediately align with senior engineers and stakeholders to understand the system, the abandoned feature, and the current impact.\n\nMy first action would be to confirm the root cause and identify the fastest safe mitigation. If the abandoned feature can be disabled via configuration or feature flags, I would prioritize turning it off immediately to stop the memory leak, rather than attempting a risky code change. I would also add temporary monitoring to track memory usage and verify improvement.",
+                "timestamp": "2026-01-28T10:47:47.808965"
+            },
+            {
+                "turnNo": 7,
+                "speaker": "agent",
+                "text": "Our company's primary e-commerce platform is running on a legacy monolithic architecture and handles 1 million transactions daily. However, the platform is nearing catastrophic failure due to a memory leak caused by an abandoned feature that was left enabled months ago. The issue has already resulted in a 10% loss of customer traffic, and we're on the verge of a major holiday season. The CEO has requested an immediate fix within the next 72 hours. You're the new DevOps Engineer, and it's your first week on the job. How would you handle this situation?",
+                "timestamp": "2026-01-28T10:47:00.218363"
+            },
+            {
+                "turnNo": 8,
+                "speaker": "agent",
+                "text": "In a high-performing DevOps team, what do you believe are the essential qualities of effective collaboration, and how can we as a team ensure that every member feels empowered to contribute their best work?",
+                "timestamp": "2026-01-28T10:47:51.921791"
+            },
+            {
+                "turnNo": 8,
+                "speaker": "candidate",
+                "text": "In a high-performing DevOps team, effective collaboration comes from clear communication, trust, and shared ownership. Team members should feel comfortable asking questions, sharing ideas, and raising concerns without hesitation, especially in fast-moving or high-pressure situations.\n\nTo ensure everyone feels empowered, the team should encourage open discussions, value different perspectives, and give constructive feedback regularly. Clear goals, well-defined roles, and transparency around decisions also help people understand how their work contributes to the bigger picture. When learning and mistakes are treated as part of growth, team members are more confident in contributing their best work and supporting each other.\n",
+                "timestamp": "2026-01-28T10:48:23.811602"
+            },
+            {
+                "turnNo": 9,
+                "speaker": "agent",
+                "text": "That covers all my questions. Do you have any questions for me about the role, the team, or the company?",
+                "timestamp": "2026-01-28T10:48:27.348395"
+            },
+            {
+                "turnNo": 9,
+                "speaker": "candidate",
+                "text": "no",
+                "timestamp": "2026-01-28T10:49:05.80137"
+            },
+            {
+                "turnNo": 10,
+                "speaker": "agent",
+                "text": "Thank you for your time today! We'll review your responses and get back to you with next steps shortly. Have a great day!",
+                "timestamp": "2026-01-28T10:49:09.122986"
+            }
+        ],
+        "scores": {
+            "id": "e1f10eb3-5d9c-4b2b-b4ef-4b2c1fe2aede",
+            "interview_id": "INT-c84de73f-4202-4d34-86cf-c619258e4a6e",
+            "technical_score": 62,
+            "communication_score": 68,
+            "culture_score": 62,
+            "overall_score": 64,
+            "recommendation": "HOLD",
+            "reasoning": {
+                "concerns": [
+                    "Improve STAR structure with more detail in each 'S'ection",
+                    "Provide more specific examples of automation and process improvement",
+                    "Elaborate on how they plan to adapt to the organization's growth",
+                    "Consider using more technical terms and concepts to demonstrate expertise in DevOps engineering. For example, discussing the importance of monitoring and logging in containerized environments.",
+                    "Provide more depth in specific tools and technologies used for log rotation and monitoring."
+                ],
+                "highlights": [
+                    "Completed turn",
+                    "Clearly describes a situation and the root cause of the bottleneck",
+                    "Used the STAR method to structure the answer, which is a strong indicator for behavioral questions.",
+                    "Good understanding of DevOps engineer responsibilities",
+                    "Clear goal to contribute to the team's mission"
+                ]
+            },
+            "created_at": "2026-01-28T10:49:42.02136"
+        },
+        "signals": {
+            "id": "c6651a37-eb66-4b06-9482-5a1cc9d3aecf",
+            "interview_id": "INT-c84de73f-4202-4d34-86cf-c619258e4a6e",
+            "talk_ratio": 0.7,
+            "avg_response_length": 105,
+            "sentiment": "positive",
+            "speech_rate_wpm": 262,
+            "call_quality_score": 85,
+            "created_at": "2026-01-28T10:49:41.916686"
+        },
+        "summary": {
+            "concerns": [
+                "Improve STAR structure with more detail in each 'S'ection",
+                "Provide more specific examples of automation and process improvement",
+                "Elaborate on how they plan to adapt to the organization's growth",
+                "Consider using more technical terms and concepts to demonstrate expertise in DevOps engineering. For example, discussing the importance of monitoring and logging in containerized environments.",
+                "Provide more depth in specific tools and technologies used for log rotation and monitoring."
+            ],
+            "highlights": [
+                "Completed turn",
+                "Clearly describes a situation and the root cause of the bottleneck",
+                "Used the STAR method to structure the answer, which is a strong indicator for behavioral questions.",
+                "Good understanding of DevOps engineer responsibilities",
+                "Clear goal to contribute to the team's mission"
+            ]
+        }
+    },
+    {
+        "interviewId": "INT-44fbf841-b0f5-4e50-b845-aa3b0fd20122",
+        "candidateId": "CAND-088",
+        "jobId": "JOB-DA-FRESHER",
+        "status": "COMPLETED",
+        "transcript": [
+            {
+                "turnNo": 0,
+                "speaker": "system",
+                "text": "Hi! I'm an AI interviewer powered by advanced language models. This conversation will be recorded and analyzed to assess your qualifications for the position. Your responses will be evaluated based on technical skills, communication, and cultural fit. The entire interview typically takes 15-20 minutes. Do I have your consent to proceed and record this conversation?",
+                "timestamp": "2026-01-27T10:07:45.980347"
+            },
+            {
+                "turnNo": 1,
+                "speaker": "agent",
+                "text": "Welcome! I've reviewed your background and I'm excited to dive in. To kick things off, can you walk me through a pivotal moment where you applied data-driven insights to drive meaningful change?",
+                "timestamp": "2026-01-27T10:07:54.24052"
+            },
+            {
+                "turnNo": 1,
+                "speaker": "candidate",
+                "text": "One pivotal moment that stands out was when I worked on improving sales performance reporting for an e commerce team that was struggling with inconsistent numbers across dashboards.\n\nThe team was making decisions based on weekly sales reports, but different reports showed different totals. I started by validating the data at the source level and found that revenue was being double counted due to joins at the wrong grain between orders and order items. I rewrote the SQL logic to aggregate at the order level first and then join to dimension tables, which immediately corrected the numbers.\n\nAfter fixing the data, I analyzed trends by product category and region and identified that a small set of categories were driving most of the revenue decline. I shared these insights with the business team using a simple dashboard and clear explanations of the drivers behind the trend.\n\nAs a result, the team adjusted pricing and promotional strategies for those categories, which led to improved performance in the following weeks. More importantly, the business regained trust in the data and standardized the corrected logic across all reports.\n\nThis experience reinforced the impact of combining strong data validation, technical analysis, and clear communication to drive meaningful, data driven change.\n",
+                "timestamp": "2026-01-27T10:08:35.658103"
+            },
+            {
+                "turnNo": 2,
+                "speaker": "agent",
+                "text": "Tell me about a time when you had to work with a team that had conflicting priorities and timelines. How did you handle the situation, and what was the outcome?",
+                "timestamp": "2026-01-27T10:08:39.216095"
+            },
+            {
+                "turnNo": 2,
+                "speaker": "candidate",
+                "text": "One example was when I was working on a data reporting project that depended on both the product team and the engineering team, each with different priorities and timelines.\n\nThe product team wanted new metrics delivered quickly to support an upcoming launch, while the engineering team was focused on stabilizing existing data pipelines and was hesitant to make changes close to a release. This created tension around scope and deadlines.\n\nI handled this by first clarifying the underlying needs rather than the initial requests. I met with both teams to understand which metrics were truly critical for the launch and which changes posed the highest risk to system stability. Based on this, I proposed a phased approach. In the short term, I delivered a simplified version of the metrics using existing data sources and temporary logic that did not require pipeline changes. At the same time, I documented the longer term solution and aligned it with the engineering team’s roadmap.\n\nThroughout the process, I communicated clearly and frequently, setting expectations around what would be delivered and when. I also made trade offs explicit so everyone understood the reasoning behind the decisions.\n\nThe outcome was that the product team received the insights they needed in time for the launch, and the engineering team avoided risky last minute changes. After the launch, we implemented the more robust solution as planned. This experience showed the value of empathy, clear communication, and finding practical compromises when working across teams with competing priorities.\n",
+                "timestamp": "2026-01-27T10:09:17.996537"
+            },
+            {
+                "turnNo": 3,
+                "speaker": "agent",
+                "text": "Tell me about a time when a team member was not pulling their weight. How did you address the issue and what was the outcome?",
+                "timestamp": "2026-01-27T10:09:21.353195"
+            },
+            {
+                "turnNo": 3,
+                "speaker": "candidate",
+                "text": "One situation that stands out was during a data pipeline project where multiple team members were responsible for different parts of the ETL process. One team member owned a critical transformation step, but their tasks were repeatedly delayed, which started to impact downstream reporting timelines.\n\nFirst, I made sure not to assume intent. I reached out to them directly in a one on one conversation to understand what was causing the delays. It turned out they were juggling multiple priorities and were also unclear about some of the data logic and expectations for their part of the pipeline.\n\nTo address this, I clarified the requirements and broke the work into smaller, well defined tasks with clear ownership and deadlines. I also shared examples of the expected output, including sample SQL queries and validation checks, so expectations were concrete rather than abstract. Where needed, I offered support and paired briefly to walk through the logic.\n\nAt the same time, I communicated transparently with the rest of the team about adjusted timelines so there were no surprises. I focused on keeping the conversation professional and solution oriented rather than personal.\n\nThe outcome was positive. The team member became more engaged once expectations were clear and blockers were removed, and they started delivering their tasks on time. The pipeline was completed successfully, and the experience reinforced for me that addressing performance issues early, with clarity and empathy, is far more effective than letting frustration build or escalating too quickly.\n",
+                "timestamp": "2026-01-27T10:10:06.335182"
+            },
+            {
+                "turnNo": 4,
+                "speaker": "agent",
+                "text": "Our company prioritizes innovation and using data-driven insights to inform business decisions. What do you hope to achieve in a Data Analyst role at our company that will drive you to stay engaged and motivated?",
+                "timestamp": "2026-01-27T10:10:09.584579"
+            },
+            {
+                "turnNo": 4,
+                "speaker": "candidate",
+                "text": "In a Data Analyst role at your company, what would keep me engaged and motivated is the opportunity to work on problems where data directly influences real business decisions.\n\nI hope to contribute by helping teams move from intuition based decisions to evidence based ones. That means not only analyzing data, but also improving how metrics are defined, validated, and communicated so stakeholders can trust and act on the insights. Being able to see analysis turn into concrete changes in strategy or operations is a strong motivator for me.\n\nI am also motivated by continuous learning and improvement. Working in an environment that values innovation gives me the chance to explore new analytical approaches, work with evolving data sources, and refine my technical skills in SQL, Python, and visualization tools while solving meaningful problems.\n\nFinally, I want to grow as a partner to the business. Staying engaged for me means collaborating closely with different teams, understanding their challenges, and using data to help them succeed. When I can combine technical analysis with real business impact, that is what drives me to stay motivated and deliver high quality work.\n",
+                "timestamp": "2026-01-27T10:10:44.459903"
+            },
+            {
+                "turnNo": 5,
+                "speaker": "agent",
+                "text": "Imagine you have a large dataset of customer orders with information such as customer ID, order date, and total purchase amount. However, the dataset also contains some duplicate order records, leading to inaccurate calculations of total sales and customer counts. Describe your process for removing duplicate records and performing the necessary calculations to gain meaningful insights from the dataset.",
+                "timestamp": "2026-01-27T10:10:48.011062"
+            },
+            {
+                "turnNo": 5,
+                "speaker": "candidate",
+                "text": "I would handle this in a structured way to ensure duplicates are removed safely and the final metrics are accurate and trustworthy.\n\nFirst, I would understand what defines a duplicate order. I would confirm the business definition of a unique order, for example a combination of order ID, customer ID, and order date. It is important to be precise here so valid repeat purchases are not accidentally removed.\n\nNext, I would profile the data to quantify the issue. I would check how many duplicate records exist, whether duplicates are exact matches across all columns or partial duplicates, and whether they are coming from specific time periods or source systems. This helps identify whether the issue is systemic or isolated.\n\nTo remove duplicates, I would use a deterministic rule. For example, if the same order ID appears multiple times, I would keep the most recent record based on a load timestamp or last updated field. In SQL, this can be done using window functions such as row_number partitioned by order ID and ordered by update time, keeping only the first row.\n\nAfter deduplication, I would validate the results by comparing row counts and total sales before and after removing duplicates to ensure the changes are reasonable and expected.\n\nOnce the data is clean, I would perform the calculations. For total sales, I would sum the total purchase amount across the deduplicated dataset. For customer counts, I would count distinct customer IDs, and for customer level metrics, I would aggregate orders by customer to calculate metrics such as total spend, average order value, and purchase frequency.\n\nFinally, I would document the deduplication logic and assumptions clearly and, if possible, work with upstream teams to prevent duplicate records from being introduced in the future. This ensures the insights derived from the dataset are accurate and repeatable over time.\n",
+                "timestamp": "2026-01-27T10:11:27.073206"
+            },
+            {
+                "turnNo": 6,
+                "speaker": "agent",
+                "text": "A new business analyst has joined your team. They are interested in understanding the performance of a specific campaign, which has a mix of numerical and categorical data. Your task is to prepare the data for the analysis. The campaign data includes information on revenue, cost, conversion rate, and customer demographics such as age group and location. However, the data has some missing values and outliers that need to be handled. How would you approach data cleaning and preparation to enable the business analyst to draw meaningful insights from the campaign data?",
+                "timestamp": "2026-01-27T10:11:31.375463"
+            },
+            {
+                "turnNo": 6,
+                "speaker": "candidate",
+                "text": "I would approach this in a structured and analyst friendly way, focusing on data quality, clarity, and transparency so the new analyst can trust and easily use the data.\n\nFirst, I would start with data profiling. I would review each field to understand distributions, missing value percentages, and expected ranges. For numerical fields like revenue, cost, and conversion rate, I would check summary statistics and look for unusual values. For categorical fields like age group and location, I would review unique values and ensure categories are consistent.\n\nNext, I would handle missing values based on business context. For revenue and cost, I would confirm whether missing values mean zero activity or missing data. If zero is valid, I would fill missing values with zero; otherwise, I would keep them as null and add a missing flag column. For conversion rate, I would avoid direct imputation and instead recompute it from underlying metrics if possible, such as conversions divided by impressions. For demographic fields, I would keep missing values as a clear category like Unknown so records are not dropped silently.\n\nFor outliers, I would first visualize and quantify them using percentiles or interquartile range. I would check whether extreme revenue or cost values are data errors or valid high performing cases. If they are errors, I would correct or remove them. If they are valid but extreme, I would keep them and optionally create capped versions of the metrics for analysis, or add flags to indicate high value outliers.\n\nI would then standardize and clean categorical fields. This includes normalizing age group labels, fixing inconsistent location names, and ensuring categories align with business definitions. This step is important for reliable grouping and comparison.\n\nAfter cleaning, I would create derived metrics that are useful for analysis, such as profit calculated as revenue minus cost, and cost per conversion. I would also ensure all metrics are calculated consistently and documented clearly.\n\nFinally, I would validate the cleaned dataset by checking totals, averages, and distributions against expectations and share a short data summary with the analyst. This would include known limitations, how missing values were handled, and how outliers should be interpreted.\n\nThis approach ensures the data is clean, well structured, and easy to analyze, allowing the business analyst to focus on understanding campaign performance rather than fixing data issues.\n",
+                "timestamp": "2026-01-27T10:12:22.891616"
+            },
+            {
+                "turnNo": 7,
+                "speaker": "agent",
+                "text": "You have been given a dataset of customer transaction records, which includes fields such as order date, product code, and customer location. You need to create a report that shows the total sales by product category for each region. However, you notice that some product codes are outdated and should be mapped to their respective categories. Describe your process for creating this report and handling the product code mapping.",
+                "timestamp": "2026-01-27T10:12:26.584918"
+            },
+            {
+                "turnNo": 7,
+                "speaker": "candidate",
+                "text": "Sure. Here is a clean interview style answer you can copy paste directly, with no special characters like * and no bullets.\n\nIn this scenario, I would start by understanding the dataset and validating the key fields such as order date, product code, sales amount, and customer location or region. I would first clean the data by checking for missing values, duplicate records, and inconsistent region names to ensure accurate aggregation later.\n\nNext, I would focus on handling the outdated product codes. I would obtain a reliable product code to product category mapping table from a trusted source such as the product master data or business documentation. I would review this mapping to confirm which product codes are outdated and what their correct categories should be. Then I would join or merge this mapping table with the transaction dataset using the product code as the key. For any product codes that do not have a match, I would flag them for review or assign them to an unknown category based on business rules.\n\nOnce the product codes are correctly mapped to product categories, I would create a new derived column for product category in the dataset. After that, I would group the data by region and product category and calculate total sales using aggregation functions such as sum of sales amount.\n\nI would then validate the results by spot checking totals against known benchmarks or sample records to ensure the mapping and aggregation logic is correct. Finally, I would present the report in a clear format such as a table or dashboard that shows total sales by product category for each region, and I would document the assumptions, mapping logic, and any data quality issues encountered so the report is transparent and easy to maintain.\n",
+                "timestamp": "2026-01-27T10:17:18.562116"
+            },
+            {
+                "turnNo": 8,
+                "speaker": "agent",
+                "text": "Imagine you're working with a team where you have to prioritize multiple data-related tasks. What factors do you consider when deciding which tasks to tackle first?",
+                "timestamp": "2026-01-27T10:17:22.066186"
+            },
+            {
+                "turnNo": 8,
+                "speaker": "candidate",
+                "text": "When prioritizing multiple data related tasks, I first look at the business impact. I focus on tasks that directly affect key decisions, revenue, customers, or deadlines, especially anything leadership or stakeholders are waiting on.\n\nNext, I consider urgency and timelines. If a task is time sensitive, such as a report needed for a meeting or a downstream process that depends on my output, I prioritize that to avoid blocking others.\n\nI also assess the level of effort and complexity. If there are quick wins that can be completed with low effort and high value, I try to handle those early to free up time and reduce backlog.\n\nAnother important factor is data risk and accuracy. Tasks involving data quality issues, critical pipelines, or compliance get higher priority because errors there can have a larger negative impact.\n\nFinally, I align with the team and stakeholders. I communicate openly to confirm priorities, adjust if business needs change, and make sure my work supports the team’s overall goals rather than working in isolation.",
+                "timestamp": "2026-01-27T10:18:46.684485"
+            },
+            {
+                "turnNo": 9,
+                "speaker": "agent",
+                "text": "That covers all my questions. Do you have any questions for me about the role, the team, or the company?",
+                "timestamp": "2026-01-27T10:18:49.661338"
+            },
+            {
+                "turnNo": 9,
+                "speaker": "candidate",
+                "text": "no",
+                "timestamp": "2026-01-27T10:18:55.955829"
+            },
+            {
+                "turnNo": 10,
+                "speaker": "agent",
+                "text": "Thank you for your time today! We'll review your responses and get back to you with next steps shortly. Have a great day!",
+                "timestamp": "2026-01-27T10:18:58.8098"
+            }
+        ],
+        "scores": {
+            "id": "66c1cc85-f04a-4df5-8d9c-3aa9c95f82dc",
+            "interview_id": "INT-44fbf841-b0f5-4e50-b845-aa3b0fd20122",
+            "technical_score": 70,
+            "communication_score": 75,
+            "culture_score": 73,
+            "overall_score": 72,
+            "recommendation": "PROCEED",
+            "reasoning": {
+                "concerns": [
+                    "Mentioned trade offs explicitly to explain the decision-making process",
+                    "Provided some vague phrases, 'once expectations were clear and blockers were removed', for more specific details about the outcomes",
+                    "Mentioning a specific area where data-driven insights can drive change, in terms of metrics, data sources, or tools",
+                    "Could elaborate more",
+                    "Consider mentioning edge cases for missing value imputation and outlier detection"
+                ],
+                "highlights": [
+                    "Completed turn",
+                    "Clear and concise answer with specific context",
+                    "Used STAR method to structure the answer",
+                    "Showed a phased approach to solving the problem",
+                    "Clearly described a situation and specific steps taken to address a team performance issue"
+                ]
+            },
+            "created_at": "2026-01-27T10:19:17.396734"
+        },
+        "signals": {
+            "id": "dceb7ed0-3663-41fe-adef-8079026a93e6",
+            "interview_id": "INT-44fbf841-b0f5-4e50-b845-aa3b0fd20122",
+            "talk_ratio": 0.83,
+            "avg_response_length": 227,
+            "sentiment": "neutral",
+            "speech_rate_wpm": 567,
+            "call_quality_score": 85,
+            "created_at": "2026-01-27T10:19:17.2964"
+        },
+        "summary": {
+            "concerns": [
+                "Mentioned trade offs explicitly to explain the decision-making process",
+                "Provided some vague phrases, 'once expectations were clear and blockers were removed', for more specific details about the outcomes",
+                "Mentioning a specific area where data-driven insights can drive change, in terms of metrics, data sources, or tools",
+                "Could elaborate more",
+                "Consider mentioning edge cases for missing value imputation and outlier detection"
+            ],
+            "highlights": [
+                "Completed turn",
+                "Clear and concise answer with specific context",
+                "Used STAR method to structure the answer",
+                "Showed a phased approach to solving the problem",
+                "Clearly described a situation and specific steps taken to address a team performance issue"
+            ]
+        }
+    },
+    {
+        "interviewId": "INT-2bb47169-0ffe-436b-9fb1-869a29581e90",
+        "candidateId": "CAND-015",
+        "jobId": "JOB-DE-FRESHER",
+        "status": "COMPLETED",
+        "transcript": [
+            {
+                "turnNo": 0,
+                "speaker": "system",
+                "text": "Hi! I'm an AI interviewer powered by advanced language models. This conversation will be recorded and analyzed to assess your qualifications for the position. Your responses will be evaluated based on technical skills, communication, and cultural fit. The entire interview typically takes 15-20 minutes. Do I have your consent to proceed and record this conversation?",
+                "timestamp": "2026-01-27T12:12:17.050736"
+            },
+            {
+                "turnNo": 1,
+                "speaker": "candidate",
+                "text": "From my past projects and internship experience, one key takeaway that excites me about this Data Engineer position is seeing how well built data pipelines directly enable data driven insights and reliable decision making.\n\nDuring my internship, I worked on projects involving data ingestion, transformation, and validation, and I saw firsthand how downstream teams depended on the quality and availability of that data. Improving data consistency, fixing pipeline issues, or optimizing queries had a noticeable impact on reporting and analysis, which made the work very rewarding.\n\nThis role excites me because it allows me to focus on building scalable and dependable data solutions while continuing to grow technically. I am motivated by the opportunity to work with real world data challenges, collaborate with experienced engineers, and contribute to systems that turn raw data into trusted insights for the business.\n",
+                "timestamp": "2026-01-27T12:12:52.618085"
+            },
+            {
+                "turnNo": 1,
+                "speaker": "agent",
+                "text": "As you review the Data Engineer position, what key takeaways from your past projects or experiences make you excited about this opportunity to drive data-driven insights and solutions?",
+                "timestamp": "2026-01-27T12:12:25.895923"
+            },
+            {
+                "turnNo": 2,
+                "speaker": "agent",
+                "text": "Describe a situation where you had to manage a team and prioritize multiple projects with competing deadlines. How did you ensure timely completion and effective resource allocation?",
+                "timestamp": "2026-01-27T12:12:55.900905"
+            },
+            {
+                "turnNo": 2,
+                "speaker": "candidate",
+                "text": "During my internship, I was not formally managing a team, but I did take a coordinating role while working on multiple data tasks with overlapping deadlines. We had several requests for data fixes and small pipeline enhancements that all needed to be completed around the same time.\n\nTo manage this, I worked with senior engineers to clearly understand priorities and business impact. I helped break down the work into smaller tasks and identified which items were urgent and which could be scheduled later. I focused on completing my assigned tasks efficiently while keeping the team informed of progress and any risks.\n\nI also made sure to document my work and share reusable queries or scripts so others could pick up tasks if needed. By staying organized, communicating clearly, and aligning with the team on priorities, we were able to complete the most critical work on time and manage resources effectively despite the competing deadlines.\n",
+                "timestamp": "2026-01-27T12:13:20.750677"
+            },
+            {
+                "turnNo": 3,
+                "speaker": "candidate",
+                "text": "During my internship, our team was working on a data pipeline update with a tight deadline, and there was a disagreement about how to handle a transformation step. Some team members preferred a quick fix to meet the deadline, while others wanted a more structured solution that would be easier to maintain long term.\n\nSince I was a junior team member, I focused on supporting a constructive discussion rather than pushing a strong opinion. I helped by gathering facts, such as comparing the performance and complexity of both approaches using small test cases and sample data. I shared these findings with the team and asked clarifying questions to better understand the trade offs of each option.\n\nThe team ultimately agreed on a balanced approach that met the deadline while still being maintainable. The outcome was a successful delivery and improved alignment within the team. This experience taught me the value of clear communication, data backed discussion, and collaboration when resolving disagreements under pressure.\n",
+                "timestamp": "2026-01-27T12:13:49.243837"
+            },
+            {
+                "turnNo": 3,
+                "speaker": "agent",
+                "text": "Tell me about a time when your team was facing a tight deadline, and there was a disagreement among team members about the implementation approach. How did you handle the situation and what was the outcome?",
+                "timestamp": "2026-01-27T12:13:24.275339"
+            },
+            {
+                "turnNo": 4,
+                "speaker": "agent",
+                "text": "What aspect of our company's mission or values resonates with you, and how do you see yourself contributing to it as a Data Engineer?",
+                "timestamp": "2026-01-27T12:13:52.700971"
+            },
+            {
+                "turnNo": 4,
+                "speaker": "candidate",
+                "text": "What resonates with me most about your company’s mission is the focus on using data to create meaningful and reliable outcomes rather than just collecting data for its own sake. I value organizations that emphasize data quality, trust, and responsible decision making, because those principles align closely with how I approach my work.\n\nAs a Data Engineer, I see myself contributing by building and maintaining dependable data pipelines that ensure accurate and timely data is available to downstream teams. From my internship experience, I understand how critical clean and well structured data is for analytics, reporting, and business insights. I would focus on writing maintainable code, implementing data quality checks, and collaborating closely with analysts and stakeholders to understand their data needs.\n\nBy continuously learning and taking ownership of my responsibilities, I aim to support the company’s mission by helping turn raw data into a strong foundation for data driven decisions across the organization.\n",
+                "timestamp": "2026-01-27T12:14:17.018827"
+            },
+            {
+                "turnNo": 5,
+                "speaker": "agent",
+                "text": "Describe your process for optimizing an E-commerce database schema to improve query performance and data scalability. Consider a scenario where the database handles high traffic during peak shopping seasons.",
+                "timestamp": "2026-01-27T12:14:20.719002"
+            },
+            {
+                "turnNo": 5,
+                "speaker": "candidate",
+                "text": "To optimize an e commerce database schema for performance and scalability, I would start by understanding the access patterns, such as which tables are queried most frequently during peak traffic and which queries are critical for the business, like product searches, orders, and payments.\n\nNext, I would review the schema design to ensure proper normalization while avoiding over normalization that could cause excessive joins. For high traffic tables, I would make sure primary keys and foreign keys are well defined and add appropriate indexes on commonly filtered and joined columns, such as user_id, product_id, order_date, and status. I would also evaluate whether some read heavy use cases could benefit from denormalized tables or summary tables to reduce query complexity.\n\nI would then analyze slow queries using available query logs or execution plans and look for opportunities to optimize them by reducing unnecessary columns, limiting result sets, and rewriting inefficient joins. For scalability, I would consider partitioning large tables by date or order range to improve performance during peak seasons and make maintenance easier.\n\nFinally, I would test changes in a staging environment, monitor performance metrics, and document the optimizations. As a junior data engineer, I would work closely with senior engineers to ensure best practices are followed and that changes improve performance without impacting data integrity or reliability.\n",
+                "timestamp": "2026-01-27T12:14:44.600595"
+            },
+            {
+                "turnNo": 6,
+                "speaker": "agent",
+                "text": "Your company has decided to launch a new healthcare project that involves integrating data from various medical devices and electronic health records. However, due to data quality issues, 10% of medical devices are experiencing issues that cause inaccurate readings. How would you identify and flag these devices in the database while ensuring the integrity of the rest of the data?",
+                "timestamp": "2026-01-27T12:14:48.35024"
+            },
+            {
+                "turnNo": 6,
+                "speaker": "candidate",
+                "text": "To handle this situation, I would start by clearly defining what an inaccurate reading means in collaboration with domain experts, such as clinicians or device specialists. This could include readings outside expected ranges, missing values, abnormal spikes, or values that do not align with historical patterns for a device.\n\nOnce the criteria is defined, I would analyze the incoming data to identify devices that consistently produce these anomalies. I would write validation rules or SQL queries to calculate error rates per device and flag devices where a certain percentage of readings fail the quality checks. These flags would be stored as metadata, for example in a separate device status table or as an additional column, rather than modifying or deleting the raw data.\n\nTo ensure data integrity, I would avoid overwriting the original readings and instead keep the raw data unchanged for traceability. Downstream processes could then filter or annotate data from flagged devices while still allowing access to the full dataset when needed. I would also implement monitoring to continuously track device data quality and update flags as new data arrives.\n\nFinally, I would document the logic used to identify problematic devices and communicate the findings to relevant teams. This approach ensures that inaccurate devices are clearly identified without compromising the integrity, availability, or auditability of the rest of the healthcare data.\n",
+                "timestamp": "2026-01-27T12:15:13.918469"
+            },
+            {
+                "turnNo": 7,
+                "speaker": "agent",
+                "text": "Imagine you have a data warehouse with a fact table containing sales transactions for an e-commerce company. The fact table has columns for product_id, order_date, sales_amount, and region. You need to implement a solution to calculate the rolling 12-month sales amount for each product. However, the sales_amount column is aggregated at the order_date level. How would you structure your approach to implement this calculation in a scalable and efficient manner?",
+                "timestamp": "2026-01-27T12:15:17.768598"
+            },
+            {
+                "turnNo": 7,
+                "speaker": "candidate",
+                "text": "To implement a rolling 12 month sales calculation in a scalable and efficient way, I would structure the solution in clear stages, keeping performance and maintainability in mind.\n\nFirst, I would ensure the data is at the correct grain for the calculation. Since the fact table is already aggregated at the product_id and order_date level, this is suitable for a rolling time window. I would confirm that order_date is stored as a proper date and that there is one row per product per date to avoid double counting.\n\nNext, I would use a window function to calculate the rolling 12 month sales. In SQL, this can be done by partitioning the data by product_id and ordering by order_date, then applying a rolling window that looks back 12 months from each date. Using a date based window, such as RANGE BETWEEN INTERVAL 11 MONTH PRECEDING AND CURRENT ROW, ensures the calculation remains correct even if some dates are missing.\n\nFor scalability, I would consider creating a derived table or materialized view that stores the rolling 12 month sales per product per date, especially if this metric is used frequently in reports or dashboards. This avoids recalculating the rolling window repeatedly and reduces query load during peak usage.\n\nFinally, I would validate the results by testing a few products manually and checking edge cases such as the first year of data where a full 12 months may not exist. By using window functions on a well structured fact table and precomputing results when necessary, this approach remains efficient, scalable, and easy to maintain as data volume grows.\n",
+                "timestamp": "2026-01-27T12:15:49.510966"
+            },
+            {
+                "turnNo": 8,
+                "speaker": "agent",
+                "text": "What aspects of a healthy team culture are most important to you as a data engineer, and how do you plan to contribute to fostering those qualities in our team?",
+                "timestamp": "2026-01-27T12:15:53.350694"
+            },
+            {
+                "turnNo": 8,
+                "speaker": "candidate",
+                "text": "The most important aspects of a healthy team culture for me as a data engineer are open communication, trust, and a strong sense of collaboration. I believe teams work best when people feel comfortable asking questions, sharing ideas, and raising issues early without hesitation.\n\nI plan to contribute to this culture by being reliable and transparent in my work. I communicate progress clearly, ask for feedback when I am unsure, and document my work so it is easy for others to understand and build on. As a junior data engineer, I am also very open to learning and value constructive feedback, which helps create an environment where continuous improvement is encouraged.\n\nI also try to be respectful of different perspectives and supportive of my teammates, especially when working through complex data problems. By staying engaged, being proactive, and maintaining a positive attitude, I aim to help foster a team culture where everyone can do their best work and grow together.\n",
+                "timestamp": "2026-01-27T12:16:17.096235"
+            },
+            {
+                "turnNo": 9,
+                "speaker": "agent",
+                "text": "That covers all my questions. Do you have any questions for me about the role, the team, or the company?",
+                "timestamp": "2026-01-27T12:16:20.310578"
+            },
+            {
+                "turnNo": 9,
+                "speaker": "candidate",
+                "text": "I want to know more about company culture.",
+                "timestamp": "2026-01-27T12:16:40.569558"
+            },
+            {
+                "turnNo": 9,
+                "speaker": "agent",
+                "text": "\"Our company culture is built around collaboration, innovation, and a passion for data-driven decision making. We prioritize a flexible and inclusive work environment that fosters growth and learning among our team members. If you'd like more specifics, I'd be happy to have our hiring manager reach out to you with more information about our culture and team dynamics.\"",
+                "timestamp": "2026-01-27T12:16:40.967169"
+            },
+            {
+                "turnNo": 10,
+                "speaker": "agent",
+                "text": "Thank you for your time today! We'll review your responses and get back to you with next steps shortly. Have a great day!",
+                "timestamp": "2026-01-27T12:16:43.92859"
+            }
+        ],
+        "scores": {
+            "id": "1abb1b86-7cc6-478c-a6c2-a0ebc3dfdaf3",
+            "interview_id": "INT-2bb47169-0ffe-436b-9fb1-869a29581e90",
+            "technical_score": 68,
+            "communication_score": 78,
+            "culture_score": 70,
+            "overall_score": 72,
+            "recommendation": "PROCEED",
+            "reasoning": {
+                "concerns": [
+                    "Provide more depth in technical details and consider using the STAR method more explicitly.",
+                    "Could benefit from a slight improvement in confidence and ownership of the decision-making process",
+                    "Consider mentioning specific databases and query optimization tools, e.g., Postgres, MySQL, EXPLAIN statements",
+                    "Could elaborate more",
+                    "Could benefit from deeper technical depth in database fundamentals"
+                ],
+                "highlights": [
+                    "Completed turn",
+                    "Mentioning specific details of work and communication with the team.",
+                    "Used the STAR method for a behavioral question",
+                    "Provided clear explanations for the team's disagreement and the outcome",
+                    "Mentioned the company's use of data for meaningful outcomes and alignment with their own approach."
+                ]
+            },
+            "created_at": "2026-01-27T12:17:14.826869"
+        },
+        "signals": {
+            "id": "dcbedb25-e267-4c9e-8fb2-89fd6b53e588",
+            "interview_id": "INT-2bb47169-0ffe-436b-9fb1-869a29581e90",
+            "talk_ratio": 0.79,
+            "avg_response_length": 164,
+            "sentiment": "positive",
+            "speech_rate_wpm": 410,
+            "call_quality_score": 85,
+            "created_at": "2026-01-27T12:17:14.383976"
+        },
+        "summary": {
+            "concerns": [
+                "Provide more depth in technical details and consider using the STAR method more explicitly.",
+                "Could benefit from a slight improvement in confidence and ownership of the decision-making process",
+                "Consider mentioning specific databases and query optimization tools, e.g., Postgres, MySQL, EXPLAIN statements",
+                "Could elaborate more",
+                "Could benefit from deeper technical depth in database fundamentals"
+            ],
+            "highlights": [
+                "Completed turn",
+                "Mentioning specific details of work and communication with the team.",
+                "Used the STAR method for a behavioral question",
+                "Provided clear explanations for the team's disagreement and the outcome",
+                "Mentioned the company's use of data for meaningful outcomes and alignment with their own approach."
+            ]
+        }
+    },
+    {
+        "interviewId": "INT-a5d3d599-5130-4225-a898-b63faa0e800f",
+        "candidateId": "CAND-026",
+        "jobId": "JOB-DA-FRESHER",
+        "status": "COMPLETED",
+        "transcript": [
+            {
+                "turnNo": 0,
+                "speaker": "system",
+                "text": "Hi! I'm an AI interviewer powered by advanced language models. This conversation will be recorded and analyzed to assess your qualifications for the position. Your responses will be evaluated based on technical skills, communication, and cultural fit. The entire interview typically takes 15-20 minutes. Do I have your consent to proceed and record this conversation?",
+                "timestamp": "2026-01-27T16:58:25.136473"
+            },
+            {
+                "turnNo": 1,
+                "speaker": "agent",
+                "text": "What pivotal moments in your professional or academic journey have fueled your curiosity for data-driven insights and led you to pursue the role of a Data Analyst in our organization?",
+                "timestamp": "2026-01-27T16:58:34.800569"
+            },
+            {
+                "turnNo": 1,
+                "speaker": "candidate",
+                "text": "A few key moments in my academic and early professional journey really shaped my interest in data analysis. Early on, while working on projects and coursework, I saw how raw data could be transformed into clear insights that explained patterns and supported decisions. That shift from simply collecting data to actually understanding what it was telling us sparked my curiosity.\n\nLater, through hands on projects and practical experience, I worked with messy, real world datasets and realized how valuable good analysis and clear interpretation are to an organization. Seeing stakeholders use insights I helped generate to guide decisions made the work feel meaningful and reinforced my interest in pursuing data analysis as a career.\n\nThese experiences led me to seek a Data Analyst role where I can continue building my technical skills, work closely with business teams, and contribute to turning data into actionable insights that support the organization’s goals.\n",
+                "timestamp": "2026-01-27T16:59:06.309881"
+            },
+            {
+                "turnNo": 2,
+                "speaker": "agent",
+                "text": "Tell me about a time when you encountered a data set that had a significant discrepancy in its initial analysis. How did you communicate this discrepancy to your team, and what actions did you take to resolve it?",
+                "timestamp": "2026-01-27T16:59:13.700798"
+            },
+            {
+                "turnNo": 2,
+                "speaker": "candidate",
+                "text": "During a data analysis project, I noticed a significant discrepancy between my initial analysis results and what the team was expecting based on historical reports. The numbers were materially different, which raised concerns about data accuracy and interpretation.\n\nI communicated the discrepancy by clearly presenting the findings along with the assumptions and filters I had used. Instead of immediately concluding there was an error, I framed it as an observation and walked the team through where and how the numbers diverged. This helped keep the discussion objective and focused on understanding the data rather than assigning blame.\n\nTo resolve the issue, I worked with the team to trace the data back to its sources, reviewed recent changes in data definitions and pipelines, and ran validation checks to isolate the root cause. We eventually identified a data processing change that was excluding a subset of records. Once corrected, the analysis aligned with expectations, and we documented the issue to prevent similar discrepancies in the future.\n",
+                "timestamp": "2026-01-27T16:59:47.379694"
+            },
+            {
+                "turnNo": 3,
+                "speaker": "agent",
+                "text": "Tell me about a time when you had to lead a team project that was facing a tight deadline. Can you describe how you managed the team to deliver the project results on time?",
+                "timestamp": "2026-01-27T16:59:57.436676"
+            },
+            {
+                "turnNo": 3,
+                "speaker": "candidate",
+                "text": "During a team project with a tight deadline, we were responsible for delivering an analysis and set of insights needed for an upcoming stakeholder presentation. Midway through the project, it became clear that the timeline was tighter than expected due to delays in data availability and overlapping team commitments.\n\nI stepped in to help keep the team focused and aligned. I started by clearly defining the most critical deliverables and separating them from nice to have tasks. We broke the work into smaller pieces, assigned ownership based on each person’s strengths, and set short check ins to track progress and address blockers quickly.\n\nI also made sure communication stayed clear and supportive, encouraging team members to raise issues early so we could adjust plans if needed. By prioritizing high impact work, simplifying parts of the analysis, and keeping everyone aligned on the goal, we were able to deliver the project on time. The experience showed me how clear prioritization, teamwork, and calm leadership are essential when working under pressure.\n",
+                "timestamp": "2026-01-27T17:00:29.507729"
+            },
+            {
+                "turnNo": 4,
+                "speaker": "agent",
+                "text": "Imagine you're in this Data Analyst role at our company for a year. What impact would you hope to have made during that time, and what drives your desire to achieve that?",
+                "timestamp": "2026-01-27T17:00:39.110698"
+            },
+            {
+                "turnNo": 4,
+                "speaker": "candidate",
+                "text": "After a year in this Data Analyst role, I would hope to be someone the team trusts for delivering accurate, clear, and useful insights. I’d want to have a solid understanding of the company’s data, metrics, and business processes, and to have contributed analyses that helped teams make better, more confident decisions.\n\nI would also hope to have improved how data is used, whether that’s by creating reliable reports, helping standardize metrics, or making insights more accessible to non technical stakeholders. What drives me is seeing data actually influence outcomes, not just sit in dashboards. Knowing that my work helped clarify a problem, support a decision, or improve a process is what motivates me to continuously learn and add value in the role.\n",
+                "timestamp": "2026-01-27T17:01:13.215769"
+            },
+            {
+                "turnNo": 5,
+                "speaker": "agent",
+                "text": "A healthcare company is planning to launch a new telemedicine service. You have been tasked with analyzing patient data to understand the relationship between telemedicine services and patient outcomes. The dataset contains information on patient demographics, telemedicine services used, and the outcomes of those services. You need to analyze the data and create a report for stakeholders on the effectiveness of the telemedicine services.",
+                "timestamp": "2026-01-27T17:01:25.553811"
+            },
+            {
+                "turnNo": 5,
+                "speaker": "candidate",
+                "text": "I would approach this analysis in a structured and transparent way to ensure the results are accurate, interpretable, and useful for stakeholders.\n\nFirst, I would spend time understanding the data and the business context. This includes clarifying how patient outcomes are defined, what types of telemedicine services are included, and what success looks like from a clinical and operational perspective. I would review the dataset for completeness, check data quality issues such as missing values or inconsistencies, and ensure patient privacy requirements are followed.\n\nNext, I would prepare the data for analysis. This would involve cleaning and standardizing demographic variables, categorizing telemedicine services where appropriate, and validating outcome measures. I would also create relevant cohorts, such as patients who used telemedicine versus those who did not, or comparisons across different service types, while accounting for time windows and repeat usage.\n\nFor the analysis itself, I would start with descriptive statistics to understand overall usage patterns and baseline outcomes. Then, I would explore relationships between telemedicine usage and patient outcomes, using appropriate statistical methods to control for key factors like age, condition severity, or prior medical history where possible. The goal would be to identify trends and associations rather than overstate causality.\n\nFinally, I would create a clear, stakeholder friendly report. This would include visualizations that highlight key findings, a summary of what the data suggests about the effectiveness of telemedicine services, and any limitations or assumptions in the analysis. I would also provide actionable insights, such as which services appear most effective or where further investigation is needed, so stakeholders can use the results to guide decisions around the telemedicine launch and future improvements.\n",
+                "timestamp": "2026-01-27T17:02:20.268137"
+            },
+            {
+                "turnNo": 6,
+                "speaker": "agent",
+                "text": "A hospital wants to measure the correlation between the length of stay and the type of surgical procedure. The dataset contains information on patient demographics, surgical procedures, and hospital stay duration. However, the 'Length of Stay' column contains both numeric and categorical values (e.g., '<24 hours', '24-48 hours', '48-72 hours' etc.). You have been tasked with cleaning and preparing the data to enable analysis of the relationship between surgical procedure and length of stay.",
+                "timestamp": "2026-01-27T17:02:30.629302"
+            },
+            {
+                "turnNo": 6,
+                "speaker": "candidate",
+                "text": "To enable meaningful analysis, I would focus on standardizing the Length of Stay field so it can be used consistently while preserving its clinical meaning.\n\nFirst, I would explore the column to understand all possible values and identify how numeric and categorical entries are mixed. I would confirm whether the categorical values represent well defined time ranges and whether there are any edge cases or inconsistencies.\n\nNext, I would convert the categorical values into a numeric representation. A common and transparent approach is to map each category to a numeric value based on the midpoint of the range. For example,\n<24 hours could be mapped to 12 hours,\n24–48 hours to 36 hours,\n48–72 hours to 60 hours.\nIf the dataset uses days instead of hours, I would convert everything into a consistent unit. This makes the column suitable for correlation analysis while keeping the transformation interpretable.\n\nI would also validate existing numeric values to ensure they fall within reasonable ranges and align with the categorical definitions. Any ambiguous or invalid entries would be flagged and either corrected with stakeholder input or excluded if they cannot be reliably interpreted.\n\nOnce the Length of Stay column is fully numeric and consistent, I would create a cleaned version of the dataset and document the mapping logic and assumptions used. This ensures transparency for stakeholders and reproducibility for future analyses.\n\nWith the cleaned data, I could then analyze the relationship between surgical procedure type and length of stay using appropriate statistical methods, confident that the underlying data is consistent and comparable.\n",
+                "timestamp": "2026-01-27T17:03:08.236583"
+            },
+            {
+                "turnNo": 7,
+                "speaker": "agent",
+                "text": "Our cloud-based data warehousing infrastructure is experiencing a severe storage capacity crunch, with a forecasted increase in data volumes by 300% within the next 6 weeks. This will lead to delayed reports and potential data loss. It's also discovered that one of the key dependencies, the ETL tool, will no longer be supported by its vendor within the next 3 months.",
+                "timestamp": "2026-01-27T17:03:15.816299"
+            },
+            {
+                "turnNo": 7,
+                "speaker": "candidate",
+                "text": "I would treat this as a high-risk operational situation and focus on stabilizing the system first while creating a clear transition path, given the tight timelines and multiple risks involved.\n\nIn the short term, my immediate priority would be to reduce storage pressure and prevent data loss. I would analyze which datasets are critical for reporting and decision making versus those that are rarely accessed. Non essential or historical data could be archived to lower cost storage, compressed, or temporarily excluded from the warehouse to free up capacity. I would also review retention policies and pause or throttle non critical data ingestion and backfills to slow the growth rate over the next few weeks.\n\nIn parallel, I would work on optimizing what already exists. This includes identifying large tables with low query usage, removing duplicate or redundant data, and applying partitioning or pruning strategies where possible. Even modest optimizations can buy valuable time when growth is accelerating.\n\nAt the same time, the ETL tool deprecation is a strategic risk that can’t be ignored. I would start planning a phased transition immediately rather than waiting. In the short term, I would aim to stabilize the existing pipelines and avoid adding new dependencies on the legacy tool. In parallel, I would evaluate alternative ETL or orchestration solutions and begin migrating the most critical pipelines first, prioritizing those tied to core reporting and revenue.\n\nThroughout this process, I would keep stakeholders informed with clear, realistic updates. Leadership needs visibility into the risks, the trade offs being made, and the mitigation plan. I would also document decisions and assumptions so the team stays aligned during a fast moving situation.\n\nThe overall goal would be to buy time safely in the next 6 weeks by reducing storage growth and risk, while laying the groundwork for a controlled migration away from the unsupported ETL tool. That balance between short term stabilization and long term resilience is key to avoiding both immediate failure and repeated crises down the line.\n",
+                "timestamp": "2026-01-27T17:04:00.062182"
+            },
+            {
+                "turnNo": 8,
+                "speaker": "agent",
+                "text": "What role do you believe constructive conflict and open discussion play in a high-performing team, and how do you prefer to engage in these types of discussions?",
+                "timestamp": "2026-01-27T17:04:08.01613"
+            },
+            {
+                "turnNo": 8,
+                "speaker": "candidate",
+                "text": "I believe constructive conflict and open discussion are essential for a high-performing team, especially in technical and data-driven environments. When people feel comfortable challenging ideas, assumptions, and approaches, the team is more likely to arrive at better decisions and avoid blind spots.\n\nI prefer to engage in these discussions by keeping the focus on the problem and the data rather than on individuals. I try to listen first, ask clarifying questions, and understand different perspectives before sharing my own. When I do disagree, I aim to explain my reasoning clearly and respectfully, using evidence or examples where possible. I also value being challenged in return, as it helps refine my thinking.\n\nOverall, an environment where open discussion is encouraged and handled with mutual respect creates stronger solutions, better collaboration, and continuous learning across the team.\n",
+                "timestamp": "2026-01-27T17:05:32.75739"
+            },
+            {
+                "turnNo": 9,
+                "speaker": "agent",
+                "text": "That covers all my questions. Do you have any questions for me about the role, the team, or the company?",
+                "timestamp": "2026-01-27T17:05:37.446046"
+            },
+            {
+                "turnNo": 9,
+                "speaker": "candidate",
+                "text": "no",
+                "timestamp": "2026-01-27T17:05:44.019653"
+            },
+            {
+                "turnNo": 10,
+                "speaker": "agent",
+                "text": "Thank you for your time today! We'll review your responses and get back to you with next steps shortly. Have a great day!",
+                "timestamp": "2026-01-27T17:05:48.036726"
+            }
+        ],
+        "scores": {
+            "id": "f22b1233-9ff9-44a4-ad60-779f6aafa988",
+            "interview_id": "INT-a5d3d599-5130-4225-a898-b63faa0e800f",
+            "technical_score": 68,
+            "communication_score": 73,
+            "culture_score": 73,
+            "overall_score": 72,
+            "recommendation": "PROCEED",
+            "reasoning": {
+                "concerns": [
+                    "Some minor ambiguity in prioritization explanation",
+                    "More technical specifics would further strengthen the answer",
+                    "Could delve deeper into specific statistical methods and data visualization options",
+                    "Could elaborate more",
+                    "Consider providing more technical details on optimization strategies (e.g., indexing, partitioning) and concrete numbers for 'buying time safely'."
+                ],
+                "highlights": [
+                    "Completed turn",
+                    "Use of STAR method for a clear and concise explanation of a technical issue, demonstration of problem-solving skills by tracing the data to its sources, and effective communication of the discrepancy to the team",
+                    "Strong STAR method structure",
+                    "Professional tone and language",
+                    "Good example to showcase leadership skills"
+                ]
+            },
+            "created_at": "2026-01-27T17:06:21.951186"
+        },
+        "signals": {
+            "id": "4543481f-f63d-4750-9805-4adc626e31ad",
+            "interview_id": "INT-a5d3d599-5130-4225-a898-b63faa0e800f",
+            "talk_ratio": 0.8,
+            "avg_response_length": 178,
+            "sentiment": "positive",
+            "speech_rate_wpm": 445,
+            "call_quality_score": 85,
+            "created_at": "2026-01-27T17:06:21.121074"
+        },
+        "summary": {
+            "concerns": [
+                "Some minor ambiguity in prioritization explanation",
+                "More technical specifics would further strengthen the answer",
+                "Could delve deeper into specific statistical methods and data visualization options",
+                "Could elaborate more",
+                "Consider providing more technical details on optimization strategies (e.g., indexing, partitioning) and concrete numbers for 'buying time safely'."
+            ],
+            "highlights": [
+                "Completed turn",
+                "Use of STAR method for a clear and concise explanation of a technical issue, demonstration of problem-solving skills by tracing the data to its sources, and effective communication of the discrepancy to the team",
+                "Strong STAR method structure",
+                "Professional tone and language",
+                "Good example to showcase leadership skills"
+            ]
+        }
+    }
+]

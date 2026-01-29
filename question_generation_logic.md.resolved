@@ -1,0 +1,87 @@
+# Question Generation Flow & Logic Architecture
+
+This document details how the AI Interviewer architecturally decides and generates questions. The system is split into two layers: the **Decision Engine (Strategy)** and the **Execution Engine (LLM Generation)**.
+
+---
+
+## 1. High-Level Architecture
+The process follows a feedback loop where every candidate answer informs the next question's difficulty, type, and technical focus.
+
+```mermaid
+graph TD
+    A["Interview Controller"] -->|Answer Received| B["Evaluator Agent"]
+    B -->|Score/Signals| C["Candidate State"]
+    C -->|Update State| D["Agentic Interviewer (Decision)"]
+    D -->|Strategy Decisions| E["Question Generator (Execution)"]
+    E -->|JSON Prompt| F["LLM (Groq)"]
+    F -->|Raw JSON| G["Next Question + Rubric"]
+    G --> A
+```
+
+---
+
+## 2. The Decision Engine ([AgenticInterviewer](file:///e:/VoiceScreenAI%20-%20Copy%20%282%29/src/agents/agentic_interviewer.py#7-501))
+This layer makes the "managerial" decisions about the interview's direction without using the LLM for the strategy itself.
+
+### A. The 8-Step Core Plan
+The interview follows a strict baseline of 8 questions to ensure fair comparison across candidates:
+1. **Warmup**: Engaging intro connecting background to role.
+2. **Behavioral 1**: Soft-skill focus (Conflict/Stakeholder management).
+3. **Behavioral 2**: Ownership and results.
+4. **Motivation**: Career alignment and "Why us?".
+5. **Technical 1**: Core skill from the Job Description (JD).
+6. **Technical 2**: Complementary technical skill from JD.
+7. **Scenario**: Hypothetical problem-solving (Case study).
+8. **Culture**: Team-fit and working style preferences.
+
+### B. Adaptive Scaling
+- **Difficulty Decision**: The agent calculates the [recent_avg_score](file:///e:/VoiceScreenAI%20-%20Copy%20%282%29/src/agents/candidate_state.py#65-72) (last 3 answers).
+    - **Avg >= 8.0**: Upshift to **Hard** (Edge cases, architectural depth).
+    - **Avg < 5.0**: Downshift to **Medium/Easy** (Fundamentals) to allow recovery.
+- **Skill Selection**: The agent iterates through JD `must_have_skills`. If all are tested, it falls back to `nice_to_have` or focused technical areas.
+
+### C. Extension & Termination
+After 8 core questions, the agent analyzes the [CandidateState](file:///e:/VoiceScreenAI%20-%20Copy%20%282%29/src/agents/candidate_state.py#15-188):
+- **Termination**: If `Overall Avg >= 7.0`, the agent moves to wrap-up (Sufficient data).
+- **Extension (Second Chance)**: If **exactly one** technical/scenario area failed (<4.5) but others are strong (>=7.5), the agent adds ONE technical extension to see if it was a one-off struggle.
+
+---
+
+## 3. The Execution Engine ([QuestionGeneratorAgent](file:///e:/VoiceScreenAI%20-%20Copy%20%282%29/src/agents/question_generator_agent.py#9-294))
+Once the agent decides the *Type* and *Difficulty*, the Generator consumes the [CandidateState](file:///e:/VoiceScreenAI%20-%20Copy%20%282%29/src/agents/candidate_state.py#15-188) into an LLM prompt.
+
+### A. Context Connectivity Rule
+The LLM is instructed to **BRIDGE** every question to the candidate's history.
+- **Rule**: If the candidate mentioned a specific internship or tool in Turn 1, the LLM will frame Turn 3 using that context: *"Earlier you mentioned X, how would you apply that to...?"*
+- **Result**: This prevents the interview from feeling like a static list of questions.
+
+### B. Type-Specific Guardrails
+Each question type has a dedicated "Mission Statement" in the prompt:
+- **Behavioral**: Forces the LLM to seek **STAR** (Situation, Task, Action, Result) evidence.
+- **Scenario**: Forces a **Hypothetical Crisis** (e.g., "The production pipeline is down, and the lead is on vacation...").
+- **Technical**: Injects the `next_skill_to_test` decided by the agent.
+
+### C. The JSON Contract
+The LLM must respond with a strictly formatted JSON object containing:
+- [question](file:///e:/VoiceScreenAI%20-%20Copy%20%282%29/src/routes/interview_routes.py#54-64): The actual text spoken to the user.
+- `type`: Used to track topics covered.
+- `rubric`: Dynamically generated grading criteria (`mustMention`, `goodToMention`, `redFlags`) used by the **EvaluatorAgent** later.
+
+---
+
+## 4. Anti-Repetition Logic
+The system maintains a `topics_covered` set in the state.
+1. Each turn, the generated topic is added to the set.
+2. The next prompt explicitly lists `Previous Topics Covered` and commands: **"DO NOT ask about a topic/skill if it appears in this list."**
+3. The [InterviewController](file:///e:/VoiceScreenAI%20-%20Copy%20%282%29/src/controllers/interview_controller.py#19-544) also performs an 85% similarity word-overlap check to catch candidates pasting identical answers (Gaming Protection).
+
+---
+
+## Summary of logic triggers
+| Scenario | Decision | Logic |
+| :--- | :--- | :--- |
+| **High Performance** | Shift to Hard | Avg > 8.0 (Last 3 turns) |
+| **Silent Fail** | Extend Interview | One fail cat + two strong cats |
+| **Vague Answer** | Follow-up | Score < 5.0 |
+| **JD Overload** | Skill Filter | Pick `must_have` skills first, descending order |
+| **Candidate Gaming** | Penalize score | Similarity > 85% compared to history |
