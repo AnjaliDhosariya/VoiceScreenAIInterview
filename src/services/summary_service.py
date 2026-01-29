@@ -43,7 +43,11 @@ class SummaryService:
             for eval_data in evaluations:
                 strengths = eval_data.get('strengths', [])
                 for strength in strengths:
-                    if strength and len(strength) > 10 and strength not in highlights:
+                    # HIGH-VALUE FILTER: Ignore generic placeholders
+                    low_value = ["provided a response", "completed turn", "answered the question"]
+                    is_low_value = any(lv in strength.lower() for lv in low_value)
+                    
+                    if strength and len(strength) > 10 and not is_low_value and strength not in highlights:
                         highlights.append(strength)
         
         # Fallback to score-based
@@ -64,7 +68,24 @@ class SummaryService:
             for eval_data in evaluations:
                 improvements = eval_data.get('improvements', [])
                 for improvement in improvements:
-                    if improvement and len(improvement) > 10 and improvement not in concerns:
+                    if not improvement: continue
+                    
+                    imp_lower = improvement.lower()
+                    
+                    # DEPTH FIX: Ignore generic nitpicks if the overall assessment is good
+                    generic_keywords = ["could elaborate more", "more specific details", "show deeper understanding", "expand technical points"]
+                    is_generic = any(kw in imp_lower for kw in generic_keywords)
+                    
+                    # Also catch "Expand [X] technical points" variants
+                    if "expand" in imp_lower and "technical" in imp_lower and "point" in imp_lower:
+                        is_generic = True
+                    
+                    # GIBBERISH SAFETY: Ignore gibberish/invalid flags for orientation/wrapup turns
+                    q_type = eval_data.get('type', 'technical').lower()
+                    is_false_gibberish = q_type in ["warmup", "candidate_questions", "wrapup"] and "gibberish" in imp_lower
+                    
+                    # Only include if it's substantial, not generic, not false gibberish
+                    if len(improvement) > 10 and not is_generic and not is_false_gibberish and improvement not in concerns:
                         concerns.append(improvement)
         
         # Fallback to score-based
@@ -75,8 +96,10 @@ class SummaryService:
                 concerns.append("Communication could be more structured")
             
         # Add termination note if too few questions
-        if len(turns) < 10: 
-            concerns.append("Interview terminated early - limited signal gathered")
+        # ACCURACY FIX: The core plan is 8 questions. Intro and Wrapup are extra.
+        # If we have 8+ answers, the interview is sufficiently complete.
+        if len(turns) < 8: 
+            concerns.append("Interview ended prematurely - insufficient signal gathered for a full evaluation")
             
         return concerns[:5]
     
@@ -108,18 +131,15 @@ class SummaryService:
         green_flag_count = len([g for g in green_flags if g and len(g) > 10])
         
         # ====================
+        # TOP PRIORITY: QUALITY CONTROL (Gaming Detection)
+        # ====================
+        irrelevance_count = sum(1 for e in evaluations if "irrelevant answer" in str(e).lower() or "repetitive content" in str(e).lower())
+        if irrelevance_count >= 2:
+            return "REJECT", "Candidate provided too many irrelevant or repetitive answers, indicating poor listening, understanding, or attempt to game the system."
+
+        # ====================
         # REJECT CRITERIA
         # ====================
-        
-        # ====================
-        # EARLY TERMINATION (Insufficient Data)
-        # ====================
-        
-        # New Rule: Automatically REJECT if fewer than 5 answers (User Request)
-        if num_questions < 4:
-             if overall_score >= 60:
-                 return "REJECT", f"Early termination (only {num_questions} answers) - insufficient data to proceed despite score ({overall_score}/100)"
-             return "REJECT", f"Early termination ({num_questions} answers) with weak performance ({overall_score}/100) - candidate dropped off"
 
         # ====================
         # REJECT CRITERIA (> 5 answers)
@@ -153,18 +173,18 @@ class SummaryService:
         # ====================
         
         # Must have minimum coverage (at least 5 for 'strong', usually 8)
-        if overall_score >= 65: # Lowered threshold from 75 to 65
+        if overall_score >= 75: # Raised threshold from 65 back to 75
             # Additional validation checks
             checks_passed = 0
             reasons = []
             
             # Check 1: Technical strength
-            if technical_score >= 65: # Lowered from 70
+            if technical_score >= 70: # Raised from 65 back to 70
                 checks_passed += 1
                 reasons.append("solid technical skills")
             
             # Check 2: Communication strength
-            if communication_score >= 65: # Lowered from 70
+            if communication_score >= 70: # Raised from 65 back to 70
                 checks_passed += 1
                 reasons.append("clear communication")
             
@@ -221,14 +241,48 @@ class SummaryService:
             
             # Borderline overall score
             if 60 <= overall_score < 75:
+                # Group evaluations by type to check for recovery
+                evals_by_type = {}
+                if evaluations:
+                    for e in evaluations:
+                        t = e.get("type", "other").lower()
+                        if t not in evals_by_type: evals_by_type[t] = []
+                        evals_by_type[t].append(e.get("technical", 0) if t in ["technical", "scenario"] else e.get("communication", 0))
+
+                # Check if a second-chance was successfully passed (last score > first score in a category with 3+ turns)
+                has_recovery = False
+                has_failed_double_chance = False
+                for t, ss in evals_by_type.items():
+                    if len(ss) >= 3:
+                        if ss[-1] >= 7 and ss[0] < 5:
+                            has_recovery = True
+                        elif ss[-1] < 5 and ss[0] < 5:
+                            has_failed_double_chance = True
+                        break
+
+                # NEW: Fresher/Junior roles get a 'PROCEED' if they are in the high-60s/low-70s with NO red flags
+                job_id = scores.get("job_id", "") if scores else ""
+                is_senior = "SENIOR" in str(job_id).upper() or "EXPERIENCED" in str(job_id).upper()
+                
+                # If they recovered, enforce a HOLD instead of a direct PROCEED per user request
+                if has_recovery and overall_score >= 65:
+                    return "HOLD", f"Candidate showed strong recovery after initial failure in one category. Recommended for human review (Hold) before proceeding."
+
+                # NEW: If they failed the second chance but score is still borderline (60-70), we HOLD instead of REJECT
+                if has_failed_double_chance and overall_score >= 60:
+                    return "HOLD", f"Candidate struggled twice in the {t} category despite moderate overall performance ({overall_score}/100). Manual review recommended to assess if this gap is a dealbreaker."
+
+                if not is_senior and overall_score >= 65 and red_flag_count == 0:
+                    return "PROCEED", f"Solid performance for a non-senior role ({overall_score}/100) with no major red flags - recommend next round"
+
                 if red_flag_count > green_flag_count:
-                    return "HOLD", f"Moderate performance ({overall_score}/100) with more concerns than strengths - borderline candidate"
+                    return "HOLD", f"Moderate performance ({overall_score}/100) with technical areas to improve - borderline candidate"
                 
                 # If score is close to 75 (e.g., 70-74), lean towards PROCEED if no red flags
                 if overall_score >= 70 and red_flag_count == 0:
                      return "PROCEED", f"Solid performance ({overall_score}/100) with no red flags - recommend next round"
                      
-                return "HOLD", f"Moderate performance ({overall_score}/100) across {num_questions} questions - additional assessment needed"
+                return "HOLD", f"Moderate performance ({overall_score}/100) across {num_questions} questions - assessment complete"
             
             # Low but not rejectable
             if overall_score < 60:

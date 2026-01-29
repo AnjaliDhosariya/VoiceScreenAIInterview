@@ -1,0 +1,70 @@
+# Scoring & Evaluation Architecture
+
+This document details the logic and prioritization hierarchy used by the AI Interviewer to grade candidate answers and generate final hiring recommendations.
+
+---
+
+## 1. The Evaluation Lifecycle
+The system uses a two-tier evaluation strategy to balance **real-time responsiveness** with **final report accuracy**.
+
+| Stage | Logic Layer | Purpose | Precision |
+| :--- | :--- | :--- | :--- |
+| **Real-Time** | `Quick Evaluation` | Drives difficulty scaling and follow-up decisions. | Focused on "Pass/Fail" signal. |
+| **Final Report** | `Deep Evaluation` | Generates the detailed scorecard and specific evidence. | Uses full rubric and role-aware mandates. |
+
+---
+
+## 2. Core Scoring Philosophies
+The LLM is governed by a strict **Scoring Mandate** in `EvaluatorAgent.py` to ensure consistency.
+
+### A. Role-Aware Standards (The "Fresher" Mastery Reward)
+The system adjusts its strictness based on the `job_level` (Entry/Junior vs. Senior):
+- **Juniors/Freshers**: Prioritize **Logic, Structure, and Communication**.
+    - If a Junior shows baseline competence + a logical structure (STAR), they receive a **7.5 - 8.0**.
+    - If they demonstrate advanced concepts (Mastery), they are rewarded in the **8.5 - 9.5** range.
+- **Seniors**: Maintain a high bar. Expect edge-case handling, architectural optimizations, and strategic trade-offs.
+
+### B. Structural Rewards (STAR Method)
+- **Mandate**: If a candidate uses the **STAR method perfectly** (Situation, Task, Action, Result) or provides an exceptionally well-organized step-by-step technical explanation, **the LLM MUST award 8.5 - 9.5** in Communication and Structure.
+- **Anti-"Safe" Scoring**: The model is forbidden from defaulting to a "safe" 7.5; organization is a primary hiring signal.
+
+---
+
+## 3. The Recommendation Hierarchy (Priority of Rules)
+The [SummaryService](file:///e:/VoiceScreenAI%20-%20Copy%20%282%29/src/services/summary_service.py#4-298) uses a "Priority Waterfall" to determine the final recommendation (**PROCEED**, **HOLD**, or **REJECT**).
+
+### Priority 1: The Relevance Gate (Gaming Protection)
+This is the highest priority. If the system detects the candidate is "gaming" the interview, metrics are ignored.
+- **Trigger**: More than 2 turns flagged as "Irrelevant" (e.g., behavioral story for technical question) or "Repetitive" (>85% text overlap).
+- **Result**: **Automatic REJECT**, regardless of previous high scores.
+
+### Priority 2: Critical Disqualifiers
+- **Technical Incompetence**: Technical score **< 30** (specifically for technical roles).
+- **Red Flag Threshold**: **4+ critical red flags** (Severe gaps/dealbreakers).
+- **Overall Failure**: Overall score **< 40**.
+- **Result**: **Automatic REJECT**.
+
+### Priority 3: Performance Smoothing (The "Recovery" Rule)
+In [aggregate_scores](file:///e:/VoiceScreenAI%20-%20Copy%20%282%29/src/agents/evaluator_agent.py#307-334), the system is designed not to penalize a single bad turn if the candidate shows growth.
+- **The Logic**: If a candidate has 3+ answers in a category and has one outlier fail (e.g., 2, 8, 9), the system down-weights the 2 and focuses on the recovery.
+- **Hold Logic**: If a recovery happened, the system leans toward **HOLD** instead of a blind PROCEED to ensure a human reviews the initial struggle.
+
+### Priority 4: Strength Synthesis (PROCEED Criteria)
+To get a **PROCEED**, a candidate must satisfy multiple signals:
+1. **Overall Score >= 75** (Junior bar is slightly more lenient).
+2. **Technical Score >= 70**.
+3. **Positive Signal Ratio**: Green flags (strengths) must outnumber Red flags.
+4. **Communication Strength**: Score >= 70.
+
+---
+
+## 4. Special Case Handling
+
+### Gibberish & Low-Signal Turns
+- **Deterministic Scoring**: Orientation turns (Warmup, Q&A, Wrapup) are scored deterministically (5/5/5/5). The LLM is **not** called for these, preventing false "Gibberish" flags on short "no" or "yes" answers.
+- **Anti-Hallucination**: The LLM is commanded to leave the `improvements` list **EMPTY** if the answer is professionally sufficient. This prevents the "searching for flaws" behavior seen in earlier versions.
+
+### The "Hold" Safety Net
+- **Ambiguity**: If a candidate has a score of **65 - 74**, they default to **HOLD**.
+- **Imbalance**: If technical is high (80) but communication is low (50), the system forces a **HOLD** with a note: "Assess client-facing readiness."
+- **Senior Bar**: Any Senior scoring below 75 is automatically a **HOLD** even with no red flags.

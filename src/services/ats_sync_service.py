@@ -18,10 +18,10 @@ class ATSSyncService:
             "interviewId": interview_id,
             "transcript": transcript,
             "scores": {
-                "technical": scores.get("technical_score") if scores else 0,
-                "communication": scores.get("communication_score") if scores else 0,
-                "culture": scores.get("culture_score") if scores else 0,
-                "overall": scores.get("overall_score") if scores else 0
+                "technical": scores.get("technical") if scores else 0,
+                "communication": scores.get("communication") if scores else 0,
+                "culture": scores.get("culture") if scores else 0,
+                "overall": scores.get("overall") if scores else 0
             },
             "recommendation": recommendation,
             "summary": summary,

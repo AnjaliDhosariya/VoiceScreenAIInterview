@@ -1,9 +1,10 @@
 import os
 from groq import Groq
-from typing import Dict, Any, List
+from typing import Dict, Any, List, TYPE_CHECKING
 import json
 from src.config import GROQ_API_KEY, GROQ_MODEL
 from src.services.job_service import job_service
+from src.agents.candidate_state import CandidateState
 
 class QuestionGeneratorAgent:
     """LLM-powered agent to generate interview questions"""
@@ -64,10 +65,19 @@ class QuestionGeneratorAgent:
         
         # Common context
         job_title = job_data.get('title', 'Position')
+        job_level = job_data.get('level', 'Mid-Level')
+
+        # Shared personalization rule
+        personalization_rule = """
+CONTEXT CONNECTIVITY RULE:
+- Look at the "Conversation History" for specific facts (e.g., an internship, a project, a specific tool, or an area of interest mentioned by the candidate).
+- Whenever possible, BRIDGE the next question to these facts to make the interview feel adaptive and connected (e.g., "Earlier you mentioned your internship at X. Could you tell me about a time there where...").
+- Do not repeat facts, but use them to frame the next challenge.
+"""
 
         # SPECIAL HANDLING: Warmup questions should be catchy and engaging
         if q_type == 'warmup':
-            return f"""You are an energetic and professional interviewer for a {job_title} role.
+            return f"""You are an energetic and professional interviewer for a {job_level} {job_title} role.
 
 Generate a CATCHY and ENGAGING warmup question to kick off the interview.
 Respond using a valid JSON object.
@@ -80,14 +90,9 @@ CRITICAL RULES FOR WARMUP:
 5. Aim for 30-50 words - enough to set a great stage
 
 GOOD EXAMPLES (CATCHY):
-- "Welcome! I've reviewed your background and I'm excited to dive in. To kick things off, what specific experiences have prepared you to tackle the challenges of a {job_title} role?"
+- "To kick things off, what specific experiences have prepared you to tackle the challenges of a {job_title} role?"
 - "It's great to connect with you! I'd love to hear the story of your career journey so far and what sparked your passion for becoming a {job_title}."
 - "Hi there! To set the stage, could you bridge the gap between your past projects and why you see this {job_title} position as your next big move?"
-
-BAD EXAMPLES (TOO SIMPLE OR TOO COMPLEX):
-- "Tell me about yourself." (Too boring)
-- "You have a 500GB database..." (Too technical/complex)
-- "What is your experience?" (Too generic)
 
 Output Format:
 {{
@@ -101,9 +106,11 @@ Output Format:
 }}"""
         
         elif q_type == 'motivation':
-            return f"""You are an interviewer for {job_title}.
+            return f"""You are an interviewer for a {job_level} {job_title}.
 
 Generate a MOTIVATION question to understand what drives the candidate.
+
+{personalization_rule}
 
 CRITICAL RULES FOR MOTIVATION:
 1. Focus on WHY they want this specific role/company
@@ -114,15 +121,6 @@ CRITICAL RULES FOR MOTIVATION:
 6. Keep it professional but personal
 
 Respond using a valid JSON object.
-
-GOOD EXAMPLES:
-- "What specifically about this {job_title} role at our company aligns with your career goals?"
-- "What part of being a {job_title} do you find most energizing and why?"
-- "We have a fast-paced environment. What kind of work culture allows you to do your best work?"
-
-BAD EXAMPLES (AVOID):
-- "Tell me about your background and experience" (Already covered in warmup)
-- "What experiences have prepared you for this role?" (Already covered in warmup)
 
 Output Format:
 {{
@@ -136,22 +134,19 @@ Output Format:
 }}"""
         
         elif q_type == 'behavioral':
-             return f"""You are an interviewer for {job_title}.
+             return f"""You are an interviewer for a {job_level} {job_title}.
 
 Generate a BEHAVIORAL question using the STAR method (Situation, Task, Action, Result).
+
+{personalization_rule}
 
 CRITICAL RULES FOR BEHAVIORAL:
 1. Ask "Tell me about a time when..." or "Describe a situation where..."
 2. Focus on SOFT SKILLS: Conflict resolution, Leadership, Teamwork, Adaptability, Ownership, Integrity.
-3. DO NOT ask technical questions (e.g., "Tell me about a time you used Python").
+3. DO NOT ask domain-specific skills questions (e.g., "Tell me about a time you used a specific tool").
 4. DO NOT ask about code or tools. Focus on PEOPLE and PROCESS logic.
 
 Respond using a valid JSON object.
-
-GOOD EXAMPLES:
-- "Tell me about a time you had a conflict with a stakeholder. How did you resolve it?"
-- "Describe a situation where you had to take ownership of a project that was falling behind."
-- "Tell me about a time you had to explain a complex technical concept to a non-technical audience."
 
 Output Format:
 {{
@@ -163,9 +158,60 @@ Output Format:
         "redFlags": ["blaming others", "vague", "no result"]
     }}
 }}"""
+
+        elif q_type == 'culture':
+            return f"""You are an interviewer for a {job_level} {job_title}.
+
+Generate a CULTURE and VALUES question to see if the candidate aligns with a high-performing team.
+
+{personalization_rule}
+
+CRITICAL RULES FOR CULTURE:
+1. Focus on PREFERENCES and VALUES (e.g., communication style, team environment, feedback).
+2. NO "Tell me about a time when..." (that is Behavioral).
+3. NO technical scenarios (that is Technical/Scenario).
+4. Tone: Collaborative, observant, and professional.
+
+Respond using a valid JSON object.
+
+Output Format:
+{{
+    "question": "your culture question here",
+    "type": "culture",
+    "rubric": {{
+        "mustMention": ["preferences", "team alignment"],
+        "goodToMention": ["communication", "growth mindset"],
+        "redFlags": ["toxic traits", "prefers working in total isolation"]
+    }}
+}}"""
+
+        elif q_type == 'scenario':
+            return f"""You are an interviewer for a {job_level} {job_title}.
+
+Generate a SCENARIO-based Case Study question. This should be a 'Problem Solving' challenge.
+
+{personalization_rule}
+
+CRITICAL RULES FOR SCENARIO:
+1. Present a HYPOTHETICAL business or professional crisis (e.g., "A critical deadline is at risk", "A key resource is unavailable", "A major stakeholder changed requirements").
+2. Ask "How would you handle this?" or "Walk me through your first 3 steps."
+3. Focus on SYSTEM-LEVEL thinking and prioritization.
+4. DO NOT ask generic technical questions like "How do you use SQL?". Give a complex context.
+
+Respond using a valid JSON object.
+
+Output Format:
+{{
+    "question": "your scenario question here",
+    "type": "scenario",
+    "rubric": {{
+        "mustMention": ["prioritization", "structured approach", "communication"],
+        "goodToMention": ["scalability", "risk mitigation"],
+        "redFlags": ["panics", "no structured plan", "ignores stakeholders"]
+    }}
+}}"""
         
-        # OPTIMIZATION: Concise context for other question types (TECHNICAL / SCENARIO / CULTURE / ETC)
-        job_title = job_data.get('title', 'Position')
+        # Context for TECHNICAL questions
         skills_str = ', '.join(job_data.get('must_have_skills', [])[:5])
         
         difficulty_notes = {
@@ -174,7 +220,7 @@ Output Format:
             "hard": "Advanced mastery, test deep expertise and edge cases."
         }
         
-        # Build history context (last 3 turns)
+        # Build history context
         history = self._format_history(previous_answers)
         
         # Focus area for technical questions
@@ -182,51 +228,29 @@ Output Format:
         if q_type == 'technical' and candidate_state and hasattr(candidate_state, 'next_skill_to_test'):
             focus_area = f"Target skill: {candidate_state.next_skill_to_test}"
 
-        # Placeholder for topics_covered, assuming it will be passed or derived from candidate_state
-        # For now, it's an empty string to avoid errors.
         topics_covered = getattr(candidate_state, 'topics_covered', '') if candidate_state else ''
 
-        prompt = f"""You are an interviewer for {job_title}. 
+        prompt = f"""You are an interviewer for a {job_level} {job_title}. 
 Question Type: {q_type}. Difficulty: {difficulty} ({difficulty_notes.get(difficulty)}).
 Skills Focus: {skills_str}. {focus_area}
 Previous Topics Covered: {topics_covered}
 
+{personalization_rule}
+
 DIVERSITY & ANTI-REPETITION RULES:
 1. DO NOT ask about a topic/skill if it appears in "Previous Topics Covered".
-2. DO NOT repeat the same Scenario structure. If you asked about "missing data" or "joining two tables" previously, DO NOT ask a similar question again.
-3. VARY the context: Use different industries (Finance, Healthcare, E-commerce) and different data problems (Data Quality, Performance, Privacy, Modeling).
-4. If "SQL" or "Joins" were already tested, move to "Optimization", "Warehousing", or "Python/Scripting".
+2. DO NOT repeat the same Scenario structure.
+3. VARY the context: Use different industries and data problems.
 
-CRITICAL: DO NOT ask about candidate's background, experience overview, or career journey - this was already covered in warmup question.
+CRITICAL: DO NOT ask about candidate's background overview - this was already covered in warmup.
 
 Conversation History:
 {history}
 
-CRITICAL: DO NOT repeat topics, themes, or specific technical subjects already covered in the Conversation History.
-Each question must explore a DIFFERENT skill or situation.
-If a candidate has already discussed "model optimization", DO NOT ask about it again in a different way. Move to another area (e.g., data quality, monitoring, versioning, team conflict).
-Avoid asking questions that lead the candidate to repeat what they have already said. Seek depth in UNTESTED areas of the job description.
+CRITICAL: DO NOT repeat topics confirmed in history. 
+Seek depth in UNTESTED areas of the job description or BRIDGE to specific details mentioned in the Conversation History for a deeper probe.
 
 Generate a JSON object for the next question. 
-
-CRITICAL DISTINCTION:
-- Behavioral questions: Use STAR method (Situation, Task, Action, Result). Ask "Tell me about a time when..."
-- Culture questions: Ask about preferences, values, and ideal work environments. NO storytelling. Examples: "What work environment brings out your best?", "How do you define a healthy team culture?"
-- Motivation questions: Ask "WHY this role?", "Where do you see yourself?", "What drives you?". NO technical scenarios.
-
-Criteria:
-1. Dynamic, JD-specific question focusing on: {skills_str}.
-2. For Behavioral: Use STAR method. Ask "Tell me about a time when...".
-3. For Culture: Ask about preferences/values (NOT past situations). NO "Tell me about a time".
-4. For Motivation: Ask about drivers/goals (NOT skills). NO "Tell me about a time".
-5. For Technical/Scenario: 
-   - DO NOT USE "Tell me about a time when...". 
-   - Instead, use: "How would you handle...", "Imagine you have...", "Describe your process for...".
-   - Present a HYPOTHETICAL situation or a specific technical problem to solve based on {skills_str}.
-   - Example Technical: "How would you implement a solution for [Specific Skill from {skills_str}] given [Specific constraint]?"
-   - Example Scenario: "Your team is facing a challenge with [Task related to {job_title}]. How would you structure your approach?"
-6. Be mindful of the role level ({job_data.get('level', 'Mid')}). Do not over-complicate for junior/mid roles.
-
 Output Format:
 {{
     "question": "string",
@@ -254,11 +278,11 @@ Output Format:
     
     def _fallback_question(self, q_type: str, job_data: Dict[str, Any]) -> Dict[str, Any]:
         """Simple fallback questions"""
-        job_title = job_data.get('title', 'Data Analyst') if job_data else 'Data Analyst'
+        job_title = job_data.get('title', 'Professional Role') if job_data else 'Professional Role'
         fallbacks = {
             "warmup": f"Welcome! To kick things off, I'd love to hear a bit about your journey. What specific experiences have prepared you for this {job_title} role?",
             "behavioral": "Tell me about a time you handled a difficult project deadline.",
-            "technical": f"What are the most important tools you use for {job_title} tasks?",
+            "technical": f"What are the most important industry-standard tools or methodologies you use for {job_title} tasks?",
             "motivation": f"Why are you interested in this {job_title} role specifically?",
             "culture": "How do you define a healthy team culture?"
         }

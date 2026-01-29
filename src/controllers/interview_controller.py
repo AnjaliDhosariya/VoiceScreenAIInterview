@@ -12,6 +12,7 @@ from src.agents.evaluator_agent import EvaluatorAgent
 from src.agents.interview_flow_graph import interview_graph, InterviewState
 # NEW: Agentic interviewer imports
 from src.agents.agentic_interviewer import AgenticInterviewer
+from src.agents.candidate_state import CandidateState
 from src.services.state_persistence import StatePersistence
 from src.services.job_service import job_service
 
@@ -171,15 +172,20 @@ class InterviewController:
                 "totalQuestions": state.question_count
             }
         
-        # Performance/Accuracy Fix: Save state immediately so turn tracking is updated 
-        # before the candidate can request the next turn.
-        StatePersistence.save_state(state)
-        
         # Calculate actual turn number (now synchronized by agentic interviewer)
         next_turn_no = state.question_count
         
-        # Save question as agent turn
+        # PERSISTENCE FIX: Save the rubric used for this question into state
+        # so it can be re-used during final evaluation to prevent hallucinations.
+        if "rubric" in question_data:
+            state.question_rubrics[next_turn_no] = question_data["rubric"]
+        
+        # Save question as agent turn FIRST to ensure transcript persistence
         QuestionService.save_turn(interview_id, next_turn_no, "agent", question_data["question"])
+        
+        # [ATOMICITY REFINEMENT] Save state AFTER transcript is persisted
+        # This prevents the state from advancing its turn count if the DB write fails.
+        StatePersistence.save_state(state)
         
         return {
             "turnNo": next_turn_no,
@@ -187,7 +193,7 @@ class InterviewController:
             "question": question_data["question"],
             "expectedSignals": question_data.get("rubric", {}).get("mustMention", []),
             "agentDifficulty": state.current_difficulty, # Directly from state
-            "totalQuestions": f"{state.question_count + 1}/10-15"
+            "totalQuestions": f"{state.question_count + 1}/10-12"
         }
     
     def submit_answer(self, interview_id: str, turn_no: int, answer: str) -> Dict[str, Any]:
@@ -237,9 +243,75 @@ class InterviewController:
                     except Exception as e:
                         print(f"[ERROR] Failed to generate response to candidate question: {e}")
             
-            # API REDUCTION: We no longer evaluate every answer as it comes in.
-            # We will evaluate in the final report or only when deep context is needed.
+            # REPETITION DETECTION: Check for redundant answers
+            is_repetitive = False
+            previous_candidate_answers = [t["text"] for t in turns if t["speaker"] == "candidate" and t["turn_no"] < turn_no]
             
+            curr_ans_clean = answer.lower().strip()
+            if len(curr_ans_clean) > 50: # Only check significant answers
+                for prev_ans in previous_candidate_answers:
+                    prev_ans_clean = prev_ans.lower().strip()
+                    if len(prev_ans_clean) < 50: continue
+                    
+                    # Simple jaccard-like similarity for speed
+                    words_curr = set(curr_ans_clean.split())
+                    words_prev = set(prev_ans_clean.split())
+                    if not words_curr or not words_prev: continue
+                    
+                    intersection = words_curr.intersection(words_prev)
+                    union = words_curr.union(words_prev)
+                    similarity = len(intersection) / len(union)
+                    
+                    if similarity > 0.85: # 85% overlap in words
+                        is_repetitive = True
+                        print(f"[WARN] REPETITIVE ANSWER DETECTED: {similarity*100:.1f}% similarity")
+                        break
+
+            # API REDUCTION: We perform a LIGHTWEIGHT evaluation here 
+            # to enable adaptive difficulty, but skip the full heavy analysis.
+            print("\n" + "="*50)
+            print(f"🔍 REAL-TIME EVALUATION STARTED: Turn {turn_no}")
+            print("="*50)
+            try:
+                # 1. Load state
+                state = StatePersistence.load_state(interview_id)
+                if state:
+                    # [NEW] Persist repetition status
+                    if is_repetitive:
+                        if turn_no not in state.repetitive_turns:
+                            state.repetitive_turns.append(turn_no)
+                    
+                    # 2. Simple scoring for difficulty logic
+                    job_data = job_service.get_job(session.get("job_id", ""))
+                    job_level = job_data.get("level", "Mid") if job_data else "Mid"
+                    
+                    eval_result = self.evaluator_agent.quick_evaluate(
+                        question=state.last_question or "Context", 
+                        answer=answer,
+                        question_type=state.last_question_type or "technical",
+                        job_level=job_level
+                    )
+                    
+                    score = eval_result.get('overall', 5)
+                    print(f"✅ QUICK SCORE: {score}/10")
+                    
+                    # 3. Update state for difficulty adaptation
+                    self.agentic_interviewer.update_state_after_evaluation(
+                        state=state,
+                        evaluation=eval_result,
+                        question=state.last_question,
+                        question_type=state.last_question_type,
+                        answer=answer
+                    )
+                    
+                    # 4. Save state to persist difficulty decision
+                    StatePersistence.save_state(state)
+                    print(f"📈 DIFFICULTY UPDATE: {state.current_difficulty.upper()}")
+                    print("="*50 + "\n")
+            except Exception as e:
+                print(f"❌ [WARN] Lightweight evaluation failed: {e}")
+                print("="*50 + "\n")
+
             return {
                 "received": True,
                 "status": "INTERVIEW_IN_PROGRESS",
@@ -271,13 +343,16 @@ class InterviewController:
             # 2. Parallel Evaluation (Core Intelligence)
             try:
                 job_data = job_service.get_job(session["job_id"])
-                evaluations = self._evaluate_all_answers(turns, job_data)
+                # Pass state for access to saved rubrics
+                state = StatePersistence.load_state(interview_id)
+                evaluations = self._evaluate_all_answers(turns, job_data, state)
             except Exception as e:
                 print(f"[ERROR] Parallel evaluation failed: {e}")
                 evaluations = []
             
             # 3. Score Aggregation
             scores = self.evaluator_agent.aggregate_scores(evaluations)
+            scores["job_id"] = session.get("job_id", "") # Inject for recommendation logic
             
             # 4. Signals Calculation
             try:
@@ -408,7 +483,7 @@ class InterviewController:
         
         return qa_pairs
     
-    def _evaluate_all_answers(self, turns: List[Dict[str, Any]], job_data: Dict[str, Any] = None) -> List[Dict[str, Any]]:
+    def _evaluate_all_answers(self, turns: List[Dict[str, Any]], job_data: Dict[str, Any] = None, state: Optional[CandidateState] = None) -> List[Dict[str, Any]]:
         """Evaluate all Q&A pairs in parallel to reduce latency"""
         print(f"[DEBUG] Starting parallel evaluation of {len(turns)} turns")
         qa_pairs = self._extract_qa_pairs(turns)
@@ -423,18 +498,33 @@ class InterviewController:
         def safe_evaluate(qa):
             try:
                 turn_no = qa.get("turn_no", 0)
-                # Determine type from plan (turn_no 1 is index 0)
+                # ACCURACY FIX: Use the actual types recorded in state during the interview
+                # This ensures extensions and special turns are correctly identified.
                 q_type = "technical"
-                if 1 <= turn_no <= len(plan):
+                if state and hasattr(state, 'question_types') and 1 <= turn_no <= len(state.question_types):
+                     q_type = state.question_types[turn_no - 1]
+                elif 1 <= turn_no <= len(plan):
                     q_type = plan[turn_no - 1]["type"]
                 
                 print(f"[DEBUG] Evaluating turn {turn_no} ({q_type})...")
                 
+                # ACCURACY FIX: Use the original rubric if available in state
+                rubric = {"mustMention": [], "goodToMention": [], "redFlags": []}
+                if state and hasattr(state, 'question_rubrics') and turn_no in state.question_rubrics:
+                    rubric = state.question_rubrics[turn_no]
+                    print(f"[DEBUG] Using persisted rubric for turn {turn_no}: {rubric.get('mustMention', [])}")
+
+                # [REFINEMENT] Prepare answer with repetition warning if flagged
+                prepared_answer = qa["answer"]
+                if state and hasattr(state, 'repetitive_turns') and turn_no in state.repetitive_turns:
+                    prepared_answer = f"[SYSTEM WARNING: REPETITIVE CONTENT DETECTED. The candidate has provided this exact or near-identical answer previously. Evaluate as Irrelevant/Repeated.]\n\n{prepared_answer}"
+                    print(f"[DEBUG] Prepending repetition warning to turn {turn_no}")
+
                 return self.evaluator_agent.evaluate_answer(
                     qa["question"],
-                    qa["answer"],
+                    prepared_answer,
                     q_type,
-                    {"mustMention": [], "goodToMention": [], "redFlags": []},
+                    rubric,
                     job_data
                 )
             except Exception as e:

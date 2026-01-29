@@ -4,8 +4,6 @@
             "id": "JOB-DA-FRESHER",
             "title": "Data Analyst",
             "level": "Fresher / Entry Level",
-            "experience_years": "0-1",
-            "department": "Analytics",
             "description": "Seeking a motivated fresher to join our analytics team. You'll work on data extraction, cleaning, and basic reporting while learning industry best practices.",
             "responsibilities": [
                 "Extract and clean data from multiple sources",
@@ -38,25 +36,12 @@
                 "Attention to detail",
                 "Communication of findings",
                 "Teamwork and collaboration"
-            ],
-            "sample_questions": {
-                "technical": [
-                    "Explain the difference between WHERE and HAVING clauses in SQL",
-                    "How would you find duplicate records in a table?",
-                    "What is a LEFT JOIN and when would you use it?"
-                ],
-                "behavioral": [
-                    "Tell me about a time you had to learn something new quickly",
-                    "Describe a project where attention to detail was critical"
-                ]
-            }
+            ]
         },
         "JOB-DA-MID": {
             "id": "JOB-DA-MID",
             "title": "Data Analyst",
             "level": "Mid-Level",
-            "experience_years": "2-4",
-            "department": "Analytics",
             "description": "Looking for an experienced Data Analyst to drive insights and support business decisions. You'll own end-to-end analysis projects and mentor junior team members.",
             "responsibilities": [
                 "Design and execute complex analytical projects",
@@ -92,25 +77,12 @@
                 "Project ownership",
                 "Mentorship capabilities",
                 "Problem-solving approach"
-            ],
-            "sample_questions": {
-                "technical": [
-                    "Explain window functions with a real-world example",
-                    "How would you design a dashboard for executive leadership?",
-                    "Walk me through your approach to A/B test analysis"
-                ],
-                "behavioral": [
-                    "Describe a time you influenced a business decision with data",
-                    "Tell me about a complex analysis project you owned end-to-end"
-                ]
-            }
+            ]
         },
         "JOB-DE-FRESHER": {
             "id": "JOB-DE-FRESHER",
             "title": "Data Engineer",
             "level": "Junior",
-            "experience_years": "0-2",
-            "department": "Data Engineering",
             "description": "Join our data engineering team to build scalable data pipelines. You'll learn modern data stack technologies and contribute to our data infrastructure.",
             "responsibilities": [
                 "Assist in building ETL/ELT pipelines",
@@ -144,25 +116,12 @@
                 "Attention to detail",
                 "Collaboration with analysts",
                 "Learning new technologies"
-            ],
-            "sample_questions": {
-                "technical": [
-                    "What is the difference between ETL and ELT?",
-                    "How would you handle duplicate records in a data pipeline?",
-                    "Explain the concept of idempotency in data pipelines"
-                ],
-                "behavioral": [
-                    "Describe a technical challenge you overcame",
-                    "How do you approach debugging a failing pipeline?"
-                ]
-            }
+            ]
         },
         "JOB-DE-SENIOR": {
             "id": "JOB-DE-SENIOR",
             "title": "Senior Data Engineer",
             "level": "Senior",
-            "experience_years": "5-8",
-            "department": "Data Engineering",
             "description": "Lead the design and implementation of enterprise-scale data infrastructure. Architect solutions, mentor engineers, and drive technical excellence.",
             "responsibilities": [
                 "Design and architect data infrastructure solutions",
@@ -204,26 +163,12 @@
                 "Cross-functional collaboration",
                 "Mentorship and team building",
                 "Strategic thinking"
-            ],
-            "sample_questions": {
-                "technical": [
-                    "Design a real-time data pipeline for processing millions of events per second",
-                    "How would you optimize a slowly performing data warehouse?",
-                    "Explain your approach to ensuring data quality at scale"
-                ],
-                "behavioral": [
-                    "Describe a time you architected a complex data system",
-                    "How do you handle technical disagreements with peers?",
-                    "Tell me about mentoring an engineer to solve a difficult problem"
-                ]
-            }
+            ]
         },
         "JOB-DS-FRESHER": {
             "id": "JOB-DS-FRESHER",
             "title": "Data Scientist",
             "level": "Junior",
-            "experience_years": "0-2",
-            "department": "Data Science",
             "description": "Start your data science career building predictive models and deriving insights from data. Work alongside experienced data scientists on real business problems.",
             "responsibilities": [
                 "Build and evaluate machine learning models",
@@ -258,25 +203,12 @@
                 "Curiosity and experimentation",
                 "Communication of technical concepts",
                 "Collaboration with stakeholders"
-            ],
-            "sample_questions": {
-                "technical": [
-                    "Explain the bias-variance tradeoff",
-                    "When would you use logistic regression vs decision trees?",
-                    "How do you handle imbalanced datasets?"
-                ],
-                "behavioral": [
-                    "Describe a data problem you solved with creative analysis",
-                    "How do you explain technical results to non-technical stakeholders?"
-                ]
-            }
+            ]
         },
         "JOB-DS-SENIOR": {
             "id": "JOB-DS-SENIOR",
             "title": "Senior Data Scientist",
             "level": "Senior",
-            "experience_years": "5-8",
-            "department": "Data Science",
             "description": "Lead high-impact data science initiatives that drive business value. Build advanced models, establish best practices, and guide junior scientists.",
             "responsibilities": [
                 "Design and implement end-to-end ML solutions",
@@ -318,26 +250,12 @@
                 "Technical leadership",
                 "Stakeholder influence",
                 "Team mentorship"
-            ],
-            "sample_questions": {
-                "technical": [
-                    "Design an end-to-end recommendation system for an e-commerce platform",
-                    "How would you approach building a customer churn prediction model?",
-                    "Explain your process for debugging a model that's underperforming in production"
-                ],
-                "behavioral": [
-                    "Describe a project where your model drove significant business impact",
-                    "Tell me about a time you had to balance model complexity with interpretability",
-                    "How do you prioritize between multiple data science initiatives?"
-                ]
-            }
+            ]
         },
         "JOB-ML-JUNIOR": {
             "id": "JOB-ML-JUNIOR",
             "title": "AI/ML Engineer",
             "level": "Junior",
-            "experience_years": "1-3",
-            "department": "Machine Learning",
             "description": "Build and deploy machine learning models in production. Work on ML infrastructure, model serving, and continuous improvement of AI systems.",
             "responsibilities": [
                 "Deploy ML models to production environments",
@@ -375,25 +293,12 @@
                 "Collaboration with DS and engineering teams",
                 "Production reliability focus",
                 "Continuous learning"
-            ],
-            "sample_questions": {
-                "technical": [
-                    "How would you deploy a machine learning model as a REST API?",
-                    "Explain your approach to monitoring ML models in production",
-                    "What is model drift and how do you detect it?"
-                ],
-                "behavioral": [
-                    "Describe a time you debugged a production ML issue",
-                    "How do you balance speed of deployment with model quality?"
-                ]
-            }
+            ]
         },
         "JOB-ML-SENIOR": {
             "id": "JOB-ML-SENIOR",
             "title": "Senior AI/ML Engineer",
             "level": "Senior",
-            "experience_years": "5-8",
-            "department": "Machine Learning",
             "description": "Architect and scale AI/ML infrastructure to support company-wide machine learning initiatives. Lead MLOps practices and drive technical excellence.",
             "responsibilities": [
                 "Design scalable ML infrastructure and platforms",
@@ -436,35 +341,308 @@
                 "System design thinking",
                 "Team mentorship",
                 "Strategic planning"
+            ]
+        },
+        "JOB-DEVOPS-FRESHER": {
+            "id": "JOB-DEVOPS-FRESHER",
+            "title": "DevOps Engineer",
+            "level": "Fresher / Entry Level",
+            "experience_years": "0-1",
+            "department": "Platform Engineering",
+            "description": "Entry-level DevOps engineer role focused on supporting CI/CD pipelines, containerized applications, and cloud infrastructure under senior guidance.",
+            "responsibilities": [
+                "Support CI/CD pipelines for application deployments",
+                "Containerize applications using Docker",
+                "Assist in Kubernetes deployments and monitoring",
+                "Write basic infrastructure scripts using Terraform",
+                "Monitor system health and logs",
+                "Assist in incident troubleshooting"
             ],
-            "sample_questions": {
-                "technical": [
-                    "Design an end-to-end MLOps platform for a company with 100+ models",
-                    "How would you optimize inference latency for a real-time prediction API?",
-                    "Explain your approach to implementing a RAG system with LLMs"
-                ],
-                "behavioral": [
-                    "Describe a time you scaled an ML system to handle 10x traffic",
-                    "How do you approach technical decision-making for long-term projects?",
-                    "Tell me about mentoring an engineer through a complex ML infrastructure challenge"
-                ]
-            }
+            "must_have_skills": [
+                "Linux fundamentals",
+                "Docker (images, containers, Dockerfiles)",
+                "Kubernetes basics (pods, services, deployments)",
+                "Terraform basics",
+                "Jenkins fundamentals",
+                "Basic cloud knowledge (AWS/GCP/Azure)"
+            ],
+            "nice_to_have_skills": [
+                "Helm basics",
+                "GitHub Actions",
+                "Monitoring tools exposure"
+            ],
+            "technical_focus_areas": [
+                "CI/CD pipelines",
+                "Container orchestration",
+                "Infrastructure automation"
+            ],
+            "behavioral_focus_areas": [
+                "Operational discipline",
+                "Incident awareness",
+                "Learning mindset"
+            ]
+        },
+        "JOB-DEVOPS-EXPERIENCED": {
+            "id": "JOB-DEVOPS-EXPERIENCED",
+            "title": "DevOps Engineer",
+            "level": "Experienced",
+            "experience_years": "4-8",
+            "department": "Platform Engineering",
+            "description": "Experienced DevOps engineer responsible for designing, operating, and scaling CI/CD pipelines, Kubernetes platforms, and cloud infrastructure.",
+            "responsibilities": [
+                "Design and maintain CI/CD pipelines at scale",
+                "Manage Kubernetes clusters in production",
+                "Provision infrastructure using Terraform",
+                "Implement monitoring, alerting, and logging",
+                "Handle production incidents and postmortems",
+                "Collaborate with engineering and security teams"
+            ],
+            "must_have_skills": [
+                "Docker (advanced usage)",
+                "Kubernetes (production workloads)",
+                "Terraform (modules, state management)",
+                "Jenkins or GitHub Actions",
+                "AWS/GCP/Azure cloud services",
+                "Linux system internals",
+                "Monitoring and alerting tools"
+            ],
+            "nice_to_have_skills": [
+                "Helm",
+                "Service mesh",
+                "SRE practices"
+            ],
+            "technical_focus_areas": [
+                "Scalability",
+                "Reliability engineering",
+                "Infrastructure security"
+            ],
+            "behavioral_focus_areas": [
+                "Incident ownership",
+                "Decision making under pressure",
+                "Cross-team leadership"
+            ]
+        },
+        "JOB-BACKEND-FRESHER": {
+            "id": "JOB-BACKEND-FRESHER",
+            "title": "Backend Engineer",
+            "level": "Fresher / Entry Level",
+            "experience_years": "0-1",
+            "department": "Engineering",
+            "description": "Entry-level backend engineer working on APIs, databases, and backend logic under mentorship.",
+            "responsibilities": [
+                "Build REST APIs",
+                "Write backend business logic",
+                "Work with relational databases",
+                "Write unit tests",
+                "Fix bugs and improve code quality"
+            ],
+            "must_have_skills": [
+                "Python or Java",
+                "Data structures and algorithms basics",
+                "SQL (joins, indexing basics)",
+                "REST API fundamentals",
+                "Git version control"
+            ],
+            "nice_to_have_skills": [
+                "FastAPI or Spring Boot",
+                "Basic system design knowledge"
+            ],
+            "technical_focus_areas": [
+                "API development",
+                "Database interaction",
+                "Code maintainability"
+            ],
+            "behavioral_focus_areas": [
+                "Problem-solving",
+                "Attention to detail",
+                "Collaboration"
+            ]
+        },
+        "JOB-BACKEND-EXPERIENCED": {
+            "id": "JOB-BACKEND-EXPERIENCED",
+            "title": "Backend Engineer",
+            "level": "Experienced",
+            "experience_years": "3-7",
+            "department": "Engineering",
+            "description": "Experienced backend engineer responsible for building scalable, reliable backend systems.",
+            "responsibilities": [
+                "Design scalable APIs",
+                "Handle high-throughput systems",
+                "Optimize database queries",
+                "Implement authentication and authorization",
+                "Review code and mentor juniors"
+            ],
+            "must_have_skills": [
+                "Advanced Python or Java",
+                "System design fundamentals",
+                "SQL and NoSQL databases",
+                "Concurrency and async programming",
+                "Caching strategies"
+            ],
+            "nice_to_have_skills": [
+                "Message queues",
+                "Distributed systems exposure"
+            ],
+            "technical_focus_areas": [
+                "Scalability",
+                "Performance optimization",
+                "System reliability"
+            ],
+            "behavioral_focus_areas": [
+                "Ownership",
+                "Technical decision-making",
+                "Mentorship"
+            ]
+        },
+        "JOB-FRONTEND-FRESHER": {
+            "id": "JOB-FRONTEND-FRESHER",
+            "title": "Frontend Engineer",
+            "level": "Fresher / Entry Level",
+            "experience_years": "0-1",
+            "department": "Engineering",
+            "description": "Entry-level frontend engineer focused on building responsive and accessible user interfaces.",
+            "responsibilities": [
+                "Build UI components",
+                "Integrate frontend with APIs",
+                "Fix UI bugs",
+                "Ensure responsive layouts"
+            ],
+            "must_have_skills": [
+                "HTML",
+                "CSS",
+                "JavaScript",
+                "React basics",
+                "Browser fundamentals"
+            ],
+            "nice_to_have_skills": [
+                "TypeScript",
+                "Basic accessibility standards"
+            ],
+            "technical_focus_areas": [
+                "Component-based UI",
+                "State management basics"
+            ],
+            "behavioral_focus_areas": [
+                "Attention to UX",
+                "Learning mindset"
+            ]
+        },
+        "JOB-FRONTEND-EXPERIENCED": {
+            "id": "JOB-FRONTEND-EXPERIENCED",
+            "title": "Frontend Engineer",
+            "level": "Experienced",
+            "experience_years": "3-6",
+            "department": "Engineering",
+            "description": "Experienced frontend engineer responsible for scalable UI architecture and performance optimization.",
+            "responsibilities": [
+                "Design frontend architecture",
+                "Optimize rendering performance",
+                "Ensure accessibility compliance",
+                "Collaborate with backend teams"
+            ],
+            "must_have_skills": [
+                "React or Angular",
+                "TypeScript",
+                "State management libraries",
+                "Frontend performance optimization",
+                "API integration"
+            ],
+            "nice_to_have_skills": [
+                "Next.js",
+                "Design systems"
+            ],
+            "technical_focus_areas": [
+                "Frontend scalability",
+                "Performance optimization"
+            ],
+            "behavioral_focus_areas": [
+                "Ownership",
+                "Cross-team collaboration"
+            ]
+        },
+        "JOB-FULLSTACK-FRESHER": {
+            "id": "JOB-FULLSTACK-FRESHER",
+            "title": "Full Stack Engineer",
+            "level": "Fresher / Entry Level",
+            "experience_years": "0-1",
+            "department": "Engineering",
+            "description": "Entry-level full stack engineer working across frontend and backend layers.",
+            "responsibilities": [
+                "Develop basic full-stack features",
+                "Consume and build APIs",
+                "Debug issues across the stack"
+            ],
+            "must_have_skills": [
+                "JavaScript",
+                "React basics",
+                "Backend language fundamentals",
+                "SQL basics"
+            ],
+            "nice_to_have_skills": [
+                "Docker basics",
+                "Cloud exposure"
+            ],
+            "technical_focus_areas": [
+                "End-to-end flow",
+                "Debugging"
+            ],
+            "behavioral_focus_areas": [
+                "Adaptability",
+                "Problem-solving"
+            ]
+        },
+        "JOB-FULLSTACK-EXPERIENCED": {
+            "id": "JOB-FULLSTACK-EXPERIENCED",
+            "title": "Full Stack Engineer",
+            "level": "Experienced",
+            "experience_years": "3-7",
+            "department": "Engineering",
+            "description": "Experienced full stack engineer owning features from frontend to backend and deployment.",
+            "responsibilities": [
+                "Design end-to-end systems",
+                "Build scalable frontend and backend",
+                "Deploy and monitor applications"
+            ],
+            "must_have_skills": [
+                "Frontend framework",
+                "Backend framework",
+                "System design",
+                "Databases",
+                "Docker"
+            ],
+            "nice_to_have_skills": [
+                "CI/CD",
+                "Cloud platforms"
+            ],
+            "technical_focus_areas": [
+                "System integration",
+                "Scalability"
+            ],
+            "behavioral_focus_areas": [
+                "Ownership",
+                "Decision making"
+            ]
         }
     },
     "metadata": {
-        "version": "1.0",
-        "last_updated": "2026-01-24",
-        "total_jobs": 8,
+        "version": "1.1",
+        "last_updated": "2026-01-28",
+        "total_jobs": 16,
         "roles": [
             "Data Analyst",
             "Data Engineer",
             "Data Scientist",
-            "AI/ML Engineer"
+            "AI/ML Engineer",
+            "DevOps Engineer",
+            "Backend Engineer",
+            "Frontend Engineer",
+            "Full Stack Engineer"
         ],
         "experience_levels": [
             "Fresher (0-1 years)",
             "Junior (1-3 years)",
             "Mid-Level (2-4 years)",
+            "Experienced (3-8 years)",
             "Senior (5-8 years)"
         ]
     }

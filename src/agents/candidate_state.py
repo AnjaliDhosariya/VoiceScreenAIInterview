@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Set, Dict, Any, Literal
+from typing import List, Set, Dict, Any, Literal, Optional
 from datetime import datetime
 
 @dataclass
@@ -45,6 +45,12 @@ class CandidateState:
     last_answer: str = ""
     last_score: float = 0.0
     
+    question_types: List[str] = field(default_factory=list) # Maps turn to type
+    category_scores: Dict[str, List[float]] = field(default_factory=dict) # type -> [scores]
+    question_rubrics: Dict[int, Dict[str, Any]] = field(default_factory=dict) # turn_no -> rubric
+    second_chance_category: Optional[str] = None # Category targeted for second chance validation
+    repetitive_turns: List[int] = field(default_factory=list) # List of turn numbers flagged as repetitive
+    
     # State metadata
     created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
     last_updated: str = field(default_factory=lambda: datetime.utcnow().isoformat())
@@ -69,11 +75,17 @@ class CandidateState:
         self.decisions_made.append(decision)
         self.last_updated = datetime.utcnow().isoformat()
     
-    def update_performance(self, score: float):
+    def update_performance(self, score: float, category: str = "general"):
         """Update performance metrics after evaluation"""
         self.performance_trend.append(score)
         self.last_score = score
         self.last_updated = datetime.utcnow().isoformat()
+        
+        # Category Tracking
+        self.question_types.append(category)
+        if category not in self.category_scores:
+            self.category_scores[category] = []
+        self.category_scores[category].append(score)
         
         # Update struggle/strong counters
         if score < 5.0:
@@ -88,7 +100,7 @@ class CandidateState:
         
         # Update overall score (weighted average, recent scores count more)
         self.overall_score = self.avg_score
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for JSON serialization"""
         return {
@@ -106,6 +118,11 @@ class CandidateState:
             "topics_covered": list(self.topics_covered),
             "skills_tested": list(self.skills_tested),
             "next_skill_to_test": self.next_skill_to_test,
+            "question_types": self.question_types,
+            "category_scores": self.category_scores,
+            "question_rubrics": {str(k): v for k, v in self.question_rubrics.items()}, # JSON keys must be strings
+            "second_chance_category": self.second_chance_category,
+            "repetitive_turns": self.repetitive_turns,
             "decisions_made": [
                 {
                     "timestamp": d.timestamp,
@@ -133,8 +150,8 @@ class CandidateState:
                 timestamp=d["timestamp"],
                 question_number=d["question_number"],
                 decision_type=d["decision_type"],
-                action=d["action"],
-                reasoning=d["reasoning"],
+                action=d.get("action", "unknown"),
+                reasoning=d.get("reasoning", "Legacy decision"),
                 context=d.get("context", {})
             )
             for d in data.get("decisions_made", [])
@@ -145,16 +162,21 @@ class CandidateState:
             candidate_id=data["candidate_id"],
             job_id=data["job_id"],
             overall_score=data.get("overall_score", 0.0),
-            performance_trend=data.get("performance_trend", []),
+            performance_trend=data.get("performance_trend") or [],
             question_count=data.get("question_count", 0),
-            red_flags=data.get("red_flags", []),
-            green_flags=data.get("green_flags", []),
+            red_flags=data.get("red_flags") or [],
+            green_flags=data.get("green_flags") or [],
             struggle_count=data.get("struggle_count", 0),
             strong_answer_count=data.get("strong_answer_count", 0),
             current_difficulty=data.get("current_difficulty", "medium"),
-            topics_covered=set(data.get("topics_covered", [])),
-            skills_tested=set(data.get("skills_tested", [])),
+            topics_covered=set(data.get("topics_covered") or []),
+            skills_tested=set(data.get("skills_tested") or []),
             next_skill_to_test=data.get("next_skill_to_test", ""),
+            question_types=data.get("question_types") or [],
+            category_scores=data.get("category_scores") or {},
+            question_rubrics={int(k): v for k, v in data.get("question_rubrics", {}).items()},
+            second_chance_category=data.get("second_chance_category"),
+            repetitive_turns=data.get("repetitive_turns") or [],
             decisions_made=decisions,
             last_question=data.get("last_question", ""),
             last_question_type=data.get("last_question_type", ""),

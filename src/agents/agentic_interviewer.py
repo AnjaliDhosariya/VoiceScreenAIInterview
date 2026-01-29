@@ -6,10 +6,10 @@ from src.services.job_service import job_service
 
 class AgenticInterviewer:
     """
-    Autonomous interview agent that makes intelligent decisions within bounds (10-15 questions).
+    Autonomous interview agent that makes intelligent decisions within bounds (10-12 questions).
     
     This agent:
-    - Decides when to terminate (after 10 min, before 15 max)
+    - Decides when to terminate (after 10 min, before 12 max)
     - Chooses difficulty levels based on performance
     - Selects which technical skills to test
     - Adds follow-up questions when needed
@@ -19,7 +19,7 @@ class AgenticInterviewer:
     # Constants
     MIN_CORE_QUESTIONS = 8  # Core evaluation questions (Strict 8-step plan)
     MIN_QUESTIONS = 10  # Minimum total including candidate Q&A + wrap-up
-    MAX_QUESTIONS = 13  # Reduced max since core is shorter
+    MAX_QUESTIONS = 12  # Strict limit to prevent long interviews
     END_INTERVIEW_BUFFER = 2  # Slots for candidate Q&A + wrap-up
     
     # Core 8-question evaluation plan (Verified User Request)
@@ -28,9 +28,9 @@ class AgenticInterviewer:
         {"type": "behavioral", "description": "Behavioral question 1 (conflict/stakeholder)"},
         {"type": "behavioral", "description": "Behavioral question 2 (ownership/result)"},
         {"type": "motivation", "description": "Role motivation question"},
-        {"type": "technical", "description": "JD-specific technical Q1"},
-        {"type": "technical", "description": "JD-specific technical Q2"},
-        {"type": "scenario", "description": "Scenario/case question (role-specific)"},
+        {"type": "technical", "description": "JD-specific domain Q1"},
+        {"type": "technical", "description": "JD-specific domain Q2"},
+        {"type": "scenario", "description": "Scenario/case question (role-appropriate)"},
         {"type": "culture", "description": "Culture fit question"}
     ]
     
@@ -54,21 +54,38 @@ class AgenticInterviewer:
         if state.question_count >= self.MAX_QUESTIONS - self.END_INTERVIEW_BUFFER:
             return False, "Reached maximum questions limit"
         
-        # AGENT AUTONOMOUS DECISIONS (questions 9-11):
+        # AGENT AUTONOMOUS DECISIONS (Limit to ONE extra question total):
         
-        # 1. STOP: Sufficient Positive Data
-        # If the candidate is solid (>= 7.0), we don't need to grill them further.
-        if state.avg_score >= 7.0:
-            return False, f"Sufficient positive data gathered (Avg {state.avg_score:.1f}/10) - ending interview"
-            
-        # 2. STOP: Consistent Failure
-        # If they are performing very poorly (Avg < 4.0), further questions won't help.
-        if state.avg_score < 4.0:
-             return False, f"insufficient performance (Avg {state.avg_score:.1f}/10) - ending interview"
+        # If we have already asked more than core questions, force move to wrap-up
+        if state.question_count >= self.MIN_CORE_QUESTIONS + 1:
+            return False, "Already provided one extension question - ending interview"
 
-        # 3. CONTINUE: Weak/Mixed Performance (4.0 <= Score < 7.0)
-        # We need to probe specific weak areas to give them a chance or confirm rejection.
-        return True, f"Mixed signals (Avg {state.avg_score:.1f}/10) - probing weak areas for final assessment"
+        # Check for EXACTLY one technical/scenario failure while others are strong
+        # This implementation follows the "add only 1 extra question" rule.
+        important_categories = ["behavioral", "motivation", "technical", "scenario"]
+        failed_cats = []
+        strong_cats = []
+        
+        for cat in important_categories:
+            scores = state.category_scores.get(cat, [])
+            if not scores: continue
+            
+            avg_cat = sum(scores) / len(scores)
+            min_cat = min(scores)
+            
+            # Failure defined as low average or a specific very poor answer
+            if avg_cat < 6.0 or min_cat < 4.5:
+                failed_cats.append(cat)
+            elif avg_cat >= 7.5:
+                 strong_cats.append(cat)
+        
+        # Extension Rule: Only for technical or scenario failure, and only if other areas are solid.
+        if len(failed_cats) == 1 and failed_cats[0] in ["technical", "scenario"] and len(strong_cats) >= 2:
+            state.second_chance_category = failed_cats[0]
+            return True, f"Second Chance: Validating {failed_cats[0]} with one additional question since other areas are strong."
+
+        # Default: End interview after 8 questions
+        return False, "Sufficient data gathered or general performance does not warrant extension"
     
     def should_add_followup(self, state: CandidateState) -> Tuple[bool, str, str]:
         """
@@ -81,10 +98,14 @@ class AgenticInterviewer:
         if state.question_count >= self.MAX_QUESTIONS:
             return False, "", "Already at maximum questions"
         
-        # Don't add follow-ups before completing core 10
-        if state.question_count < self.MIN_QUESTIONS:
-            return False, "", "Must complete core 10 first"
+        # Don't add follow-ups before completing core 8
+        if state.question_count < self.MIN_CORE_QUESTIONS:
+            return False, "", "Must complete core plan first"
         
+        # Reset follow-up logic if candidate shows strong recovery
+        if state.strong_answer_count >= 1 and state.last_question_type in ["technical", "scenario"]:
+            return False, "", "Candidate showed strength - skipping further technical follow-ups"
+
         # Add follow-up if answer was vague or weak (score < 5)
         if state.last_score < 5 and state.last_question_type in ["behavioral", "technical", "scenario"]:
             return True, "clarify", f"Vague/weak answer (score {state.last_score}/10) - need clarification"
@@ -105,7 +126,7 @@ class AgenticInterviewer:
         Decide difficulty level for next question based on performance trend.
         """
         # First few questions (1-3) - start at medium
-        if step_no <= 3 or not state.performance_trend:
+        if step_no <= 2 or not state.performance_trend:
             return "medium"
         
         # Calculate recent average (last 3 scores)
@@ -117,7 +138,7 @@ class AgenticInterviewer:
         
         # Struggling → simplify
         elif avg < 5.0:
-            return "easy"
+            return "medium"
         
         # Average → standard difficulty
         else:
@@ -143,6 +164,12 @@ class AgenticInterviewer:
         
         # Remove already tested skills
         untested = [s for s in must_have_skills if s not in state.skills_tested]
+        
+        # [REFINEMENT] If must_have_skills are exhausted, try nice_to_have or focus areas
+        if not untested:
+            nice_to_have = job_data.get('nice_to_have_skills', [])
+            focus_areas = job_data.get('technical_focus_areas', [])
+            untested = [s for s in nice_to_have + focus_areas if s not in state.skills_tested]
         
         # If this is Q5 (first technical) - pick primary skill
         if step_no == 5:
@@ -208,16 +235,19 @@ class AgenticInterviewer:
         
         Called after each answer is evaluated.
         """
-        # Calculate overall score from evaluation
-        technical = evaluation.get("technical", 0)
-        communication = evaluation.get("communication", 0)
-        structure = evaluation.get("structure", 0)
-        confidence = evaluation.get("confidence", 0)
+        # Calculate overall score from evaluation with defensive casting
+        try:
+            technical = float(evaluation.get("technical", 0))
+            communication = float(evaluation.get("communication", 0))
+            structure = float(evaluation.get("structure", 0))
+            confidence = float(evaluation.get("confidence", 0))
+            
+            overall = (technical + communication + structure + confidence) / 4.0
+        except (ValueError, TypeError):
+            overall = 5.0
         
-        overall = (technical + communication + structure + confidence) / 4.0
-        
-        # Update performance
-        state.update_performance(overall)
+        # Update performance with category tracking
+        state.update_performance(overall, category=question_type)
         
         # Update context
         state.last_question = question
@@ -327,6 +357,9 @@ class AgenticInterviewer:
             state.last_question_type = q_type
             state.topics_covered.add(q_type)
             
+            # [FORCE TYPE] Ensure LLM drift doesn't change the intended plan type
+            question_data["type"] = q_type
+            
             return question_data
         
         
@@ -368,8 +401,13 @@ class AgenticInterviewer:
                 difficulty = "hard"
                 
                 # FORCE TECHNICAL for follow-ups unless probing specific soft skill
-                # For simplicity, we assume deep dives are technical for now
                 q_type_followup = "technical"
+                
+                # NEW: Second Chance Override
+                if state.second_chance_category:
+                    q_type_followup = state.second_chance_category
+                    # [SAFETY] Prevent repetition - could add logic here to pick a DIFFERENT skill
+                    print(f"[DEBUG] Triggering Second Chance question for category: {q_type_followup}")
                 
                 question_data = self.question_generator.generate_question(
                     turn_no=turn_no,
@@ -379,6 +417,9 @@ class AgenticInterviewer:
                     candidate_state=state,
                     q_type_override=q_type_followup # PASS EXPLICIT TYPE
                 )
+                
+                # Clear second chance flag after use
+                state.second_chance_category = None
                 
                 state.question_count = turn_no
                 state.last_question = question_data["question"]
